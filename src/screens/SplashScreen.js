@@ -16,6 +16,8 @@ const SplashScreen = (props) => {
         />
         <Text style = {styles.txtTitle}>CinematicVoyage</Text>
         <Text style = {styles.txtContent}>PHIM NHƯ SỐNG | SỐNG NHƯ PHIM</Text>
+        <Text style = {styles.txtContent}>PHIM NHƯ SỐNG | SỐNG NHƯ PHIM</Text>
+
     </View>
   )
 }
