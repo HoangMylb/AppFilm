@@ -65,8 +65,6 @@ const Login = props => {
               ---------------------------- Hoặc ----------------------------
             </Text>
 
-            <Text> Dunggggg demo </Text>
-
             {/* 2 logo social */}
             <View style={styles.imgSocial}>
               <Image
