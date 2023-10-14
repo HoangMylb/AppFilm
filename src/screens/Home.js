@@ -9,7 +9,7 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-
+import layout from './Shared/layout';
 import movieList from '../data/movieItem';
 import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';
@@ -29,6 +29,7 @@ const Home = (props) => {
 
   const renderItem = ({item}) => {
     return (
+      
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
         <Image
           style={{
@@ -61,6 +62,7 @@ const Home = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
+
       <ScrollView>
         <View style={styles.screen}>
           {/* HEADER */}
@@ -167,6 +169,7 @@ const Home = (props) => {
           </View>
         </View>
       </ScrollView>
+                
     </SafeAreaView>
   );
 };

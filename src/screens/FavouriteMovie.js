@@ -7,13 +7,13 @@ const FavouriteMovie = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
+            {/* <View style={styles.header}>
                 <View style={styles.iconBack}>
                     <Text style={{ marginTop: '20%', marginLeft: '20%',color:'white' }}>Icon</Text>
                 </View>
                 <Text style={{ lineHeight: 40, fontWeight: '700' }}>Yêu Thích</Text>
                 <Text style={{ width: 44, }}></Text>
-            </View>
+            </View> */}
 
            
                 <FlatList

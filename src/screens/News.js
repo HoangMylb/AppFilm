@@ -60,7 +60,6 @@ const renderItem = ({ item }) => {
     return (
         <View
         >
-
             <View style={{ width: '90%', height: 255, backgroundColor: 'white', marginTop: 20, marginLeft: 20, borderRadius: 12 }}>
                 <Image style={{ width: '100%', height: '70%',objectFit:'cover' }} source={{uri:item.url}}></Image>
 
