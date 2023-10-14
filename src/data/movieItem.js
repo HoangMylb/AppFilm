@@ -1,7 +1,7 @@
 const movieList = [
   {
     name: 'Bố Già',
-    url: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/movie1.png?alt=media&token=ab711858-43e2-4269-8037-d3987af27e87&_gl=1*8ifwpz*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NTk5Mzg1Mi4xMC4xLjE2OTU5OTQ5MTcuNjAuMC4w',
+    url: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Attack.png?alt=media&token=986c6d25-cc69-4e77-9989-3d102ba9716e&_gl=1*1qdudoi*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NjkzOTczMS4yNS4xLjE2OTY5NDI2MDUuNjAuMC4w',
     start:
       'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/start4.png?alt=media&token=ccb618f6-2d3e-4522-b4d3-496f4d9feee2&_gl=1*5yz81l*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NjAwNTY5My4xMS4xLjE2OTYwMDU3MDUuNDguMC4w',
   },
@@ -16,7 +16,7 @@ const movieList = [
     url: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/movie3.png?alt=media&token=e0604275-ad78-4f05-944f-70fd0f8ee123&_gl=1*i6m1ny*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NTk5Mzg1Mi4xMC4xLjE2OTU5OTUwMDMuNjAuMC4w',
     start:
       'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/start3.png?alt=media&token=976ee840-069c-4348-8859-20bdcae601c1&_gl=1*17asp4i*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NjAwNTY5My.4xMS4xLjE2OTYwMDU4MTQuNDcuMC4w',
-  },
+  }
 ];
 
 export default movieList;

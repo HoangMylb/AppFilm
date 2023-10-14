@@ -3,6 +3,8 @@ import React from 'react'
 import SplashScreen from './src/screens/SplashScreen'
 import Login from './src/screens/Login'
 import Home from './src/screens/Home'
+import DetailMovie from './src/screens/DetailMovie'
+import News from './src/screens/News'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -14,6 +16,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }}/>
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>

@@ -1,7 +1,7 @@
 const directorList = [
     {
       name: 'Bố Già',
-      url: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/movie1.png?alt=media&token=ab711858-43e2-4269-8037-d3987af27e87&_gl=1*8ifwpz*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NTk5Mzg1Mi4xMC4xLjE2OTU5OTQ5MTcuNjAuMC4w',
+      url: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Attack.png?alt=media&token=986c6d25-cc69-4e77-9989-3d102ba9716e&_gl=1*pyax0v*_ga*MTI0MjA0MTY1OC4xNjk2OTM5OTAx*_ga_CW55HF8NVT*MTY5NjkzOTkwMC4xLjEuMTY5Njk0Mjg3MC42MC4wLjA',
       start:
         'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/start4.png?alt=media&token=ccb618f6-2d3e-4522-b4d3-496f4d9feee2&_gl=1*5yz81l*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NjAwNTY5My4xMS4xLjE2OTYwMDU3MDUuNDguMC4w',
     },
