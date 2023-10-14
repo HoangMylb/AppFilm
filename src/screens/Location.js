@@ -69,7 +69,7 @@ const Location = ({navigation}) => {
             <ScrollView style={{ backgroundColor: '#CF9B9B' }}>
                 <View style={styles.header}>
                     <FlatList
-                        style={{ flex: 1 }}
+                        style={{}}
                         data={location}
                         keyExtractor={item => item.title}
                         renderItem={renderItem}
