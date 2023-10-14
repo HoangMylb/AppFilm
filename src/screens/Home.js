@@ -9,20 +9,27 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-
+import layout from './Shared/layout';
 import movieList from '../data/movieItem';
 import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';
 
-const Home = () => {
+const Home = (props) => {
+
+  const {navigation} = props;
   // data phim
   const [movie, setMovie] = useState(movieList);
   const [director, setDirector] = useState(directorList);
   const [actor, setActor] = useState(actorList);
 
 
+  const clickNext = () => {
+    navigation.navigate('User');
+  };
+
   const renderItem = ({item}) => {
     return (
+      
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
         <Image
           style={{
@@ -55,6 +62,7 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+
       <ScrollView>
         <View style={styles.screen}>
           {/* HEADER */}
@@ -63,12 +71,16 @@ const Home = () => {
               <Text style={styles.txt1}>Xin chào, Phúc</Text>
               <Text style={styles.txt2}>Đặt vé xem phim thôi nào</Text>
             </View>
+            <TouchableOpacity onPress={clickNext}>
             <Image
               style={styles.imgHeader}
               source={{
                 uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/ImageUser.png?alt=media&token=07b4b15d-4dcf-402b-88c0-87a987022e19&_gl=1*30vg5j*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkwOTQyOC4zOS4wLjA.',
               }}
             />
+            </TouchableOpacity>
+              
+            
           </View>
           {/* ... */}
           {/* MOVIE thứ 1 */}
@@ -157,6 +169,7 @@ const Home = () => {
           </View>
         </View>
       </ScrollView>
+                
     </SafeAreaView>
   );
 };
@@ -166,7 +179,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#CF9B9B',
+    backgroundColor: 'white',
   },
 
   screen: {
@@ -180,19 +193,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   imgHeader: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
   },
 
   // title
 
   txt1: {
-    fontSize: 24,
+    fontSize: 22,
     color: '#000000',
     fontFamily: 'Roboto',
   },
   txt2: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Roboto',
     color: '#635F5B',
   },
@@ -201,7 +214,7 @@ const styles = StyleSheet.create({
 
   txtRap: {
     marginTop: 15,
-    fontSize: 36,
+    fontSize: 30,
     fontFamily: 'Roboto',
     color: '#000000',
   },

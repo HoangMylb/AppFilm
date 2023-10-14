@@ -17,6 +17,9 @@ const Login = props => {
   const clickNext = () => {
     navigation.navigate('Home');
   };
+  const clickNextTo = () => {
+    navigation.navigate('Register');
+  };
 
   return (
     <View style={styles.Background}>
@@ -27,7 +30,7 @@ const Login = props => {
           <Image
             style={styles.logo}
             source={{
-              uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/logoCV.png?alt=media&token=b53e602f-2fd6-4520-916b-83ab21905a2d&_gl=1*k5swc5*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NTk5Mzg1Mi4xMC4xLjE2OTU5OTQyMzcuNjAuMC4w',
+              uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Login%2FlogoLogin.png?alt=media&token=1afeaeee-bd13-4bbc-9765-39c42faf3a52&_gl=1*1ad23ct*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzIwODExMy4yOS4xLjE2OTcyMDkzMzkuNDkuMC4w',
             }}
           />
         </View>
@@ -37,6 +40,12 @@ const Login = props => {
           <View style={styles.loginAccount}>
             {/* Input email*/}
             <View style={styles.inputAccount}>
+              <Image
+                style={styles.inputIcon}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/logoEmail.png?alt=media&token=00111537-92bd-48de-8754-a1ac66871c3b&_gl=1*aj7qcl*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5Njk0Njg5OS4yNi4xLjE2OTY5NDc4NzUuNDcuMC4w',
+                }}
+              />
               <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -45,9 +54,15 @@ const Login = props => {
             </View>
             {/* Input password*/}
             <View style={styles.inputAccount}>
+              <Image
+                style={styles.inputIcon}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/logoPassword.png?alt=media&token=3b71665d-b37b-49b8-9cfa-d98b52532b7f&_gl=1*1wwkmox*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5Njk0Njg5OS4yNi4xLjE2OTY5NDgzNjYuNDUuMC4w',
+                }}
+              />
               <TextInput
                 style={styles.input}
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 placeholderTextColor="black"
               />
             </View>
@@ -80,13 +95,23 @@ const Login = props => {
                 }}
               />
             </View>
-
-            {/* chữ  */}
-            <Text style={styles.txtQuestion}>
-              Bạn chưa có tài khoản ?
-              <Text style={styles.txtRegister}> Đăng kí</Text>
-            </Text>
           </View>
+          <View style={styles.bottomText}>
+              <Text style={styles.txtQuestion}>Người dùng mới !</Text>
+              <TouchableOpacity
+                onPress={clickNextTo}
+                style={{
+                  borderWidth: 1,
+                  width: 95,
+                  height: 25,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginLeft: 8,
+                  borderColor: '#FF1F11',
+                }}>
+                <Text style={styles.txtRegister}> Đăng ký</Text>
+              </TouchableOpacity>
+            </View>
         </View>
       </SafeAreaView>
     </View>
@@ -98,8 +123,7 @@ export default Login;
 const styles = StyleSheet.create({
   // nền của component
   Background: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
     backgroundColor: '#CF9B9B',
   },
 
@@ -120,8 +144,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: '35%',
-    height: '35%',
+    width: '40%',
+    height: '60%',
   },
 
   // --------------------------
@@ -141,14 +165,21 @@ const styles = StyleSheet.create({
 
   // input Account
   inputAccount: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderRadius: 12,
     width: '90%',
     height: 40,
     backgroundColor: 'white',
   },
+  inputIcon: {
+    width: 15, // Điều chỉnh kích thước của biểu tượng Email
+    height: 15, // Điều chỉnh kích thước của biểu tượng Email
+    marginLeft: 15, // Khoảng cách giữa biểu tượng và TextInput
+  },
   input: {
     fontSize: 14,
-    marginLeft: 15,
+    marginLeft: 5, // Khoảng cách giữa TextInput và placeholder
   },
 
   // forgot Password
@@ -181,13 +212,13 @@ const styles = StyleSheet.create({
   // --------------------------
   loginSocial: {
     width: '100%',
-    height: '40%',
+    height: '30%',
     justifyContent: 'space-around',
     alignItems: 'center',
   },
 
   txtOr: {
-    color: 'white',
+    color: 'black',
     fontSize: 14,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
@@ -200,15 +231,24 @@ const styles = StyleSheet.create({
   },
 
   txtQuestion: {
-    color: 'white',
+    color: 'black',
     fontSize: 14,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
   },
   txtRegister: {
-    color: '#F6B027',
-    fontSize: 14,
+    color: '#FF1F11',
+    fontSize: 15,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
+  },
+
+  bottomText: {
+    bottom: 5,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
