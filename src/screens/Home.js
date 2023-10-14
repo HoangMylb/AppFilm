@@ -9,7 +9,6 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import layout from './Shared/layout';
 import movieList from '../data/movieItem';
 import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';

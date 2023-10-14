@@ -6,7 +6,6 @@ import Home from './src/screens/Home'
 import BuyTickets from './src/screens/BuyTickets'
 import Location from './src/screens/Location'
 import DetailMovie from './src/screens/DetailMovie'
-import layout from './src/screens/Shared/layout'
 import Favourite from './src/screens/FavouriteMovie'
 import News from './src/screens/News'
 import User from './src/screens/User'
@@ -24,7 +23,7 @@ const App = () => {
     //<Location/>
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="BuyTickets" component={layout} options={{ headerShown: false }}/>
+      <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }}/>
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
         <Stack.Screen name="News" component={News} options={{ headerShown: false }}/>
