@@ -13,27 +13,29 @@ import Register from './src/screens/Register'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
+import { UserProvider } from './src/context/UserContext'
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-
-    //<Location/>
+<UserProvider>
+    {/* //<Location/> */}
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }}/>
-        <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
-        <Stack.Screen name="News" component={News} options={{ headerShown: false }}/>
-        <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }}/>
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
-        <Stack.Screen name="User" component={User} options={{ headerShown: false }}/>
-        <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+        <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+        <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }} />
+
+        <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+        <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
 
       </Stack.Navigator>
     </NavigationContainer>
+    </UserProvider>
   )
 }
 

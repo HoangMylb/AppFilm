@@ -5,12 +5,15 @@ import {
   Text,
   View,
   TextInput,
-  TouchableWithoutFeedback,ScrollView,TouchableOpacity
+  TouchableWithoutFeedback, ScrollView, TouchableOpacity, Pressable, Platform
 } from 'react-native';
-import React, {useState} from 'react';
-
+import React, { useState } from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
 const Register = () => {
   const [gender, setGender] = useState('');
+  const [date, setDate] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState(new Date());
+  const [showPicker, setshowPicker] = useState(false)
 
   const handleGenderPress = selectedGender => {
     if (selectedGender === gender) {
@@ -19,6 +22,22 @@ const Register = () => {
       setGender(selectedGender);
     }
   };
+  const toggleDatepicker = ()=>{
+    setshowPicker(!showPicker);
+  }
+  const onChange = ( {type}, selectedDate)=>{
+    if (type=="set") {
+      const currentDate = selectedDate;
+      setDateOfBirth(currentDate);
+      if (Platform.OS==="android") {
+        toggleDatepicker();
+        setDate(currentDate.toDateString())
+      }
+    }else{
+      toggleDatepicker();
+    }
+  }
+  
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#CF9B9B' }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -82,6 +101,7 @@ const Register = () => {
                 style={styles.input}
                 placeholder="Số điện thoại"
                 placeholderTextColor="black"
+                textContentType='telephoneNumber'
               />
             </View>
 
@@ -135,11 +155,35 @@ const Register = () => {
                     'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
                 }}
               />
-              <TextInput
-                style={styles.input}
-                placeholder="Họ và tên"
-                placeholderTextColor="black"
+              {showPicker &&(
+                <DateTimePicker
+              mode='date'
+              display='spinner'
+              value={dateOfBirth}
+              onChange={onChange}
+              maximumDate={new Date('2023-12-31')}
+              minimumDate={new Date('1900-1-1')}
+              
               />
+              )}
+              
+              {!showPicker &&(
+                <Pressable
+                onPress={toggleDatepicker}
+              >
+                <TextInput
+                style={styles.input}
+                placeholder="Ngày sinh"
+                textAlign='center'
+                
+                value={date}
+                onChangeText={setDate}
+                placeholderTextColor="black"
+                editable={false}
+              />
+              </Pressable>
+              )}
+              
             </View>
 
             {/* Input password */}
@@ -174,7 +218,7 @@ const Register = () => {
               />
             </View>
 
-            
+
             <TouchableOpacity style={styles.btnAccount}>
               <Text style={styles.btnTxt}>Đăng ký</Text>
             </TouchableOpacity>
@@ -236,7 +280,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 40,
     backgroundColor: 'white',
-    margin:10,
+    margin: 10,
   },
   inputIcon: {
     width: 15, // Điều chỉnh kích thước của biểu tượng Email
@@ -245,7 +289,8 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 14,
-    marginLeft: 5, // Khoảng cách giữa TextInput và placeholder
+    marginLeft: 5, 
+    color: 'black'// Khoảng cách giữa TextInput và placeholder
   },
 
   // Lựa chọn giới tính
