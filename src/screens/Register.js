@@ -20,7 +20,7 @@ const Register = () => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#CF9B9B' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#18191A' }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
           {/* View chứa hình ảnh logon và text */}
@@ -191,7 +191,7 @@ const Register = () => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginLeft: 8,
-                  borderColor: '#FF1F11',
+                  borderColor: '#E38025',
                 }}>
                 <Text style={styles.txtRegister}> Đăng nhập</Text>
               </TouchableOpacity>
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    color: '#000000',
+    color: '#ffffff',
   },
   formContainer: {
     justifyContent: 'space-around',
@@ -257,15 +257,18 @@ const styles = StyleSheet.create({
   sex: {
     fontSize: 18, // Điều chỉnh kích thước văn bản
     marginBottom: 10, // Tạo khoảng cách giữa văn bản và các radio buttons
+    color: 'white',
   },
   radioOptionsContainer: {
     flexDirection: 'row', // Sắp xếp các radio button theo chiều ngang
     justifyContent: 'space-between',
+    
   },
   radioOption: {
     flexDirection: 'row', // Sắp xếp radio button và văn bản theo chiều ngang
     alignItems: 'center', // Căn giữa theo chiều ngang
     marginRight: 20, // Tạo khoảng cách giữa các radio buttons
+    
   },
   radioCircle: {
     width: 15,
@@ -273,13 +276,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: 'white',
   },
   radioSelected: {
-    backgroundColor: 'gray',
+    backgroundColor: '#E38025',
   },
   radioLabel: {
     marginLeft: 5,
+    color: 'white',
   },
 
 
@@ -290,7 +294,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 40,
     width: '90%',
-    backgroundColor: '#D65555',
+    backgroundColor: '#E38025',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,
@@ -307,13 +311,13 @@ const styles = StyleSheet.create({
   // Footer
 
   txtQuestion: {
-    color: 'black',
+    color: 'white',
     fontSize: 14,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
   },
   txtRegister: {
-    color: '#FF1F11',
+    color: '#E38025',
     fontSize: 15,
     fontFamily: 'Kanit',
     fontWeight: 'bold',

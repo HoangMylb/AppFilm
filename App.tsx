@@ -12,20 +12,55 @@ import User from './src/screens/User'
 import Register from './src/screens/Register'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import FavouriteMovie from './src/screens/FavouriteMovie'
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import Feather from 'react-native-vector-icons/Feather';
+import Octicons from 'react-native-vector-icons/Octicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
+function MyTab(){
+  return(
+    <Tab.Navigator 
+    screenOptions={({route}) => ({
+      tabBarStyle: {backgroundColor: 'black'},
+      headerShown: false,
+      tabBarShowLabel: false,
+      // tabBarActiveTintColor: 'black',
+      // tabBarInactiveTintColor: 'white',
+      tabBarIcon: ({focused, color, size}) => {
+        if (route.name === 'HomeTab') {
+          return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
+        } else if (route.name === 'LocationTab') {
+          return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
+        }else if (route.name === 'FMTab') {
+          return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
+        }else if (route.name === 'NewsTab') {
+          return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
+        }
+      },
+    })}>
+    <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }}/>
+    <Stack.Screen name="LocationTab" component={Location} options={{ headerShown: false }}/>
+    <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }}/>
+    <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }}/>
+    </Tab.Navigator>
+  )
+  
+}
 const App = () => {
   return (
 
     //<Location/>
     <NavigationContainer>
-      <Stack.Navigator>
-      <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }}/>
+      <Stack.Navigator initialRouteName='Splash'>
+        <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }}/>
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
+        <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }}/>
         <Stack.Screen name="News" component={News} options={{ headerShown: false }}/>
         <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }}/>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>

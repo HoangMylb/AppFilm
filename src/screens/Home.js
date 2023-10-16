@@ -12,6 +12,8 @@ import {
 import movieList from '../data/movieItem';
 import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';
+import MovieItem from '../renderItem/renderMovie';
+import DirectorItem from '../renderItem/renderDirector';
 
 const Home = (props) => {
 
@@ -26,42 +28,16 @@ const Home = (props) => {
     navigation.navigate('User');
   };
 
-  const renderItem = ({item}) => {
-    return (
-      
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <Image
-          style={{
-            width: 120,
-            height: 200,
-            resizeMode: 'cover',
-            borderRadius: 12,
-            margin: 10,
-          }}
-          source={{uri: item.url}}
-        />
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 16,
-          }}>
-          {item.name}
-        </Text>
-        <Image
-          style={{
-            width: 90,
-            height: 14,
-            resizeMode: 'cover',
-          }}
-          source={{uri: item.start}}
-        />
-      </View>
-    );
+  const renderItem = ({ item }) => {
+    return <MovieItem item={item} />; // Sử dụng MovieItem component
+  };
+
+  const renderItem1 = ({ item }) => {
+    return <DirectorItem item={item} />; // Sử dụng MovieItem component
   };
 
   return (
     <SafeAreaView style={styles.container}>
-
       <ScrollView>
         <View style={styles.screen}>
           {/* HEADER */}
@@ -89,7 +65,7 @@ const Home = (props) => {
 
             {/* Danh sách phim đang chiếu */}
             <View style={styles.headerMovie}>
-              <Text style={{fontSize: 24, color: '#000000'}}>Đang chiếu</Text>
+              <Text style={{fontSize: 24, color: 'white'}}>Đang chiếu</Text>
               <Image
                 style={{width: 77, height: 1}}
                 source={{
@@ -97,7 +73,7 @@ const Home = (props) => {
                 }}
               />
               <TouchableOpacity>
-                <Text style={{fontSize: 13, color: '#CE1212'}}>
+                <Text style={{fontSize: 13, color: '#E38025'}}>
                   Xem tất cả &gt;
                 </Text>
               </TouchableOpacity>
@@ -108,7 +84,7 @@ const Home = (props) => {
               style={{flex: 1}}
               horizontal
               data={movie}
-              keyExtractor={item => item.name}
+              keyExtractor={(item, index) => item.name + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
               renderItem={renderItem}
             />
           </View>
@@ -117,7 +93,7 @@ const Home = (props) => {
           <View style={styles.director}>
             {/* Tiêu đề */}
             <View style={styles.headerDirector}>
-              <Text style={{fontSize: 24, color: '#000000'}}>Đạo diễn   </Text>
+              <Text style={{fontSize: 24, color: 'white'}}>Đạo diễn   </Text>
               <Image
                 style={{width: 77, height: 1}}
                 source={{
@@ -125,7 +101,7 @@ const Home = (props) => {
                 }}
               />
               <TouchableOpacity>
-                <Text style={{fontSize: 13, color: '#CE1212'}}>
+                <Text style={{fontSize: 13, color: '#E38025'}}>
                   Xem tất cả &gt;
                 </Text>
               </TouchableOpacity>
@@ -135,8 +111,8 @@ const Home = (props) => {
               style={{flex: 1}}
               horizontal
               data={director}
-              keyExtractor={item => item.name}
-              renderItem={renderItem}
+              keyExtractor={(item, index) => item.Dic + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
+              renderItem={renderItem1}
             />
           </View>
 
@@ -144,7 +120,7 @@ const Home = (props) => {
           <View style={styles.actor}>
             {/* Tiêu đề */}
             <View style={styles.headerActor}>
-              <Text style={{fontSize: 24, color: '#000000'}}>Đang chiếu</Text>
+              <Text style={{fontSize: 24, color: 'white'}}>Đang chiếu</Text>
               <Image
                 style={{width: 77, height: 1}}
                 source={{
@@ -152,7 +128,7 @@ const Home = (props) => {
                 }}
               />
               <TouchableOpacity>
-                <Text style={{fontSize: 13, color: '#CE1212'}}>
+                <Text style={{fontSize: 13, color: '#E38025'}}>
                   Xem tất cả &gt;
                 </Text>
               </TouchableOpacity>
@@ -168,7 +144,6 @@ const Home = (props) => {
           </View>
         </View>
       </ScrollView>
-                
     </SafeAreaView>
   );
 };
@@ -178,7 +153,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#18191A',
   },
 
   screen: {
@@ -200,40 +175,40 @@ const styles = StyleSheet.create({
 
   txt1: {
     fontSize: 22,
-    color: '#000000',
+    color: '#ffffff',
     fontFamily: 'Roboto',
   },
   txt2: {
     fontSize: 12,
     fontFamily: 'Roboto',
-    color: '#635F5B',
+    color: '#C57831',
   },
 
   // Movie
 
   txtRap: {
     marginTop: 15,
-    fontSize: 30,
+    fontSize: 32,
     fontFamily: 'Roboto',
-    color: '#000000',
+    color: '#ffffff',
   },
 
   headerMovie: {
-    marginTop: 15,
+    marginTop: 45,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
 
   headerDirector: {
-    marginTop: 15,
+    marginTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
 
   headerActor: {
-    marginTop: 15,
+    marginTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

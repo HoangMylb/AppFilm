@@ -54,7 +54,7 @@ const Location = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{ width: '100%', height: '10%', backgroundColor: '#CF9B9B', }}>
+            {/* <View style={{ width: '100%', height: '10%', backgroundColor: '#CF9B9B', }}>
                 <TouchableOpacity onPress={() => {
                     navigation.goBack();
                 }} >
@@ -64,9 +64,9 @@ const Location = ({navigation}) => {
                     />
                     <Text style={{ width: 86, height: 28, top: -25, left: 135, fontSize: 20, color: 'black,', fontWeight: 700 }}>Rạp phim</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
 
-            <ScrollView style={{ backgroundColor: '#CF9B9B' }}>
+            <ScrollView>
                 <View style={styles.header}>
                     <FlatList
                         style={{ flex: 1 }}

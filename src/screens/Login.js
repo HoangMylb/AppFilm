@@ -67,7 +67,7 @@ const Login = props => {
               />
             </View>
             <TouchableOpacity style={styles.forgotPassword}>
-              <Text style={{color: '#CA0E0E'}}>Quên mật khẩu</Text>
+              <Text style={{color: '#E38025'}}>Quên mật khẩu</Text>
             </TouchableOpacity>
             {/* Button Login */}
             <TouchableOpacity style={styles.btnAccount} onPress={clickNext}>
@@ -107,7 +107,7 @@ const Login = props => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginLeft: 8,
-                  borderColor: '#FF1F11',
+                  borderColor: '#E38025',
                 }}>
                 <Text style={styles.txtRegister}> Đăng ký</Text>
               </TouchableOpacity>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   // nền của component
   Background: {
     flex: 1,
-    backgroundColor: '#CF9B9B',
+    backgroundColor: '#18191A',
   },
 
   // Khung của component
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 40,
     width: '90%',
-    backgroundColor: '#D65555',
+    backgroundColor: '#E38025',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   },
 
   txtOr: {
-    color: 'black',
+    color: 'white',
     fontSize: 14,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
@@ -231,19 +231,20 @@ const styles = StyleSheet.create({
   },
 
   txtQuestion: {
-    color: 'black',
+    color: 'white',
     fontSize: 14,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
   },
   txtRegister: {
-    color: '#FF1F11',
+    color: '#E38025',
     fontSize: 15,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
   },
 
   bottomText: {
+    position: 'absolute',
     bottom: 5,
     left: 0,
     right: 0,
