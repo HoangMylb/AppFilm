@@ -3,124 +3,50 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, 
 
 import locationList from '../data/locationItem';
 
-const Location = ({navigation}) => {
+const Location = (props) => {
     //data rạp 
     const [location, setLocation] = useState(locationList);
-
+    const {navigation} = props;
     const renderItem = ({ item }) => {
+        const { url,title, address, phone,id } = item;
         return (
-            <View>
-                <Image
-                    style={{
-                        width: 100,
-                        height: 95,
-                        resizeMode: 'cover',
-                    }}
-                    source={{ uri: item.url }}
-                />
-                <Text
-                    style={{
-                        color: 'black',
-                        fontSize: 24,
-                        top: -90,
-                        left: 5,
-                        textAlign: 'center',
-                    }}>
-                    {item.title}
-                </Text>
-                <Text
-                    style={{
-                        color: 'black',
-                        fontSize: 16,
-                        left: 45,
-                        top: -80,
-                        textAlign: 'center',
-                    }}>
-                    {item.address}
-                </Text>
-                <Text
-                    style={{
-                        color: 'black',
-                        fontSize: 16,
-                        left: -30,
-                        top: -70,
-                        textAlign: 'center',
-                    }}>
-                    {item.phone}
-                </Text>
+            <View style={{marginTop: 10}}>
+                <View style={{flexDirection: 'row'}}>
+                    <Image
+                        style={{ width: 100, height: 95, resizeMode: 'cover', }}
+                        source={{ uri: url }}
+                    />
+                    <View style={{ padding: 5}}>
+                        <Text
+                            style={{  color: 'black',  fontSize: 24 }}> {title}
+                        </Text>
+                        <Text
+                            style={{color: 'black', fontSize: 16, marginTop: 10 }}>
+                            {address}
+                        </Text>
+                        <Text
+                            style={{color: 'black', fontSize: 16,marginTop: 10}}>
+                            {phone}
+                        </Text>
+                    </View>
+                </View>
+
+                <View style={{ width: 400, height: 1, backgroundColor: 'black', marginTop: 10 }}></View>
             </View>
         )
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            {/* <View style={{ width: '100%', height: '10%', backgroundColor: '#CF9B9B', }}>
-                <TouchableOpacity onPress={() => {
-                    navigation.goBack();
-                }} >
-                    <Image
-                        style={{ width: 44, height: 44, top: 12 }}
-                        source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Arrow%20Left%20Button.png?alt=media&token=9fe7daf4-c5aa-4560-8c9f-f0e1ea5c95a8&_gl=1*1ycno8t*_ga*MTI1MTA0NjU4MC4xNjg5OTM2NTk0*_ga_CW55HF8NVT*MTY5NjUyMzAxOC44LjEuMTY5NjUyMzExOS42MC4wLjA.' }}
-                    />
-                    <Text style={{ width: 86, height: 28, top: -25, left: 135, fontSize: 20, color: 'black,', fontWeight: 700 }}>Rạp phim</Text>
-                </TouchableOpacity>
-            </View> */}
-
-            <ScrollView>
-                <View style={styles.header}>
+        <SafeAreaView style={styles.container}>       
+                
                     <FlatList
                         style={{ flex: 1 }}
                         data={location}
-                        keyExtractor={item => item.title}
+                        keyExtractor={(item) => item.id}
                         renderItem={renderItem}
                     />
-                </View>
-                <Text style={{top: -10}}>______________________________________________________</Text>
-                <View style={styles.header}>
-                    <FlatList
-                        style={{ flex: 1 }}
-                        data={location}
-                        keyExtractor={item => item.title}
-                        renderItem={renderItem}
-                    />
-                </View>
-                <Text style={{top: -10}}>______________________________________________________</Text>
-                <View style={styles.header}>
-                    <FlatList
-                        style={{ flex: 1 }}
-                        data={location}
-                        keyExtractor={item => item.title}
-                        renderItem={renderItem}
-                    />
-                </View>
-                <Text style={{top: -10}}>______________________________________________________</Text>
-                <View style={styles.header}>
-                    <FlatList
-                        style={{ flex: 1 }}
-                        data={location}
-                        keyExtractor={item => item.title}
-                        renderItem={renderItem}
-                    />
-                </View>
-                <Text style={{top: -10}}>______________________________________________________</Text>
-                <View style={styles.header}>
-                    <FlatList
-                        style={{ flex: 1 }}
-                        data={location}
-                        keyExtractor={item => item.title}
-                        renderItem={renderItem}
-                    />
-                </View>
-                <Text style={{top: -10}}>______________________________________________________</Text>
-                <View style={styles.header}>
-                    <FlatList
-                        style={{ flex: 1 }}
-                        data={location}
-                        keyExtractor={item => item.title}
-                        renderItem={renderItem}
-                    />
-                </View>
-            </ScrollView>
+              
+          
         </SafeAreaView>
     )
 };
@@ -133,10 +59,5 @@ const styles = StyleSheet.create({
         padding: 15,
         backgroundColor: '#CF9B9B'
     },
-    header:{
-        justifyContent: 'center',
-        backgroundColor: '#CF9B9B',
-        width: 399,
-        height: 106,
-    }
+    
 })
