@@ -12,6 +12,7 @@ import User from './src/screens/User'
 import Register from './src/screens/Register'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import FavouriteMovie from './src/screens/FavouriteMovie'
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -19,6 +20,15 @@ import Feather from 'react-native-vector-icons/Feather';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import TimeSelect from './src/screens/TimeSelect'
+import ForgotpassWord from './src/screens/ForgotpassWord'
+import ForgetpassWordOtp from './src/screens/ForgetpassWordOtp'
+import SubmitPassword from './src/screens/SubmitPassword'
+import SeatSelect from './src/screens/SeatSelect'
+
+
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,7 +64,6 @@ function MyTab(){
 }
 const App = () => {
   return (
-
     //<Location/>
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Splash'>
@@ -69,6 +78,13 @@ const App = () => {
 
       </Stack.Navigator>
     </NavigationContainer>
+    // <NavigationContainer>
+    //   <Stack.Navigator>
+    //     <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}/>
+    //     <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+    //     <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
+    //   </Stack.Navigator>
+    // </NavigationContainer>
   )
 }
 
