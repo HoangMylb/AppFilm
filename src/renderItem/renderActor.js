@@ -1,17 +1,11 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import { View, Text, Image } from 'react-native';
 
-const DirectorItem = ({item}) => {
+const ActorItem = ({ item }) => {
   return (
-    <View
-      style={{
-        backgroundColor: '#595E65',
-        width: 121,
-        height: 197,
-        margin: 10,
-        borderRadius: 12,
-        justifyContent: 'space-around'
-      }}>
+    <View style={{backgroundColor: '#595E65',width: 121,height: 180, borderRadius: 12,margin: 10,
+    justifyContent: 'space-around'
+    }}>
       <Image
         style={{
           width: 62,
@@ -20,10 +14,9 @@ const DirectorItem = ({item}) => {
           borderRadius: 12,
           margin: 10,
         }}
-        source={{uri: item.imgDic}}
+        source={{ uri: item.imgDic }}
       />
-      <Text style={{color: 'white', fontSize: 20,margin: 5}}>{item.Dic}</Text>
-      <Text style={{color: 'white', fontSize: 14,margin: 5}}>{item.movie}</Text>
+      <Text style={{ color: 'white', fontSize: 20,margin: 5, }}>{item.Dic}</Text>
       <View style = {{flexDirection: 'row', justifyContent: 'space-between', margin: 5}}>
         <Image
           style={{
@@ -39,4 +32,4 @@ const DirectorItem = ({item}) => {
   );
 };
 
-export default DirectorItem;
+export default ActorItem;

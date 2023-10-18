@@ -58,6 +58,12 @@ function MyTab(){
     <Stack.Screen name="LocationTab" component={Location} options={{ headerShown: false }}/>
     <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }}/>
     <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }}/>
+    {/* <Stack.Screen name="forgotOTP" component={ForgetpassWordOtp} options={{ headerShown: false }}/>
+    <Stack.Screen name="forgot" component={ForgotpassWord} options={{ headerShown: false }}/>
+    <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }}/>
+    <Stack.Screen name="Submid" component={SubmitPassword} options={{ headerShown: false }}/>
+    <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }}/> */}
+
     </Tab.Navigator>
   )
   
@@ -66,25 +72,19 @@ const App = () => {
   return (
     //<Location/>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Splash'>
-        <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }}/>
-        <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }}/>
-        <Stack.Screen name="News" component={News} options={{ headerShown: false }}/>
-        <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }}/>
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
-        <Stack.Screen name="User" component={User} options={{ headerShown: false }}/>
-        <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
+      <Stack.Navigator initialRouteName='Home' screenOptions={{headerShown:false}}>
+        <Stack.Screen name="BuyTickets" component={BuyTickets}/>
+        <Stack.Screen name="DetailMovie" component={DetailMovie} />
+        <Stack.Screen name="FavouriteMovie" component={FavouriteMovie} />
+        <Stack.Screen name="Splash" component={SplashScreen}/>
+        <Stack.Screen name="Home" component={MyTab} />
+        <Stack.Screen name="News" component={News}/>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="User" component={User} />
+        <Stack.Screen name="Register" component={Register} />
 
       </Stack.Navigator>
     </NavigationContainer>
-    // <NavigationContainer>
-    //   <Stack.Navigator>
-    //     <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}/>
-    //     <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
-    //     <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
-    //   </Stack.Navigator>
-    // </NavigationContainer>
   )
 }
 

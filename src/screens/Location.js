@@ -54,18 +54,6 @@ const Location = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* <View style={{ width: '100%', height: '10%', backgroundColor: '#CF9B9B', }}>
-                <TouchableOpacity onPress={() => {
-                    navigation.goBack();
-                }} >
-                    <Image
-                        style={{ width: 44, height: 44, top: 12 }}
-                        source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Arrow%20Left%20Button.png?alt=media&token=9fe7daf4-c5aa-4560-8c9f-f0e1ea5c95a8&_gl=1*1ycno8t*_ga*MTI1MTA0NjU4MC4xNjg5OTM2NTk0*_ga_CW55HF8NVT*MTY5NjUyMzAxOC44LjEuMTY5NjUyMzExOS42MC4wLjA.' }}
-                    />
-                    <Text style={{ width: 86, height: 28, top: -25, left: 135, fontSize: 20, color: 'black,', fontWeight: 700 }}>Rạp phim</Text>
-                </TouchableOpacity>
-            </View> */}
-
             <ScrollView>
                 <View style={styles.header}>
                     <FlatList

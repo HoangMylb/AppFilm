@@ -14,12 +14,16 @@ import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';
 import MovieItem from '../renderItem/renderMovie';
 import DirectorItem from '../renderItem/renderDirector';
+import movieComing from '../data/comingsoon';
+import MovieComingItem from '../renderItem/renderMovieComing';
+import ActorItem from '../renderItem/renderActor';
 
 const Home = (props) => {
 
   const {navigation} = props;
   // data phim
   const [movie, setMovie] = useState(movieList);
+  const [coming, setComing] = useState(movieComing);
   const [director, setDirector] = useState(directorList);
   const [actor, setActor] = useState(actorList);
 
@@ -34,6 +38,14 @@ const Home = (props) => {
 
   const renderItem1 = ({ item }) => {
     return <DirectorItem item={item} />; // Sử dụng MovieItem component
+  };
+
+  const renderItem2 = ({ item }) => {
+    return <MovieComingItem item={item} />; // Sử dụng MovieItem component
+  };
+
+  const renderItem3 = ({ item }) => {
+    return <ActorItem item={item} />; // Sử dụng MovieItem component
   };
 
   return (
@@ -58,30 +70,19 @@ const Home = (props) => {
             
           </View>
           {/* ... */}
-          {/* MOVIE thứ 1 */}
+
+          {/* Movie đang chiếu */}
           <View style={styles.movie}>
             {/* Tiêu đề */}
             <Text style={styles.txtRap}>Phim rạp</Text>
-
             {/* Danh sách phim đang chiếu */}
             <View style={styles.headerMovie}>
               <Text style={{fontSize: 24, color: 'white'}}>Đang chiếu</Text>
-              <Image
-                style={{width: 77, height: 1}}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Line.png?alt=media&token=5e09f7de-ab43-40cd-a64a-60ecceeff5c5&_gl=1*w0d55j*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY8NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkxMTU4NS40My4wLjA.',
-                }}
-              />
-              <TouchableOpacity>
-                <Text style={{fontSize: 13, color: '#E38025'}}>
-                  Xem tất cả &gt;
-                </Text>
-              </TouchableOpacity>
             </View>
 
             {/* Phim */}
             <FlatList
-              style={{flex: 1}}
+              style={{flex: 1, marginTop: 15}}
               horizontal
               data={movie}
               keyExtractor={(item, index) => item.name + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
@@ -89,11 +90,29 @@ const Home = (props) => {
             />
           </View>
 
-          {/* Danh sách phim thứ 2 */}
+
+          {/* Danh sách phim sắp chiếu  */}
+          
+          <View style={styles.movieComing}>
+            <View style={styles.headerMovieComing}>
+              <Text style={{fontSize: 24, color: 'white'}}>Sắp chiếu</Text>
+            </View>
+
+            {/* Phim */}
+            <FlatList
+              style={{flex: 1,marginTop: 15}}
+              horizontal
+              data={coming}
+              keyExtractor={(item, index) => item.name + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
+              renderItem={renderItem2}
+            />
+          </View>
+
+          {/* Danh sách đạo diễn */}
           <View style={styles.director}>
             {/* Tiêu đề */}
             <View style={styles.headerDirector}>
-              <Text style={{fontSize: 24, color: 'white'}}>Đạo diễn   </Text>
+              <Text style={{fontSize: 24, color: 'white'}}>Đạo diễn</Text>
               <Image
                 style={{width: 77, height: 1}}
                 source={{
@@ -108,7 +127,7 @@ const Home = (props) => {
             </View>
             {/* Danh sách phim */}
             <FlatList
-              style={{flex: 1}}
+              style={{flex: 1,marginTop: 15}}
               horizontal
               data={director}
               keyExtractor={(item, index) => item.Dic + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
@@ -116,11 +135,11 @@ const Home = (props) => {
             />
           </View>
 
-          {/* Danh sách phim thứ 3 */}
+          {/* Danh sách diễn viên */}
           <View style={styles.actor}>
             {/* Tiêu đề */}
             <View style={styles.headerActor}>
-              <Text style={{fontSize: 24, color: 'white'}}>Đang chiếu</Text>
+              <Text style={{fontSize: 24, color: 'white'}}>Diễn viên</Text>
               <Image
                 style={{width: 77, height: 1}}
                 source={{
@@ -135,11 +154,11 @@ const Home = (props) => {
             </View>
             {/* Danh sách phim */}
             <FlatList
-              style={{flex: 1}}
+              style={{flex: 1,marginTop: 15}}
               horizontal
               data={actor}
-              keyExtractor={item => item.name}
-              renderItem={renderItem}
+              keyExtractor={(item, index) => item.Dic + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
+              renderItem={renderItem3}
             />
           </View>
         </View>
@@ -195,6 +214,12 @@ const styles = StyleSheet.create({
 
   headerMovie: {
     marginTop: 45,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  headerMovieComing: {
+    marginTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
