@@ -36,7 +36,8 @@ const Login = (props) => {
     } else {
       if (handleValidation()) {
         const res = await login(userName, passWord);
-        if (res) {
+        if (res.success) {
+          
           navigation.dispatch(StackActions.replace('Home'));
 
           ToastAndroid.show("Đăng nhập thành công", 1);

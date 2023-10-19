@@ -44,7 +44,7 @@ function MyTab() {
           }
         },
       })}>
-      <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }} />
+      <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }} ></Stack.Screen>
       <Stack.Screen name="LocationTab" component={Location} options={{ headerShown: false }} />
       <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }} />
       <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }} />
@@ -64,14 +64,9 @@ const App = () => {
         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
           <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
-          
-         
           <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
           <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }} />
-         
           <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-          
-
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

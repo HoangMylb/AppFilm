@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -9,103 +9,75 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
-
-const User = () => {
+import { UserContext } from '../context/UserContext';
+import { StackActions } from '@react-navigation/native';
+const User = (props) => {
+  const { navigation } = props;
   const [gender, setGender] = useState('');
+  const { khachHang } = useContext(UserContext);
 
-  const handleGenderPress = (selectedGender) => {
-    if (selectedGender === gender) {
-      setGender(''); // Bỏ chọn nếu đã chọn trước đó
-    } else {
-      setGender(selectedGender);
-    }
+  const nextTo = () => {
+    navigation.dispatch(StackActions.replace('Home'));
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#E5C4C4' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#18191A' }}>
       <View
         style={{
           justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
           height: '100%',
+          position: 'relative'
         }}
       >
+        {/* nút back */}
+
+        <View style={{ flexDirection: 'row', position: 'absolute', top: 10, left: 10 }}>
+          <TouchableOpacity onPress={nextTo}>
+            <Image
+              style={{ width: 50, height: 50 }}
+              source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Arrow%20Left%20Button2.png?alt=media&token=4ecc2c70-56d8-4da2-abac-750f6ca28639&_gl=1*8qq0vj*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzY3MjY4Ni40LjEuMTY5NzY3Mjk3Mi41NC4wLjA.' }}
+            />
+          </TouchableOpacity>
+          <Text style={{ fontSize: 20, fontWeight: '700', color: 'white', marginTop: 14, marginLeft: '33%' }}>Thông tin</Text>
+        </View>
+
 
         {/* Hình ảnh USER */}
         <View style={styles.imgUser}>
           <Image
             style={{ width: 70, height: 70 }}
-            source={{
-              uri:
-                'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/ImageUser.png?alt=media&token=07b4b15d-4dcf-402b-88c0-87a987022e19&_gl=1*td1yd*_ga*MTQ3NDUwNTMwMy4xNjk1NDY8NTE2MDEwMjcy*_ga_CW55HF8NVT*MTY5NzAxOTM0OC40LjAuMC4xLjAuMC4w',
-            }}
+            source={{uri:khachHang.hinhAnh }}
           />
         </View>
 
         {/* Thông Tin USER */}
         <View style={styles.ifmUser}>
-          <TextInput style={styles.input} value="Phạm Vĩnh Phúc" editable={false} />
-          <TextInput style={styles.input} value="091 1348 440" editable={false} />
-          <TextInput style={styles.input} value="14 / 10 / 2003" editable={false} />
-          <TextInput style={styles.input} value="phucpvps21064@fpt.edu.vn" editable={false} />
-
-          <View style={styles.genderContainer}>
-            <View>
-            <TouchableWithoutFeedback
-              onPress={() => handleGenderPress('Nam')}
-            >
-              <View style={styles.radioOption}>
-                <View
-                  style={[
-                    styles.radioCircle,
-                    gender === 'Nam' && styles.radioSelected,
-                  ]}
-                />
-                <Text style={styles.radioLabel}>Nam</Text>
-              </View>
-            </TouchableWithoutFeedback>
-            </View>
-            <View>
-            <TouchableWithoutFeedback
-              onPress={() => handleGenderPress('Nữ')}
-            >
-              <View style={styles.radioOption}>
-                <View
-                  style={[
-                    styles.radioCircle,
-                    gender === 'Nữ' && styles.radioSelected,
-                  ]}
-                />
-                <Text style={styles.radioLabel}>Nữ</Text>
-              </View>
-            </TouchableWithoutFeedback>
-            </View>
-            <View>
-            <TouchableWithoutFeedback
-              onPress={() => handleGenderPress('Chưa xác định')}
-            >
-              <View style={styles.radioOption}>
-                <View
-                  style={[
-                    styles.radioCircle,
-                    gender === 'Chưa xác định' && styles.radioSelected,
-                  ]}
-                />
-                <Text style={styles.radioLabel}>Chưa xác định</Text>
-              </View>
-            </TouchableWithoutFeedback>
-            </View>
-          </View>
+          <Text style={styles.inputTitle}>Họ và tên</Text>
+          <Text style={styles.input}>{khachHang.tenKhachHang}</Text>
+          <Text style={styles.inputTitle}>Số điện thoại</Text>
+          <Text style={styles.input}>{khachHang.SDT}</Text>
+          <Text style={styles.inputTitle}>Ngày sinh</Text>
+          <Text style={styles.input}>{khachHang.ngaySinh}</Text>
+          <Text style={styles.inputTitle}>Email</Text>
+          <Text style={styles.input}>{khachHang.userName}</Text>
+          <Text style={styles.inputTitle}>Giới tính</Text>
+          <Text style={styles.input}>{khachHang.gioiTinh}</Text>
         </View>
 
 
         {/* Button Update  USER */}
-        <View style={styles.btnUpdate}>
-            <TouchableOpacity style = {styles.btn}>
-              <Text style = {{color:'black',fontSize: 16, fontFamily: 'Kanit'}}>Cập nhật</Text>
-            </TouchableOpacity>
-        </View>
+        
+          <TouchableOpacity style={styles.btnUpdate}>
+            <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Kanit',fontWeight:'700' }}>Cập nhật thông tin</Text>
+          </TouchableOpacity>
+       
+        
+          <TouchableOpacity style={styles.btnDangXuat}>
+            <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Kanit',fontWeight:'700' }}>Đăng xuất</Text>
+          </TouchableOpacity>
+        
       </View>
     </SafeAreaView>
   );
@@ -128,6 +100,7 @@ const styles = StyleSheet.create({
     height: '50%',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+   
   },
 
   input: {
@@ -135,52 +108,42 @@ const styles = StyleSheet.create({
     width: '85%',
     height: '11%',
     borderRadius: 12,
-    fontSize: 12,
+    fontSize: 15,
     color: 'black',
     paddingLeft: 20,
-  },
 
-  // Radio buttons
-  genderContainer: {
-    width: '85%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    paddingTop: 10,
+    backgroundColor: 'white'
   },
-  radioOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  inputTitle: {
+    color: 'white', alignSelf: 'flex-start', marginLeft: 20
   },
-  radioCircle: {
-    width: 15,
-    height: 15,
-    borderRadius: 10,
-    backgroundColor: 'white',
-  },
-  radioSelected: {
-    backgroundColor: 'gray',
-  },
-  radioLabel: {
-    marginLeft: 5,
-  },
-
-
   // Button Update
-    btnUpdate: {
-      width: '100%',
-      height: '20%',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
+  btnUpdate: {
+    
+    marginTop: 10,
+    backgroundColor: 'red'
+  },
+ 
 
-    btn :{
-      width: '70%', 
-      height: '35%',
-      borderRadius: 12,
-      backgroundColor: '#EA5973',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }
+  btnUpdate: {
+    width: '70%',
+    height: '7%',
+    borderRadius: 12,
+    backgroundColor: '#E38025',
+    justifyContent: 'center',
+    alignItems: 'center',
+   marginTop: 10
+  },
+  btnDangXuat: {
+    width: '70%',
+    height: '7%',
+    borderRadius: 12,
+    backgroundColor: '#990000',
+    justifyContent: 'center',
+    alignItems: 'center',
+   marginTop: 15
+  }
 
 
 });

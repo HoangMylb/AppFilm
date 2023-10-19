@@ -13,12 +13,13 @@ export const UserProvider = (props) => {
             console.log("khachHang: "+JSON.stringify(respon.khachHang));
             if (respon.success) {
                 console.log('Đăng nhập thành công');
-               
-                return true;
+                setkhachHang(respon.khachHang);
+                return { success: true, khach: respon.khachHang };
             }
             else {
                 console.log('Đăng nhập thất bại');
-                return false;
+                
+                return { success: true , khach: null };
             }
         } catch (error) {
             console.log('login', error)
@@ -42,9 +43,16 @@ export const UserProvider = (props) => {
             return false;
         }
     }
-    
+    const getThongTin = async (_id) => {
+        try {
+            await customAxios().post('/khachhang/newKhachHang', { _id: _id});
+        } catch (error) {
+            console.log('login', error)
+            return false;
+        }
+    }
     return (
-        <UserContext.Provider value={{ login,register }}>
+        <UserContext.Provider value={{ login,register,getThongTin ,khachHang  }}>
             {children}
         </UserContext.Provider>
     )
