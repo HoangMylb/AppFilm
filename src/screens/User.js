@@ -22,7 +22,7 @@ const User = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#E5C4C4' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#18191A' }}>
       <View
         style={{
           justifyContent: 'center',
@@ -103,7 +103,7 @@ const User = () => {
         {/* Button Update  USER */}
         <View style={styles.btnUpdate}>
             <TouchableOpacity style = {styles.btn}>
-              <Text style = {{color:'black',fontSize: 16, fontFamily: 'Kanit'}}>Cập nhật</Text>
+              <Text style = {{color:'white',fontSize: 16, fontFamily: 'Kanit'}}>Cập nhật</Text>
             </TouchableOpacity>
         </View>
       </View>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    backgroundColor: '#EA5973',
+    backgroundColor: 'white',
     width: '85%',
     height: '11%',
     borderRadius: 12,
@@ -158,10 +158,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   radioSelected: {
-    backgroundColor: 'gray',
+    backgroundColor: '#e38025',
   },
   radioLabel: {
     marginLeft: 5,
+    color: 'white'
   },
 
 
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
       width: '70%', 
       height: '35%',
       borderRadius: 12,
-      backgroundColor: '#EA5973',
+      backgroundColor: '#E38025',
       justifyContent: 'center',
       alignItems: 'center',
     }
