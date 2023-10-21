@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect  } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  ScrollView,
+  ScrollView, ActivityIndicator
 } from 'react-native';
 import movieList from '../data/movieItem';
 import directorList from '../data/directorItem';
@@ -15,31 +15,52 @@ import actorList from '../data/actorItem';
 import MovieItem from '../renderItem/renderMovie';
 import DirectorItem from '../renderItem/renderDirector';
 import { UserContext } from '../context/UserContext';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Home = (props) => {
-  const { khachHang, getId } = useContext(UserContext);
+  const { getId } = useContext(UserContext);
   const [tenKhachHang, settenKhachHang] = useState('')
-  const nextToo = async () => {
-    const a = await getId(khachHang._id)
-    if (a.success) {
-      console.log("getIda1: "+JSON.stringify(a.message._id));
-      settenKhachHang(a.message.tenKhachHang)
-    }else{
-      console.log("getIdSai: "+JSON.stringify(a.success));
+  const [data2, setData2] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const fetchData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('keepLogedIn');
+      const storedData2 = await AsyncStorage.getItem('userData');
+      if (storedData !== null) {
+        setData2(JSON.parse(storedData2));
+      }
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+    } finally {
+      setIsLoading(false); // Đã tải xong dữ liệu từ AsyncStorage
     }
-    
+  };
+  const nextToo = async () => {
+    console.log("data2: " + data2);
+    console.log("data2IdHome: " + data2._id);
+    console.log("data2hinhAnh: " + data2.hinhAnh);
+    const a = await getId(data2._id);
+    if (a.success) {
+      console.log("getIda1: " + JSON.stringify(a.message._id));
+      settenKhachHang(a.message.tenKhachHang)
+    } else {
+      console.log("getIdSai: " + JSON.stringify(a.success));
+
+    }
+
   };
   //console.log("khachHome: "+JSON.stringify(khachHang));
   useEffect(() => {
-    nextToo();
-    
-  }, [])
+    fetchData();
+    if (!isLoading) {
+      nextToo();
+    }
+  }, [isLoading]);
   const { navigation } = props;
   // data phim
   const [movie, setMovie] = useState(movieList);
   const [director, setDirector] = useState(directorList);
   const [actor, setActor] = useState(actorList);
- 
+
 
 
   const clickNext = () => {
@@ -56,25 +77,28 @@ const Home = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView >
         <View style={styles.screen}>
           {/* HEADER */}
           <View style={styles.header}>
             <View style={styles.txtHeader}>
-              
-                <Text style={styles.txt1}>Xin chào, {tenKhachHang} </Text>
-              
+
+              <Text style={styles.txt1}>Xin chào, {tenKhachHang} </Text>
+
               <Text style={styles.txt2}>Đặt vé xem phim thôi nào</Text>
             </View>
+            {isLoading ? (
+                <ActivityIndicator size="large" color="blue" />
+              ) :
             <TouchableOpacity onPress={clickNext}>
-              <Image
-                style={styles.imgHeader}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/ImageUser.png?alt=media&token=07b4b15d-4dcf-402b-88c0-87a987022e19&_gl=1*30vg5j*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkwOTQyOC4zOS4wLjA.',
-                }}
-              />
+             
+                <Image
+                  style={{ width: 50, height: 50, }}
+                  source={{ uri: data2.hinhAnh }}
+                />
+             
             </TouchableOpacity>
-
+          }
 
           </View>
           {/* ... */}
@@ -101,7 +125,7 @@ const Home = (props) => {
 
             {/* Phim */}
             <FlatList
-              style={{ flex: 1 }}
+             
               horizontal
               data={movie}
               keyExtractor={(item, index) => item.name + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
@@ -128,7 +152,7 @@ const Home = (props) => {
             </View>
             {/* Danh sách phim */}
             <FlatList
-              style={{ flex: 1 }}
+              
               horizontal
               data={director}
               keyExtractor={(item, index) => item.Dic + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
@@ -155,7 +179,7 @@ const Home = (props) => {
             </View>
             {/* Danh sách phim */}
             <FlatList
-              style={{ flex: 1 }}
+              
               horizontal
               data={actor}
               keyExtractor={item => item.name}
@@ -185,6 +209,10 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+   
+  },
+  txtHeader:{
+    
   },
   imgHeader: {
     width: 50,

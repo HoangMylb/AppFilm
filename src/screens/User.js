@@ -10,7 +10,7 @@ import {
   Alert,
   Modal,
   Button,
-  TouchableWithoutFeedback, ScrollView, Pressable, Platform, ToastAndroid
+  TouchableWithoutFeedback, ActivityIndicator, Pressable, Platform, ToastAndroid
 
 } from 'react-native';
 import { UserContext } from '../context/UserContext';
@@ -20,12 +20,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const User = (props) => {
   const { navigation } = props;
 
-  const { khachHang, suaHoTen, getId, suaSDT,suaPassWord,suaNgaySinh,suaEmail,suaGioiTinh } = useContext(UserContext);
-
-
+  const { suaHoTen, getId, suaSDT,suaPassWord,suaNgaySinh,suaEmail,suaGioiTinh } = useContext(UserContext);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const [data2, setData2] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const fetchData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('keepLogedIn');
+      const storedData2 = await AsyncStorage.getItem('userData');
+      if (storedData !== null) {
+        setData2(JSON.parse(storedData2));
+      }
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+    } finally {
+      setIsLoading(false); // Đã tải xong dữ liệu từ AsyncStorage
+    }
+  };
   const nextToo = async () => {
-    const a = await getId(khachHang._id)
+    
+    console.log("data2IdUser: "  + data2._id);
+    console.log("data2IdHinhAnh: "  + data2.hinhAnh);
+    const a = await getId(data2._id);
     if (a.success) {
       console.log("getIda1: " + JSON.stringify(a.message._id));
       setTenKhachHang(a.message.tenKhachHang)
@@ -40,7 +56,12 @@ const User = (props) => {
     }
 
   };
-
+  useEffect(() => {
+    fetchData();
+    if (!isLoading) {
+      nextToo();
+    }
+  }, [isLoading]);
   const nextTo = async () => {
     navigation.dispatch(StackActions.replace('Home'));
   };
@@ -94,13 +115,10 @@ const User = (props) => {
   const [showPicker, setshowPicker] = useState(false)
   const [newPassWord, setNewPassWord] = useState('');
   const [rePassWord, setRePassWord] = useState('');
-  useEffect(() => {
-    nextToo();
-
-  }, [])
+ 
   //hàm xử lý của họ tên
   const changeHoTen = async () => {
-    const res = await suaHoTen(khachHang._id, tenKhachHang);
+    const res = await suaHoTen(data2._id, tenKhachHang);
     if (res.success) {
       hideAlert();
       ToastAndroid.show("Cập nhật thành công", 1);
@@ -110,7 +128,7 @@ const User = (props) => {
   };
   //hàm xử lý của SDT
   const changeSDT = async () => {
-    const res = await suaSDT(khachHang._id, SDT);
+    const res = await suaSDT(data2._id, SDT);
     if (res.success) {
       hideAlert();
       ToastAndroid.show("Cập nhật thành công", 1);
@@ -120,7 +138,7 @@ const User = (props) => {
   };
   //hàm xử lý của NgaySinh
   const changeNgaySinh = async () => {
-    const res = await suaNgaySinh(khachHang._id, date);
+    const res = await suaNgaySinh(data2._id, date);
     
     if (res.success) {
       
@@ -132,7 +150,7 @@ const User = (props) => {
   };
   //hàm xử lý của Email
   const changeEmail = async () => {
-    const res = await suaEmail(khachHang._id, userName);
+    const res = await suaEmail(data2._id, userName);
     if (res.success) {
       hideAlert();
       ToastAndroid.show("Cập nhật thành công", 1);
@@ -142,7 +160,7 @@ const User = (props) => {
   };
   //hàm xử lý của GioiTinh
   const changeGioTinh = async () => {
-    const res = await suaGioiTinh(khachHang._id, gender);
+    const res = await suaGioiTinh(data2._id, gender);
     if (res.success) {
       hideAlert();
       ToastAndroid.show("Cập nhật thành công", 1);
@@ -153,7 +171,7 @@ const User = (props) => {
   //hàm xử lý của Email
   const changePassWord = async () => {
     
-    const res = await suaPassWord(khachHang._id, newPassWord, rePassWord);
+    const res = await suaPassWord(data2._id, newPassWord, rePassWord);
     if (res.success) {
       setpassWord(newPassWord)
       hideAlert();
@@ -172,7 +190,9 @@ const User = (props) => {
   };
   // Xử lý đăng xuất
   const handleActiveDangXuat = () => {
+    AsyncStorage.setItem("keepLogedIn","")
     setIsEditing(false);
+    navigation.dispatch(StackActions.replace('Login'));
   };
   // Hàm xử lý khi lưu thay đổi
 
@@ -243,10 +263,15 @@ const User = (props) => {
 
         {/* Hình ảnh USER */}
         <View style={styles.imgUser}>
+          {isLoading?(
+            <ActivityIndicator size="large" color="blue" />
+          ):
           <Image
             style={{ width: 50, height: 50, }}
-            source={{ uri: khachHang.hinhAnh }}
+            source={{ uri: data2.hinhAnh }}
           />
+          }
+          
         </View>
 
         {/* Thông Tin USER */}

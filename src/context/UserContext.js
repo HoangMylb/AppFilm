@@ -1,17 +1,18 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { createContext, useState, useEffect } from 'react'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import customAxios from "../helper/AxiosHelper"
 export const UserContext = createContext();
 export const UserProvider = (props) => {
     const { children } = props;
-    const [khachHang, setkhachHang] = useState('')
+   
+ 
     const login = async (userName, passWord) => {
         try {
             const respon = await customAxios().post('/khachhang/login', { userName: userName, passWord: passWord });
             if (respon.success) {
                 console.log('Đăng nhập thành công');
-                setkhachHang(respon.khachHang);
+                
                
                 return { success: true, khach: respon.khachHang };
             }
@@ -142,7 +143,7 @@ export const UserProvider = (props) => {
         }
     }
     return (
-        <UserContext.Provider value={{ login,register,suaHoTen,khachHang,suaPassWord, getId, suaSDT,suaNgaySinh,suaEmail,suaGioiTinh  }}>
+        <UserContext.Provider value={{ login,register,suaHoTen,suaPassWord, getId, suaSDT,suaNgaySinh,suaEmail,suaGioiTinh  }}>
             {children}
         </UserContext.Provider>
     )

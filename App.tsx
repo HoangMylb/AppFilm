@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import SplashScreen from './src/screens/SplashScreen'
 import Login from './src/screens/Login'
 import Home from './src/screens/Home'
@@ -19,6 +19,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -53,21 +54,57 @@ function MyTab() {
 
 }
 const App = () => {
+  const [data, setData] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Biến tạm thời
+  useEffect(() => {
+    // Trong một hàm useEffect để thực hiện lấy giá trị từ AsyncStorage khi màn hình được tải
+    const fetchData = async () => {
+      try {
+        const storedData = await AsyncStorage.getItem('keepLogedIn');
+        if (storedData !== null) {
+          const parsedData = storedData === 'true';
+          setData(parsedData); // Gán giá trị từ AsyncStorage cho state data
+        }
+      } catch (error) {
+        // Xử lý lỗi nếu cần
+      } finally {
+        setIsLoading(false); // Đã tải xong dữ liệu từ AsyncStorage
+      }
+
+    };
+
+    fetchData(); // Gọi hàm fetchData để lấy dữ liệu từ AsyncStorage khi màn hình được tải
+  }, []);
+  console.log("dataApp: " + data);
   return (
+
 
     //<Location/>
     <UserProvider>
       <NavigationContainer>
-        <Stack.Navigator >
-        <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
-          <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
-          <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
-          <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }} />
-          <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-        </Stack.Navigator>
+        {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
+          <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+        ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+            <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+            <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+            <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }} />
+            <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+            <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+            <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+            <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+            <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }} />
+            <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        )}
       </NavigationContainer>
     </UserProvider>
   )

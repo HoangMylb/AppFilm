@@ -16,7 +16,9 @@ import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../context/UserContext';
 import validator from 'validator';
 import { StackActions } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = (props) => {
+  
   const { navigation } = props;
   const [userName, setUserName] = useState('')
   const [passWord, setPassWord] = useState('')
@@ -37,9 +39,14 @@ const Login = (props) => {
       if (handleValidation()) {
         const res = await login(userName, passWord);
         if (res.success) {
-          
-          navigation.dispatch(StackActions.replace('Home'));
+          const userData = res.khach;
 
+          AsyncStorage.setItem('keepLogedIn', JSON.stringify(true));
+          AsyncStorage.setItem('userData', JSON.stringify(userData));
+          console.log(" res.khach: "+ JSON.stringify(res.khach));
+          console.log("JSON.stringify(userData): "+ JSON.stringify(userData));
+          navigation.dispatch(StackActions.replace('Home'));
+          
           ToastAndroid.show("Đăng nhập thành công", 1);
         } else {
           ToastAndroid.show("Sai tài khoản hoặc mật khẩu", 1);
