@@ -61,8 +61,6 @@ const Register = (props) => {
     }else{
       formatDate(dateOfBirth);
     }
-   
-  
 };
   //checkPassWord
   

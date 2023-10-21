@@ -1,4 +1,4 @@
-import React, { useState, useContext  } from 'react';
+import React, { useState, useContext, useEffect  } from 'react';
 import {
   StyleSheet,
   Text,
@@ -17,16 +17,29 @@ import DirectorItem from '../renderItem/renderDirector';
 import { UserContext } from '../context/UserContext';
 
 const Home = (props) => {
- 
-  const { khachHang } = useContext(UserContext);
-  
-  console.log("khachContext: "+JSON.stringify(khachHang));
-  
+  const { khachHang, getId } = useContext(UserContext);
+  const [tenKhachHang, settenKhachHang] = useState('')
+  const nextToo = async () => {
+    const a = await getId(khachHang._id)
+    if (a.success) {
+      console.log("getIda1: "+JSON.stringify(a.message._id));
+      settenKhachHang(a.message.tenKhachHang)
+    }else{
+      console.log("getIdSai: "+JSON.stringify(a.success));
+    }
+    
+  };
+  //console.log("khachHome: "+JSON.stringify(khachHang));
+  useEffect(() => {
+    nextToo();
+    
+  }, [])
   const { navigation } = props;
   // data phim
   const [movie, setMovie] = useState(movieList);
   const [director, setDirector] = useState(directorList);
   const [actor, setActor] = useState(actorList);
+ 
 
 
   const clickNext = () => {
@@ -48,9 +61,9 @@ const Home = (props) => {
           {/* HEADER */}
           <View style={styles.header}>
             <View style={styles.txtHeader}>
-              {khachHang && khachHang.tenKhachHang && (
-                <Text style={styles.txt1}>Xin chào, {khachHang.tenKhachHang}</Text>
-              )}
+              
+                <Text style={styles.txt1}>Xin chào, {tenKhachHang} </Text>
+              
               <Text style={styles.txt2}>Đặt vé xem phim thôi nào</Text>
             </View>
             <TouchableOpacity onPress={clickNext}>
