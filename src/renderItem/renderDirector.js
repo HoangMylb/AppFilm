@@ -50,6 +50,8 @@ const DirectorItem = ({item}) => {
         <Text style={{ color: 'white', fontSize: 16 }}>{item.more}</Text>
       </View>
     </View>
+    </View>
+    </View>
   );
 };
 
