@@ -14,6 +14,7 @@ import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';
 import MovieItem from '../renderItem/renderMovie';
 import DirectorItem from '../renderItem/renderDirector';
+import ActorItem from '../renderItem/renderActor';
 
 const Home = (props) => {
 
@@ -34,6 +35,10 @@ const Home = (props) => {
 
   const renderItem1 = ({ item }) => {
     return <DirectorItem item={item} />; // Sử dụng MovieItem component
+  };
+
+  const renderItem2 = ({ item }) => {
+    return <ActorItem item={item} />; // Sử dụng MovieItem component
   };
 
   return (
@@ -120,7 +125,7 @@ const Home = (props) => {
           <View style={styles.actor}>
             {/* Tiêu đề */}
             <View style={styles.headerActor}>
-              <Text style={{fontSize: 24, color: 'white'}}>Đang chiếu</Text>
+              <Text style={{fontSize: 24, color: 'white'}}>Diễn viên</Text>
               <Image
                 style={{width: 77, height: 1}}
                 source={{
@@ -138,8 +143,8 @@ const Home = (props) => {
               style={{flex: 1}}
               horizontal
               data={actor}
-              keyExtractor={item => item.name}
-              renderItem={renderItem}
+              keyExtractor={(item, index) => item.Dic + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
+              renderItem={renderItem2}
             />
           </View>
         </View>
