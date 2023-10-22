@@ -12,6 +12,10 @@ import User from './src/screens/User'
 import Register from './src/screens/Register'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Notification from './src/screens/Notification'
+import PayMode from './src/screens/PayMode'
+import PaySuccess from './src/screens/PaySuccess'
+import PayLosing from './src/screens/PayLosing'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import FavouriteMovie from './src/screens/FavouriteMovie'
@@ -62,6 +66,7 @@ function MyTab(){
 }
 const App = () => {
   return (
+
     //<Location/>
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Splash'>
@@ -83,6 +88,10 @@ const App = () => {
     //     <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
     //   </Stack.Navigator>
     // </NavigationContainer>
+
+    // <Notification />
+    // <PayMode/>
+    <PayLosing />
   )
 }
 
