@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,25 +7,59 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  ScrollView,
+  ScrollView, ActivityIndicator
 } from 'react-native';
 import movieList from '../data/movieItem';
 import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';
 import MovieItem from '../renderItem/renderMovie';
 import DirectorItem from '../renderItem/renderDirector';
-import movieComing from '../data/comingsoon';
-import MovieComingItem from '../renderItem/renderMovieComing';
-import ActorItem from '../renderItem/renderActor';
-
+import { UserContext } from '../context/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Home = (props) => {
+  const { getId } = useContext(UserContext);
+  const [tenKhachHang, settenKhachHang] = useState('')
+  const [hinhAnh, setHinhAnh] = useState('')
+  const [data2, setData2] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const fetchData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('keepLogedIn');
+      const storedData2 = await AsyncStorage.getItem('userData');
+      if (storedData !== null) {
+        setData2(JSON.parse(storedData2));
+      }
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+    } finally {
+      setIsLoading(false); // Đã tải xong dữ liệu từ AsyncStorage
+    }
+  };
+  const nextToo = async () => {
+    const a = await getId(data2._id);
+    if (a.success) {
+      console.log("getIda1: " + JSON.stringify(a.message._id));
+      settenKhachHang(a.message.tenKhachHang)
+      setHinhAnh(a.message.hinhAnh)
+    } else {
+      console.log("getIdSai: " + JSON.stringify(a.success));
 
-  const {navigation} = props;
+    }
+
+  };
+  //console.log("khachHome: "+JSON.stringify(khachHang));
+  useEffect(() => {
+    fetchData();
+    if (!isLoading) {
+      nextToo();
+    }
+  }, [isLoading]);
+  const { navigation } = props;
   // data phim
   const [movie, setMovie] = useState(movieList);
-  const [coming, setComing] = useState(movieComing);
   const [director, setDirector] = useState(directorList);
   const [actor, setActor] = useState(actorList);
+
 
 
   const clickNext = () => {
@@ -40,49 +74,61 @@ const Home = (props) => {
     return <DirectorItem item={item} />; // Sử dụng MovieItem component
   };
 
-  const renderItem2 = ({ item }) => {
-    return <MovieComingItem item={item} />; // Sử dụng MovieItem component
-  };
-
-  const renderItem3 = ({ item }) => {
-    return <ActorItem item={item} />; // Sử dụng MovieItem component
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView >
         <View style={styles.screen}>
           {/* HEADER */}
           <View style={styles.header}>
             <View style={styles.txtHeader}>
-              <Text style={styles.txt1}>Xin chào, Phúc</Text>
+
+              <Text style={styles.txt1}>Xin chào, {tenKhachHang} </Text>
+
               <Text style={styles.txt2}>Đặt vé xem phim thôi nào</Text>
             </View>
-            <TouchableOpacity onPress={clickNext}>
-            <Image
-              style={styles.imgHeader}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/ImageUser.png?alt=media&token=07b4b15d-4dcf-402b-88c0-87a987022e19&_gl=1*30vg5j*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkwOTQyOC4zOS4wLjA.',
-              }}
-            />
-            </TouchableOpacity>
-              
-            
+            {isLoading ? (
+              <ActivityIndicator size="large" color="blue" />
+            ) :
+              <TouchableOpacity onPress={clickNext}>
+
+                {hinhAnh ? ( // Check if hinhAnh is not empty
+                  <Image
+                    style={{ width: 50, height: 50,  borderRadius: 25, backgroundColor: 'red' }}
+                    source={{ uri: hinhAnh }}
+                  />
+                ) : (
+                  // Handle the case when hinhAnh is empty
+                  <Text>No Image</Text>
+                )}
+              </TouchableOpacity>
+            }
+
           </View>
           {/* ... */}
-
-          {/* Movie đang chiếu */}
+          {/* MOVIE thứ 1 */}
           <View style={styles.movie}>
             {/* Tiêu đề */}
             <Text style={styles.txtRap}>Phim rạp</Text>
+
             {/* Danh sách phim đang chiếu */}
             <View style={styles.headerMovie}>
-              <Text style={{fontSize: 24, color: 'white'}}>Đang chiếu</Text>
+              <Text style={{ fontSize: 24, color: 'white' }}>Đang chiếu</Text>
+              <Image
+                style={{ width: 77, height: 1 }}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Line.png?alt=media&token=5e09f7de-ab43-40cd-a64a-60ecceeff5c5&_gl=1*w0d55j*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY8NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkxMTU4NS40My4wLjA.',
+                }}
+              />
+              <TouchableOpacity>
+                <Text style={{ fontSize: 13, color: '#E38025' }}>
+                  Xem tất cả &gt;
+                </Text>
+              </TouchableOpacity>
             </View>
 
             {/* Phim */}
             <FlatList
-              style={{flex: 1, marginTop: 15}}
+
               horizontal
               data={movie}
               keyExtractor={(item, index) => item.name + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
@@ -90,44 +136,26 @@ const Home = (props) => {
             />
           </View>
 
-
-          {/* Danh sách phim sắp chiếu  */}
-          
-          <View style={styles.movieComing}>
-            <View style={styles.headerMovieComing}>
-              <Text style={{fontSize: 24, color: 'white'}}>Sắp chiếu</Text>
-            </View>
-
-            {/* Phim */}
-            <FlatList
-              style={{flex: 1,marginTop: 15}}
-              horizontal
-              data={coming}
-              keyExtractor={(item, index) => item.name + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
-              renderItem={renderItem2}
-            />
-          </View>
-
-          {/* Danh sách đạo diễn */}
+          {/* Danh sách phim thứ 2 */}
           <View style={styles.director}>
             {/* Tiêu đề */}
             <View style={styles.headerDirector}>
-              <Text style={{fontSize: 24, color: 'white'}}>Đạo diễn</Text>
+              <Text style={{ fontSize: 24, color: 'white' }}>Đạo diễn   </Text>
               <Image
-                style={{width: 77, height: 1}}
+                style={{ width: 77, height: 1 }}
                 source={{
                   uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Line.png?alt=media&token=5e09f7de-ab43-40cd-a64a-60ecceeff5c5&_gl=1*w0d55j*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY8NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkxMTU4NS40My4wLjA.',
                 }}
               />
               <TouchableOpacity>
-                <Text style={{fontSize: 13, color: '#E38025'}}>
+                <Text style={{ fontSize: 13, color: '#E38025' }}>
                   Xem tất cả &gt;
                 </Text>
               </TouchableOpacity>
             </View>
             {/* Danh sách phim */}
             <FlatList
-              style={{flex: 1,marginTop: 15}}
+
               horizontal
               data={director}
               keyExtractor={(item, index) => item.Dic + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
@@ -135,30 +163,30 @@ const Home = (props) => {
             />
           </View>
 
-          {/* Danh sách diễn viên */}
+          {/* Danh sách phim thứ 3 */}
           <View style={styles.actor}>
             {/* Tiêu đề */}
             <View style={styles.headerActor}>
-              <Text style={{fontSize: 24, color: 'white'}}>Diễn viên</Text>
+              <Text style={{ fontSize: 24, color: 'white' }}>Đang chiếu</Text>
               <Image
-                style={{width: 77, height: 1}}
+                style={{ width: 77, height: 1 }}
                 source={{
                   uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Line.png?alt=media&token=5e09f7de-ab43-40cd-a64a-60ecceeff5c5&_gl=1*w0d55j*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY8NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkxMTU4NS40My4wLjA.',
                 }}
               />
               <TouchableOpacity>
-                <Text style={{fontSize: 13, color: '#E38025'}}>
+                <Text style={{ fontSize: 13, color: '#E38025' }}>
                   Xem tất cả &gt;
                 </Text>
               </TouchableOpacity>
             </View>
             {/* Danh sách phim */}
             <FlatList
-              style={{flex: 1,marginTop: 15}}
+
               horizontal
               data={actor}
-              keyExtractor={(item, index) => item.Dic + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
-              renderItem={renderItem3}
+              keyExtractor={item => item.name}
+              renderItem={renderItem}
             />
           </View>
         </View>
@@ -184,6 +212,10 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+
+  },
+  txtHeader: {
+
   },
   imgHeader: {
     width: 50,
@@ -218,12 +250,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  headerMovieComing: {
-    marginTop: 25,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
 
   headerDirector: {
     marginTop: 25,
@@ -239,7 +265,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  actor:{
+  actor: {
     marginBottom: 20,
   }
 });
