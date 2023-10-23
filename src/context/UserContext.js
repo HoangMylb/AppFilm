@@ -142,8 +142,22 @@ export const UserProvider = (props) => {
             return false;
         }
     }
+    const suaHinhAnh = async (_id, hinhAnh) => {
+        try {
+            const respon =  await customAxios().post('/khachhang/SuaHinhAnh', { _id: _id, hinhAnh});
+            if (respon.success) {           
+                return { success: true, message: respon.message }
+            }
+            else {
+                return { success: false, message: respon.message }
+            }
+        } catch (error) {
+            console.log('SuaHinhAnh', error)
+            return false;
+        }
+    }
     return (
-        <UserContext.Provider value={{ login,register,suaHoTen,suaPassWord, getId, suaSDT,suaNgaySinh,suaEmail,suaGioiTinh  }}>
+        <UserContext.Provider value={{ login,register,suaHinhAnh,suaHoTen,suaPassWord, getId, suaSDT,suaNgaySinh,suaEmail,suaGioiTinh  }}>
             {children}
         </UserContext.Provider>
     )

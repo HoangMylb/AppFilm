@@ -13,14 +13,66 @@ import {
   TouchableWithoutFeedback, ActivityIndicator, Pressable, Platform, ToastAndroid
 
 } from 'react-native';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import ImagePicker from 'react-native-image-crop-picker';
+import { storage } from "../../firebaseConfig";
 import { UserContext } from '../context/UserContext';
 import { StackActions } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const User = (props) => {
   const { navigation } = props;
+  // bắt đầu các hàm thay đổi hình đại diện
+  const [dowload, setDowload] = useState('');
+  async function pickImage() {
+    try {
+      const image = await ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: true,
+      });
+      const uri = image.path;
+      if (uri) {
+        // upload the image
+        await uploadImage(uri);
+      }
+    } catch (error) {
+      ToastAndroid.show("Hủy chọn ảnh", 1);
 
-  const { suaHoTen, getId, suaSDT,suaPassWord,suaNgaySinh,suaEmail,suaGioiTinh } = useContext(UserContext);
+    }
+  }
+
+  async function uploadImage(uri) {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const storageRef = ref(storage, "Stuff/" + new Date().getTime());
+    const uploadTask = uploadBytesResumable(storageRef, blob);
+
+    // listen for events
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+      },
+      (error) => {
+        // handle error
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+          console.log("File available at", url);
+          // Lưu đường dẫn vào state
+
+          
+          setDowload(url);
+
+        });
+      }
+    );
+  }
+  //kết thúc các hàm thay đổi hình đại diện
+  const { suaHoTen, getId, suaSDT, suaPassWord, suaNgaySinh, suaEmail, suaGioiTinh, suaHinhAnh } = useContext(UserContext);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [data2, setData2] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -38,30 +90,33 @@ const User = (props) => {
     }
   };
   const nextToo = async () => {
-    
-    console.log("data2IdUser: "  + data2._id);
-    console.log("data2IdHinhAnh: "  + data2.hinhAnh);
     const a = await getId(data2._id);
     if (a.success) {
       console.log("getIda1: " + JSON.stringify(a.message._id));
       setTenKhachHang(a.message.tenKhachHang)
       setDate(a.message.ngaySinh)
       setGender(a.message.gioiTinh)
-      console.log("ngaySinh: "+a.message.ngaySinh);
       setuserName(a.message.userName)
       setpassWord(a.message.passWord)
       setSDT(a.message.SDT)
+      sethinhAnh(a.message.hinhAnh)
     } else {
       console.log("getIdSai: " + JSON.stringify(a.success));
     }
 
   };
+
   useEffect(() => {
     fetchData();
     if (!isLoading) {
       nextToo();
     }
-  }, [isLoading]);
+    if (dowload) {
+      changeHinhAnh();
+     
+    }
+
+  }, [isLoading, dowload]);
   const nextTo = async () => {
     navigation.dispatch(StackActions.replace('Home'));
   };
@@ -108,14 +163,14 @@ const User = (props) => {
   const [userName, setuserName] = useState('');
   const [passWord, setpassWord] = useState('');
   const [SDT, setSDT] = useState('');
-  const [hinhAnh, sethinhAnh] = useState('https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/ImageUser.png?alt=media&token=07b4b15d-4dcf-402b-88c0-87a987022e19&_gl=1*td1yd*_ga*MTQ3NDUwNTMwMy4xNjk1NDY8NTE2MDEwMjcy*_ga_CW55HF8NVT*MTY5NzAxOTM0OC40LjAuMC4xLjAuMC4w')
+  const [hinhAnh, sethinhAnh] = useState('')
   const [gender, setGender] = useState('');
   const [date, setDate] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [showPicker, setshowPicker] = useState(false)
   const [newPassWord, setNewPassWord] = useState('');
   const [rePassWord, setRePassWord] = useState('');
- 
+
   //hàm xử lý của họ tên
   const changeHoTen = async () => {
     const res = await suaHoTen(data2._id, tenKhachHang);
@@ -139,9 +194,9 @@ const User = (props) => {
   //hàm xử lý của NgaySinh
   const changeNgaySinh = async () => {
     const res = await suaNgaySinh(data2._id, date);
-    
+
     if (res.success) {
-      
+
       hideAlert();
       ToastAndroid.show("Cập nhật thành công", 1);
     } else {
@@ -170,12 +225,23 @@ const User = (props) => {
   };
   //hàm xử lý của Email
   const changePassWord = async () => {
-    
+
     const res = await suaPassWord(data2._id, newPassWord, rePassWord);
     if (res.success) {
       setpassWord(newPassWord)
       hideAlert();
 
+      ToastAndroid.show("Cập nhật thành công", 1);
+    } else {
+      ToastAndroid.show("" + res.message, 1);
+    }
+  };
+  //hàm xử lý của HinhAnh
+  const changeHinhAnh = async () => {
+    const res = await suaHinhAnh(data2._id, dowload);
+    if (res.success) {
+      sethinhAnh(dowload);
+      hideAlert();
       ToastAndroid.show("Cập nhật thành công", 1);
     } else {
       ToastAndroid.show("" + res.message, 1);
@@ -190,7 +256,7 @@ const User = (props) => {
   };
   // Xử lý đăng xuất
   const handleActiveDangXuat = () => {
-    AsyncStorage.setItem("keepLogedIn","")
+    AsyncStorage.setItem("keepLogedIn", "")
     setIsEditing(false);
     navigation.dispatch(StackActions.replace('Login'));
   };
@@ -262,18 +328,32 @@ const User = (props) => {
 
 
         {/* Hình ảnh USER */}
-        <View style={styles.imgUser}>
-          {isLoading?(
-            <ActivityIndicator size="large" color="blue" />
-          ):
-          <Image
-            style={{ width: 50, height: 50, }}
-            source={{ uri: data2.hinhAnh }}
-          />
-          }
-          
-        </View>
 
+        <TouchableOpacity onPress={pickImage} style={styles.imgUser}>
+          <View >
+            {isLoading ? (
+              <ActivityIndicator size="large" color="blue" />
+            ) :
+              <View>
+                {hinhAnh ? ( // Check if hinhAnh is not empty
+                  <Image
+                    style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'red' }}
+                    source={{ uri: hinhAnh }}
+                  />
+                ) : (
+                  // Handle the case when hinhAnh is empty
+                  <Text>No Image</Text>
+                )}
+              </View>
+            }
+          </View>
+          <Image
+            resizeMode='cover'
+            style={{ aspectRatio: 1, width: 22, height: 22, position: 'absolute', top: 30, left: 35 }}
+            source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Frefresh2.png?alt=media&token=bb4aed51-115d-450a-a2f5-c6623c13fb00&_gl=1*18lbbxu*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5ODAyMzA1NS4yMS4xLjE2OTgwMjM1MjQuMjguMC4w' }}
+
+          />
+        </TouchableOpacity>
         {/* Thông Tin USER */}
         <View style={styles.ifmUser}>
           <Text style={styles.inputTitle}>Họ và tên</Text>
@@ -363,6 +443,7 @@ const User = (props) => {
         <TouchableOpacity style={styles.btnDangXuat} onPress={handleDangXuat}>
           <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Kanit', fontWeight: '700' }}>Đăng xuất</Text>
         </TouchableOpacity>
+
       </View >
       {/* hiện thông báo đăng xuất */}
       <View style={styles.container}>
@@ -681,7 +762,7 @@ const User = (props) => {
       </View>
       {/*kết thúc hiện cập nhật mật khẩu */}
     </SafeAreaView >
-    
+
   );
 
 };
@@ -714,10 +795,11 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   imgUser: {
-    width: '100%',
+
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 60,
+    position: 'relative',
 
   },
 
@@ -852,8 +934,8 @@ const styles = StyleSheet.create({
   btnTxt: {
     color: 'white', fontSize: 16, fontFamily: 'Kanit', fontWeight: '700'
   },
- 
-  
-  
+
+
+
 
 });

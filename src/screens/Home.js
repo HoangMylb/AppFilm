@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Home = (props) => {
   const { getId } = useContext(UserContext);
   const [tenKhachHang, settenKhachHang] = useState('')
+  const [hinhAnh, setHinhAnh] = useState('')
   const [data2, setData2] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
@@ -35,13 +36,11 @@ const Home = (props) => {
     }
   };
   const nextToo = async () => {
-    console.log("data2: " + data2);
-    console.log("data2IdHome: " + data2._id);
-    console.log("data2hinhAnh: " + data2.hinhAnh);
     const a = await getId(data2._id);
     if (a.success) {
       console.log("getIda1: " + JSON.stringify(a.message._id));
       settenKhachHang(a.message.tenKhachHang)
+      setHinhAnh(a.message.hinhAnh)
     } else {
       console.log("getIdSai: " + JSON.stringify(a.success));
 
@@ -88,17 +87,21 @@ const Home = (props) => {
               <Text style={styles.txt2}>Đặt vé xem phim thôi nào</Text>
             </View>
             {isLoading ? (
-                <ActivityIndicator size="large" color="blue" />
-              ) :
-            <TouchableOpacity onPress={clickNext}>
-             
-                <Image
-                  style={{ width: 50, height: 50, }}
-                  source={{ uri: data2.hinhAnh }}
-                />
-             
-            </TouchableOpacity>
-          }
+              <ActivityIndicator size="large" color="blue" />
+            ) :
+              <TouchableOpacity onPress={clickNext}>
+
+                {hinhAnh ? ( // Check if hinhAnh is not empty
+                  <Image
+                    style={{ width: 50, height: 50,  borderRadius: 25, backgroundColor: 'red' }}
+                    source={{ uri: hinhAnh }}
+                  />
+                ) : (
+                  // Handle the case when hinhAnh is empty
+                  <Text>No Image</Text>
+                )}
+              </TouchableOpacity>
+            }
 
           </View>
           {/* ... */}
@@ -125,7 +128,7 @@ const Home = (props) => {
 
             {/* Phim */}
             <FlatList
-             
+
               horizontal
               data={movie}
               keyExtractor={(item, index) => item.name + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
@@ -152,7 +155,7 @@ const Home = (props) => {
             </View>
             {/* Danh sách phim */}
             <FlatList
-              
+
               horizontal
               data={director}
               keyExtractor={(item, index) => item.Dic + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
@@ -179,7 +182,7 @@ const Home = (props) => {
             </View>
             {/* Danh sách phim */}
             <FlatList
-              
+
               horizontal
               data={actor}
               keyExtractor={item => item.name}
@@ -209,10 +212,10 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-   
+
   },
-  txtHeader:{
-    
+  txtHeader: {
+
   },
   imgHeader: {
     width: 50,
