@@ -35,7 +35,7 @@ const Notification = () => {
                 <View style={styles.headerContainer}>
                     <Image style={{ width: 44, height: 44, borderRadius: 50, marginVertical: 20 }}
                         source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Infomation%2FArrow%20Left%20Button.png?alt=media&token=2d5c781c-a330-4755-b2f8-0bc38dd0bf77&_gl=1*kv2sxo*_ga*MzE0OTk3MTQxLjE2OTcyNzI0ODQ.*_ga_CW55HF8NVT*MTY5NzQ2MzQ0Ny4yLjEuMTY5NzQ2NjMxNS42MC4wLjA.' }} />
-                    <Text style={styles.label}>Thông báo</Text>
+                    <Text style={styles.label}>Thông báo </Text>
                     <Text></Text>
                     <Text></Text>
                 </View>

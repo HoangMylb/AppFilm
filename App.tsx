@@ -16,13 +16,11 @@ import Notification from './src/screens/Notification'
 import PayMode from './src/screens/PayMode'
 import PaySuccess from './src/screens/PaySuccess'
 import PayLosing from './src/screens/PayLosing'
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import FavouriteMovie from './src/screens/FavouriteMovie'
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import TimeSelect from './src/screens/TimeSelect'
 import ForgotpassWord from './src/screens/ForgotpassWord'
 import ForgetpassWordOtp from './src/screens/ForgetpassWordOtp'
@@ -60,11 +58,6 @@ function MyTab(){
     <Stack.Screen name="LocationTab" component={Location} options={{ headerShown: false }}/>
     <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }}/>
     <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }}/>
-    {/* <Stack.Screen name="forgotOTP" component={ForgetpassWordOtp} options={{ headerShown: false }}/>
-    <Stack.Screen name="forgot" component={ForgotpassWord} options={{ headerShown: false }}/>
-    <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }}/>
-    <Stack.Screen name="Submid" component={SubmitPassword} options={{ headerShown: false }}/>
-    <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }}/> */}
 
     </Tab.Navigator>
   )
@@ -75,7 +68,7 @@ const App = () => {
 
     //<Location/>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home' screenOptions={{headerShown:false}}>
+      <Stack.Navigator initialRouteName='PayLosing' screenOptions={{headerShown:false}}>
         <Stack.Screen name="BuyTickets" component={BuyTickets}/>
         <Stack.Screen name="DetailMovie" component={DetailMovie} />
         <Stack.Screen name="FavouriteMovie" component={FavouriteMovie} />
@@ -85,6 +78,12 @@ const App = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="User" component={User} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="PayLosing" component={PayLosing} />
+        <Stack.Screen name="PayMode" component={PayMode} />
+        <Stack.Screen name="PaySuccess" component={PaySuccess} />
+        <Stack.Screen name="Notification" component={Notification} />
+
+
 
       </Stack.Navigator>
     </NavigationContainer>
