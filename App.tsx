@@ -95,7 +95,10 @@ const App = () => {
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
           </Stack.Navigator>
         ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
-          <Stack.Navigator initialRouteName="Login">
+          <Stack.Navigator
+          // initialRouteName="Login"
+           >
+             
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
             <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
