@@ -7,7 +7,7 @@ import {
   TextInput,
   Touchable,
   TouchableOpacity,
-  View,
+  View,ScrollView
 } from 'react-native';
 import React from 'react';
 
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
 
   btnTxt: {
     fontSize: 18,
-    color: 'black',
+    color: 'white',
     fontFamily: 'Kanit',
     fontWeight: 'bold',
   },
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   },
 
   bottomText: {
-    position: 'absolute',
+    position:  'absolute',
     bottom: 5,
     left: 0,
     right: 0,

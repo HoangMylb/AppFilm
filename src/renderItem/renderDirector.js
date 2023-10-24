@@ -35,20 +35,6 @@ const DirectorItem = ({item}) => {
           source={{uri: item.favour}}
         />
         <Text style={{color: 'white', fontSize: 16}}>{item.more}</Text>
-      <Text style={{ color: 'white', fontSize: 20,margin: 10 }}>{item.Dic}</Text>
-      <Text style={{ color: 'white', fontSize: 12,margin: 10 }}>{item.movie}</Text>
-      
-      <View style={{flexDirection: 'row', justifyContent: 'space-between',margin:10}}>
-        <Image
-            style={{
-            width: 15,
-            height: 14,
-            resizeMode: 'cover',
-            }}
-            source={{ uri: item.favour }}
-        />
-        <Text style={{ color: 'white', fontSize: 16 }}>{item.more}</Text>
-      </View>
     </View>
     </View>
     </View>
