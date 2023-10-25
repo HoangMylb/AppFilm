@@ -32,6 +32,13 @@ const Home = (props) => {
     navigation.navigate('User');
   };
 
+  const clickNextAll = () => {
+    navigation.navigate('Launching');
+  };
+  const clickNextAllComing = () => {
+    navigation.navigate('Coming');
+  };
+
   const renderItem = ({ item }) => {
     return <MovieItem item={item} />; // Sử dụng MovieItem component
   };
@@ -78,7 +85,7 @@ const Home = (props) => {
             {/* Danh sách phim đang chiếu */}
             <View style={styles.headerMovie}>
               <Text style={{fontSize: 24, color: 'white'}}>Đang chiếu</Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={clickNextAll}>
                 <Text style={{fontSize: 13, color: '#E38025'}}>
                   Xem tất cả &gt;
                 </Text>
@@ -101,13 +108,12 @@ const Home = (props) => {
           <View style={styles.movieComing}>
             <View style={styles.headerMovieComing}>
               <Text style={{fontSize: 24, color: 'white'}}>Sắp chiếu</Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={clickNextAllComing}>
                 <Text style={{fontSize: 13, color: '#E38025'}}>
                   Xem tất cả &gt;
                 </Text>
               </TouchableOpacity>
             </View>
-
             {/* Phim */}
             <FlatList
               style={{flex: 1,marginTop: 15}}
