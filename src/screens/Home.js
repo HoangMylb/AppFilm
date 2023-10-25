@@ -9,19 +9,37 @@ import {
   FlatList,
   ScrollView, ActivityIndicator
 } from 'react-native';
-import movieList from '../data/movieItem';
 import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';
 import MovieItem from '../renderItem/renderMovie';
 import DirectorItem from '../renderItem/renderDirector';
 import { UserContext } from '../context/UserContext';
+import { PhimContext } from '../context/PhimContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Home = (props) => {
-  const { getId } = useContext(UserContext);
+  const { navigation } = props;
+  //phim
+  const { getPhimHome } = useContext(PhimContext);
+  const [dataPhim, setDataPhim] = useState('')
+   //user
+   const { getId } = useContext(UserContext);
   const [tenKhachHang, settenKhachHang] = useState('')
   const [hinhAnh, setHinhAnh] = useState('')
   const [data2, setData2] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  //ham cua Phim
+  const phimHome = async () => {
+    const a = await getPhimHome();
+    if (a.success) {
+      setDataPhim(a.message)
+    } else {
+      console.log("Khong lay duoc Phim: " + JSON.stringify(a.success));
+
+    }
+
+  };
+  
+  //ket thuc ham cua Phim
   const fetchData = async () => {
     try {
       const storedData = await AsyncStorage.getItem('keepLogedIn');
@@ -50,13 +68,16 @@ const Home = (props) => {
   //console.log("khachHome: "+JSON.stringify(khachHang));
   useEffect(() => {
     fetchData();
+    
     if (!isLoading) {
       nextToo();
+      phimHome();
     }
   }, [isLoading]);
-  const { navigation } = props;
+  
+ 
   // data phim
-  const [movie, setMovie] = useState(movieList);
+ 
   const [director, setDirector] = useState(directorList);
   const [actor, setActor] = useState(actorList);
 
@@ -98,7 +119,7 @@ const Home = (props) => {
                   />
                 ) : (
                   // Handle the case when hinhAnh is empty
-                  <Text>No Image</Text>
+                  <Text  style={{ color: 'white' }}>Đang tải</Text>
                 )}
               </TouchableOpacity>
             }
@@ -128,11 +149,12 @@ const Home = (props) => {
 
             {/* Phim */}
             <FlatList
-
               horizontal
-              data={movie}
-              keyExtractor={(item, index) => item.name + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
-              renderItem={renderItem}
+              data={dataPhim}
+              keyExtractor={(item, index) => item.tenPhim + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
+              renderItem={({ item }) => (
+                <MovieItem item={item}  navigation={navigation} idUser={data2._id}/> 
+              )}
             />
           </View>
 

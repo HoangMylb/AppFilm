@@ -20,6 +20,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { PhimProvider } from './src/context/PhimContext'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -81,34 +82,36 @@ const App = () => {
 
     //<Location/>
     <UserProvider>
-      <NavigationContainer>
-        {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
-          <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-        ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
-            <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
-            <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
-            <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }} />
-            <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-          </Stack.Navigator>
-        ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
-          <Stack.Navigator
-          // initialRouteName="Login"
-           >
-             
-            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-            <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
-            <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
-            <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
-            <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }} />
-            <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-          </Stack.Navigator>
-        )}
-      </NavigationContainer>
+      <PhimProvider>
+        <NavigationContainer>
+          {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
+            <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+          ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab
+            <Stack.Navigator initialRouteName="Home">
+              <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+              <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+              <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+              <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }} />
+              <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+              <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+              <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+            </Stack.Navigator>
+          ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
+            <Stack.Navigator
+            initialRouteName="Login"
+            >
+              
+              <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+              <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+              <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+              <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+              <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+              <Stack.Screen name="DetailMovie" component={DetailMovie} options={{ headerShown: false }} />
+              <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+            </Stack.Navigator>
+          )}
+        </NavigationContainer>
+      </PhimProvider>
     </UserProvider>
   )
 }
