@@ -319,7 +319,7 @@ const User = (props) => {
         <View style={{ flexDirection: 'row', position: 'absolute', top: 10, left: 10 }}>
           <TouchableOpacity onPress={nextTo}>
             <Image
-              style={{ width: 50, height: 50 }}
+              style={{ width: 44, height: 44 }}
               source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Arrow%20Left%20Button2.png?alt=media&token=4ecc2c70-56d8-4da2-abac-750f6ca28639&_gl=1*8qq0vj*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzY3MjY4Ni40LjEuMTY5NzY3Mjk3Mi41NC4wLjA.' }}
             />
           </TouchableOpacity>
@@ -342,7 +342,7 @@ const User = (props) => {
                   />
                 ) : (
                   // Handle the case when hinhAnh is empty
-                  <Text>No Image</Text>
+                  <Text style={{ color: 'white' }}>Đang tải</Text>
                 )}
               </View>
             }

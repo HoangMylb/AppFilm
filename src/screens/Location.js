@@ -7,6 +7,7 @@ const Location = (props) => {
     //data rạp 
     const [location, setLocation] = useState(locationList);
     const {navigation} = props;
+    
     const renderItem = ({ item }) => {
         const { url,title, address, phone,id } = item;
         return (
