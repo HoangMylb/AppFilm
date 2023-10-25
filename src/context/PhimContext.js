@@ -66,14 +66,34 @@ export const PhimProvider = (props) => {
             return false;
         }
     }
-    const getYeuThich = async (persons) => {
+    const a ="651d6c933f11bb72988255c8";
+    const getYeuThich = async () => {
         try {
-            const respon =  await customAxios().get('/yeuthich/getYeuThich', { persons})
+            const respon =  await customAxios().get('/yeuthich/getYeuThich', { persons:a})
             if (respon.success) {   
-                
+                console.log("successDung: " + respon.success);
+                console.log("message: " + respon.message);
                 return { success: true, message: respon.message }
+            } else {
+                console.log("successSAI: " + respon.success);
+                console.log("message: " + respon.message);
+                return { success: false, message: respon.message }
             }
-            else {
+        } catch (error) {
+            console.log('getYeuThich', error)
+            return false;
+        }
+    }
+    const getAll = async () => {
+        try {
+            const respon =  await customAxios().get('/yeuthich')
+            if (respon.success) {   
+                console.log("successDung: " + respon.success);
+                console.log("message: " + respon.message);
+                return { success: true, message: respon.message }
+            } else {
+                console.log("successSAI: " + respon.success);
+                console.log("message: " + respon.message);
                 return { success: false, message: respon.message }
             }
         } catch (error) {
@@ -82,7 +102,7 @@ export const PhimProvider = (props) => {
         }
     }
     return (
-        <PhimContext.Provider value={{ getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich}}>
+        <PhimContext.Provider value={{ getAll,getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich}}>
             {children}
         </PhimContext.Provider>
     )

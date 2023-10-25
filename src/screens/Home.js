@@ -44,7 +44,7 @@ const Home = (props) => {
     try {
       const storedData = await AsyncStorage.getItem('keepLogedIn');
       const storedData2 = await AsyncStorage.getItem('userData');
-      if (storedData !== null) {
+      if (storedData !== false) {
         setData2(JSON.parse(storedData2));
       }
     } catch (error) {
