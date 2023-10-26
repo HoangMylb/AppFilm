@@ -6,13 +6,14 @@ import { PhimContext } from '../context/PhimContext';
 import Video from 'react-native-video';
 
 const BuyTickets = ({ navigation }) => {
-    const { newYeuThich,xoaYeuThich } = useContext(PhimContext);
+    const { newYeuThich,xoaYeuThich,kiemTraYeuThich } = useContext(PhimContext);
     const [check, setCheck] = useState(0);
     const { getDienVien } = useContext(PhimContext);
     const [dataDienVien, setDataDienVien] = useState('')
     const route = useRoute();
     const item = route.params.item;
     const idUser = route.params.idUser;
+    const [checkYT, setcheckYT] = useState(false)
     const isIcon = async () => {
         const newCheckValue = check + 1;
         setCheck(newCheckValue);
@@ -41,9 +42,24 @@ const BuyTickets = ({ navigation }) => {
     };
 
     useEffect(() => {
+        const ktYeuThich = async () => {
+           const a = await kiemTraYeuThich(idUser,item._id);
+           if (a.success) {
+            setCheck(1);
+          
+           }else{
+            setCheck(0);
+            
+           }
+           setcheckYT(a);
+        };
+        ktYeuThich();
+        
         dienVien();
     }, []);
-
+    useEffect(() => {
+        console.log("checkeff: " + check);
+    }, [check]);
     return (
         <View style={styles.container}>
             {/* nút back */}
@@ -82,7 +98,7 @@ const BuyTickets = ({ navigation }) => {
                                     style={{ width: 20, height: 20, top: -20, left: 330, position: 'absolute' }}
                                     source={{
 
-                                        uri: check === 0 ? 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/BuyTickets%2Ficonlove.png?alt=media&token=66b275d2-89e7-4791-936d-8d15715da0ec&_gl=1*jcu963*_ga*MTI1MTA0NjU4MC4xNjg5OTM2NTk0*_ga_CW55HF8NVT*MTY5Njk1MzgwOC4xMC4xLjE2OTY5NTM4NzAuNjAuMC4w'
+                                        uri: check === 0? 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/BuyTickets%2Ficonlove.png?alt=media&token=66b275d2-89e7-4791-936d-8d15715da0ec&_gl=1*jcu963*_ga*MTI1MTA0NjU4MC4xNjg5OTM2NTk0*_ga_CW55HF8NVT*MTY5Njk1MzgwOC4xMC4xLjE2OTY5NTM4NzAuNjAuMC4w'
                                             : 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/FavouriteMovie%2Fimage%2013.png?alt=media&token=086dcd3c-ef65-4fe7-9842-aaf71cf05a69&_gl=1*lvndtu*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5ODA5OTY5NC4yNi4xLjE2OTgxMDMwMDIuNDUuMC4w'
                                     }}
 
@@ -99,7 +115,7 @@ const BuyTickets = ({ navigation }) => {
 
                         <View  >
                             <FlatList
-                                style={{ marginLeft: 20, marginBottom: 10 }}
+                                style={{ marginLeft: 30, marginBottom: 10 ,width: '80%'}}
                                 horizontal
                                 data={dataDienVien}
                                 keyExtractor={(item, index) => item._id + index.toString()} // Sử dụng index để đảm bảo key là duy nhất

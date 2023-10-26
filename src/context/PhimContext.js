@@ -17,7 +17,7 @@ export const PhimProvider = (props) => {
                 return { success: false, message: respon.message }
             }
         } catch (error) {
-            console.log('getID', error)
+            console.log('getIDContext', error)
             return false;
         }
     }
@@ -32,7 +32,7 @@ export const PhimProvider = (props) => {
                 return { success: false, message: respon.message }
             }
         } catch (error) {
-            console.log('getID', error)
+            console.log('getIDContext', error)
             return false;
         }
     }
@@ -47,7 +47,7 @@ export const PhimProvider = (props) => {
                 return { success: false, message: respon.message }
             }
         } catch (error) {
-            console.log('newYeuThich', error)
+            console.log('newYeuThichContext', error)
             return false;
         }
     }
@@ -62,17 +62,15 @@ export const PhimProvider = (props) => {
                 return { success: false, message: respon.message }
             }
         } catch (error) {
-            console.log('newYeuThich', error)
+            console.log('newYeuThichContext', error)
             return false;
         }
     }
-    const a ="651d6c933f11bb72988255c8";
-    const getYeuThich = async () => {
+    
+    const getYeuThich = async (persons) => {
         try {
-            const respon =  await customAxios().get('/yeuthich/getYeuThich', { persons:a})
+            const respon =  await customAxios().get(`/yeuthich/getYeuThich?persons=${persons}`)
             if (respon.success) {   
-                console.log("successDung: " + respon.success);
-                console.log("message: " + respon.message);
                 return { success: true, message: respon.message }
             } else {
                 console.log("successSAI: " + respon.success);
@@ -80,16 +78,16 @@ export const PhimProvider = (props) => {
                 return { success: false, message: respon.message }
             }
         } catch (error) {
-            console.log('getYeuThich', error)
+            console.log('getYeuThichContext', error)
             return false;
         }
     }
-    const getAll = async () => {
+   
+    const getMangPhim = async (_id) => {
         try {
-            const respon =  await customAxios().get('/yeuthich')
+            const respon =  await customAxios().get(`/phim/getMangPhim?_id=${_id}`)
             if (respon.success) {   
-                console.log("successDung: " + respon.success);
-                console.log("message: " + respon.message);
+              
                 return { success: true, message: respon.message }
             } else {
                 console.log("successSAI: " + respon.success);
@@ -97,12 +95,28 @@ export const PhimProvider = (props) => {
                 return { success: false, message: respon.message }
             }
         } catch (error) {
-            console.log('getYeuThich', error)
+            console.log('getMangPhimContext', error)
             return false;
         }
     }
+    const kiemTraYeuThich = async (persons, phim) => {
+    try {
+        const response = await customAxios().get(`/yeuthich/kiemTraYeuThich?persons=${persons}&phim=${phim}`);
+        if (response.success) {   
+          
+            return { success: true }
+        } else {
+       
+            return { success: false }
+        }
+    } catch (error) {
+        console.log('kiemTraYeuThichContext', error);
+        return { success: false };
+    }
+}
+
     return (
-        <PhimContext.Provider value={{ getAll,getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich}}>
+        <PhimContext.Provider value={{ getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich,getMangPhim,kiemTraYeuThich}}>
             {children}
         </PhimContext.Provider>
     )

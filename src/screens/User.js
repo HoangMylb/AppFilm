@@ -145,6 +145,10 @@ const User = (props) => {
     setAlertEmail(true);
   };
   const hideAlert = () => {
+    setTenKhachHang2('');
+    setRePassWord('');
+    setSDT2('');
+    setDate2('')
     setAlertHoTen(false);
     setAlertSDT(false);
     setAlertEmail(false);
@@ -154,11 +158,12 @@ const User = (props) => {
   };
   //hàm ẩn modal của tất cả
   const handleAlertAction = () => {
+  
     hideAlert();
   };
   //biến của đăng xuất
   const [isEditing, setIsEditing] = useState(false);
-  //biến của update
+  //biến của hiện thông tin
   const [tenKhachHang, setTenKhachHang] = useState('');
   const [userName, setuserName] = useState('');
   const [passWord, setpassWord] = useState('');
@@ -170,12 +175,18 @@ const User = (props) => {
   const [showPicker, setshowPicker] = useState(false)
   const [newPassWord, setNewPassWord] = useState('');
   const [rePassWord, setRePassWord] = useState('');
-
+ //biến của update
+ const [tenKhachHang2, setTenKhachHang2] = useState('');
+ const [SDT2, setSDT2] = useState('');
+ const [date2, setDate2] = useState('');
+ const [userName2, setuserName2] = useState('');
+ const [gender2, setGender2] = useState('');
   //hàm xử lý của họ tên
   const changeHoTen = async () => {
-    const res = await suaHoTen(data2._id, tenKhachHang);
+    const res = await suaHoTen(data2._id, tenKhachHang2);
     if (res.success) {
       hideAlert();
+      setTenKhachHang(tenKhachHang2)
       ToastAndroid.show("Cập nhật thành công", 1);
     } else {
       ToastAndroid.show("" + res.message, 1);
@@ -183,9 +194,10 @@ const User = (props) => {
   };
   //hàm xử lý của SDT
   const changeSDT = async () => {
-    const res = await suaSDT(data2._id, SDT);
+    const res = await suaSDT(data2._id, SDT2);
     if (res.success) {
       hideAlert();
+      setSDT(SDT2)
       ToastAndroid.show("Cập nhật thành công", 1);
     } else {
       ToastAndroid.show("" + res.message, 1);
@@ -193,10 +205,10 @@ const User = (props) => {
   };
   //hàm xử lý của NgaySinh
   const changeNgaySinh = async () => {
-    const res = await suaNgaySinh(data2._id, date);
+    const res = await suaNgaySinh(data2._id, date2);
 
     if (res.success) {
-
+      setDate(date2);
       hideAlert();
       ToastAndroid.show("Cập nhật thành công", 1);
     } else {
@@ -205,9 +217,10 @@ const User = (props) => {
   };
   //hàm xử lý của Email
   const changeEmail = async () => {
-    const res = await suaEmail(data2._id, userName);
+    const res = await suaEmail(data2._id, userName2);
     if (res.success) {
       hideAlert();
+      setuserName(userName2)
       ToastAndroid.show("Cập nhật thành công", 1);
     } else {
       ToastAndroid.show("" + res.message, 1);
@@ -215,15 +228,16 @@ const User = (props) => {
   };
   //hàm xử lý của GioiTinh
   const changeGioTinh = async () => {
-    const res = await suaGioiTinh(data2._id, gender);
+    const res = await suaGioiTinh(data2._id, gender2);
     if (res.success) {
       hideAlert();
+      setGender(gender2)
       ToastAndroid.show("Cập nhật thành công", 1);
     } else {
       ToastAndroid.show("" + res.message, 1);
     }
   };
-  //hàm xử lý của Email
+  //hàm xử lý của password
   const changePassWord = async () => {
 
     const res = await suaPassWord(data2._id, newPassWord, rePassWord);
@@ -247,27 +261,15 @@ const User = (props) => {
       ToastAndroid.show("" + res.message, 1);
     }
   };
-  //hiện hoặc ẩn modal đăng xuất
-  const handleDangXuat = () => {
-    setIsEditing(true);
-  };
-  const handleCancel = () => {
-    setIsEditing(false);
-  };
-  // Xử lý đăng xuất
-  const handleActiveDangXuat = () => {
-    AsyncStorage.setItem("keepLogedIn", "")
-    setIsEditing(false);
-    navigation.dispatch(StackActions.replace('Login'));
-  };
-  // Hàm xử lý khi lưu thay đổi
+  
+ 
 
   //hàm của giới tính
   const handleGenderPress = selectedGender => {
-    if (selectedGender === gender) {
-      setGender(''); // Bỏ chọn nếu đã chọn trước đó
+    if (selectedGender === gender2) {
+      setGender2(''); // Bỏ chọn nếu đã chọn trước đó
     } else {
-      setGender(selectedGender);
+      setGender2(selectedGender);
     }
   };
   //hàm của date và dateOfBirth
@@ -280,7 +282,7 @@ const User = (props) => {
       setDateOfBirth(currentDate);
       if (Platform.OS === "android") {
         toggleDatepicker();
-        setDate(formatDate(currentDate.toDateString()))
+        setDate2(formatDate(currentDate.toDateString()))
       }
     } else {
       toggleDatepicker();
@@ -300,7 +302,19 @@ const User = (props) => {
   };
 
 
-
+//hiện hoặc ẩn modal đăng xuất
+const handleDangXuat = () => {
+  setIsEditing(true);
+};
+const handleCancel = () => {
+  setIsEditing(false);
+};
+// Xử lý đăng xuất
+const handleActiveDangXuat = () => {
+  AsyncStorage.setItem("keepLogedIn", "")
+  setIsEditing(false);
+  navigation.dispatch(StackActions.replace('Login'));
+};
 
   return (
 
@@ -439,7 +453,7 @@ const User = (props) => {
         </View>
 
 
-        {/* Button Update  USER */}
+       
         <TouchableOpacity style={styles.btnDangXuat} onPress={handleDangXuat}>
           <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Kanit', fontWeight: '700' }}>Đăng xuất</Text>
         </TouchableOpacity>
@@ -497,8 +511,8 @@ const User = (props) => {
                   style={styles.input}
                   placeholder="Họ và tên"
                   placeholderTextColor="black"
-
-                  onChangeText={setTenKhachHang}
+                  
+                  onChangeText={setTenKhachHang2}
                 />
               </View>
               <TouchableOpacity style={styles.btnAccount} onPress={changeHoTen}>
@@ -538,8 +552,8 @@ const User = (props) => {
                   style={styles.input}
                   placeholder="Số điện thoại"
                   placeholderTextColor="black"
-                  value={SDT}
-                  onChangeText={setSDT}
+                  
+                  onChangeText={setSDT2}
                   keyboardType='numeric'
                 />
               </View>
@@ -593,9 +607,9 @@ const User = (props) => {
                     <TextInput
                       style={styles.input}
                       placeholder="Ngày sinh"
-                      value={date}
+                      value={date2}
 
-                      onChangeText={setDate}
+                      onChangeText={setDate2}
                       placeholderTextColor="black"
                       editable={false}
                     />
@@ -639,8 +653,7 @@ const User = (props) => {
                   style={styles.input}
                   placeholder="Email"
                   placeholderTextColor="black"
-                  value={userName}
-                  onChangeText={setuserName}
+                  onChangeText={setuserName2}
                 />
               </View>
               <TouchableOpacity style={styles.btnAccount} onPress={changeEmail}>
@@ -675,7 +688,7 @@ const User = (props) => {
                       <View
                         style={[
                           styles.radioCircle,
-                          gender === 'Nam' && styles.radioSelected,
+                          gender2 === 'Nam' && styles.radioSelected,
                         ]}
                       />
                       <Text style={styles.radioLabel}>Nam</Text>
@@ -686,7 +699,7 @@ const User = (props) => {
                       <View
                         style={[
                           styles.radioCircle,
-                          gender === 'Nữ' && styles.radioSelected,
+                          gender2 === 'Nữ' && styles.radioSelected,
                         ]}
                       />
                       <Text style={styles.radioLabel}>Nữ</Text>
@@ -837,7 +850,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#990000',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '35%'
+    marginTop: '40%'
   },
   //của Update
   container: {

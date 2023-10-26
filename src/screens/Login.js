@@ -44,7 +44,7 @@ const Login = (props) => {
           AsyncStorage.setItem('keepLogedIn', JSON.stringify(true));
           AsyncStorage.setItem('userData', JSON.stringify(userData));
           console.log(" res.khach: "+ JSON.stringify(res.khach));
-          console.log("JSON.stringify(userData): "+ JSON.stringify(userData));
+          console.log("userData được lưu: "+ JSON.stringify(userData));
           navigation.dispatch(StackActions.replace('Home'));
           
           ToastAndroid.show("Đăng nhập thành công", 1);
