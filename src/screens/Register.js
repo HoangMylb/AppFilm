@@ -9,7 +9,15 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 
-const Register = () => {
+const Register = (props) => {
+
+  const {navigation} = props;
+
+  const clickNext = () => {
+    navigation.navigate('Login');
+  }
+
+
   const [gender, setGender] = useState('');
 
   const handleGenderPress = selectedGender => {
@@ -19,6 +27,8 @@ const Register = () => {
       setGender(selectedGender);
     }
   };
+
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#18191A' }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -182,7 +192,7 @@ const Register = () => {
             <View style={styles.bottomText}>
               <Text style={styles.txtQuestion}>Tài khoản đã được đăng ký !
               </Text>
-              <TouchableOpacity
+              <TouchableOpacity onPress={clickNext}
                 // onPress={clickNextTo}
                 style={{
                   borderWidth: 1,

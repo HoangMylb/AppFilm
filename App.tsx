@@ -70,7 +70,7 @@ const App = () => {
 
     //<Location/>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home' screenOptions={{headerShown:false}}>
+      <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown:false}}>
         <Stack.Screen name="BuyTickets" component={BuyTickets}/>
         <Stack.Screen name="DetailMovie" component={DetailMovie} />
         <Stack.Screen name="FavouriteMovie" component={FavouriteMovie} />
@@ -86,6 +86,7 @@ const App = () => {
         <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="Launching" component={Launching} />
         <Stack.Screen name="Coming" component={Coming} />
+        <Stack.Screen name="Forget" component={SubmitPassword} />
 
 
       </Stack.Navigator>

@@ -41,7 +41,7 @@ const Location = (props) => {
           style={{
             width: 400,
             height: 1,
-            backgroundColor: 'black',
+            backgroundColor: 'white',
             marginTop: 10,
           }}></View>
       </View>
