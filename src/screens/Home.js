@@ -185,32 +185,6 @@ const Home = (props) => {
             />
           </View>
 
-          {/* Danh sách phim thứ 3 */}
-          <View style={styles.actor}>
-            {/* Tiêu đề */}
-            <View style={styles.headerActor}>
-              <Text style={{ fontSize: 24, color: 'white' }}>Đang chiếu</Text>
-              <Image
-                style={{ width: 77, height: 1 }}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Line.png?alt=media&token=5e09f7de-ab43-40cd-a64a-60ecceeff5c5&_gl=1*w0d55j*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY8NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkxMTU4NS40My4wLjA.',
-                }}
-              />
-              <TouchableOpacity>
-                <Text style={{ fontSize: 13, color: '#E38025' }}>
-                  Xem tất cả &gt;
-                </Text>
-              </TouchableOpacity>
-            </View>
-            {/* Danh sách phim */}
-            <FlatList
-
-              horizontal
-              data={actor}
-              keyExtractor={item => item.name}
-              renderItem={renderItem}
-            />
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

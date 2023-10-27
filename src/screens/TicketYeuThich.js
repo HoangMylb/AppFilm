@@ -5,7 +5,7 @@ import { useRoute } from '@react-navigation/native';
 import { PhimContext } from '../context/PhimContext';
 import Video from 'react-native-video';
 
-const BuyTickets = ({ navigation }) => {
+const TicketYeuThich = ({ navigation }) => {
     const { newYeuThich,xoaYeuThich,kiemTraYeuThich } = useContext(PhimContext);
     const [check, setCheck] = useState(0);
     const { getDienVien } = useContext(PhimContext);
@@ -38,7 +38,7 @@ const BuyTickets = ({ navigation }) => {
 
     };
     const nextTo = async () => {
-        navigation.dispatch(StackActions.replace('Home'));
+        navigation.dispatch(StackActions.replace('YeuThich'));
     };
 
     useEffect(() => {
@@ -145,7 +145,7 @@ const BuyTickets = ({ navigation }) => {
     )
 }
 
-export default BuyTickets
+export default TicketYeuThich
 
 const styles = StyleSheet.create({
     imgdv: {

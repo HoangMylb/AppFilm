@@ -68,7 +68,7 @@ const FavouriteMovie = ({navigation }) => {
     }
 
     const onPressItem = (item) => {
-        navigation.navigate('BuyTickets', { item, idUser: data2._id });
+        navigation.navigate('TicketsYeuThich', { item, idUser: data2._id });
     };
     return (
         <View style={styles.container}>
