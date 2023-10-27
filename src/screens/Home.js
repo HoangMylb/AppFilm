@@ -184,6 +184,7 @@ const Home = (props) => {
               renderItem={renderItem1}
             />
           </View>
+
         </View>
       </ScrollView>
     </SafeAreaView>
