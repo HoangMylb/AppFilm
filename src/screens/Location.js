@@ -66,7 +66,7 @@ const renderItem = ({ item }) => {
 
                     <View style={{ marginLeft: 5 }}>
                         <Text
-                            style={{ color: 'white', fontSize: 20 }}> {item.tenRapPhim}
+                            style={{ color: 'white', fontSize: 18}}> {item.tenRapPhim}
                         </Text>
                         <Text
                             style={{ color: 'white', fontSize: 16, marginTop: 10, width: 180 }}>

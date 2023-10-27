@@ -110,9 +110,9 @@ const Login = (props) => {
                 />
               </View>
               <TouchableOpacity style={styles.forgotPassword}>
-                <Text style={{ color: '#CA0E0E' }}>Quên mật khẩu</Text>
+                <Text style={{ color: '#E38025' }}>Quên mật khẩu</Text>
               </TouchableOpacity>
-              {/* Button Login */}
+              {/* Button Login  */}
               <TouchableOpacity style={styles.btnAccount} onPress={clickNext}>
                 <Text style={styles.btnTxt}>Đăng nhập</Text>
               </TouchableOpacity>
@@ -147,13 +147,14 @@ const Login = (props) => {
               <TouchableOpacity
                 onPress={clickNextTo}
                 style={{
-                  borderWidth: 1,
+                 
                   width: 95,
                   height: 25,
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginLeft: 8,
-                  borderColor: '#FF1F11',
+                 backgroundColor: '#E38025',
+                 borderRadius: 5
                 }}>
                 <Text style={styles.txtRegister}> Đăng ký</Text>
               </TouchableOpacity>
@@ -232,16 +233,17 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 40,
     width: '90%',
-    backgroundColor: '#D65555',
+    backgroundColor: '#E38025',
     justifyContent: 'center',
     alignItems: 'center',
   },
   // txt button
   btnTxt: {
     fontSize: 18,
-    color: 'black',
+    color: 'white',
     fontFamily: 'Kanit',
     fontWeight: 'bold',
+    
   },
   // --------------------------
   loginSocial: {
@@ -264,9 +266,9 @@ const styles = StyleSheet.create({
   imgSocial2: {
     width: 50, // Độ rộng của đường viên
     height: 50, // Độ cao của đường viên
-    borderRadius: 25, // Bán kính để làm cho nó trở thành hình tròn
-    borderColor: '#800000', // Màu của đường viền (ở đây là màu đen)
-    borderWidth: 1, // Độ rộng của đường viền
+    
+  
+   
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10
@@ -278,7 +280,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   txtRegister: {
-    color: '#FF1F11',
+    color: 'white',
     fontSize: 15,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
