@@ -82,9 +82,9 @@ const BuyTickets = ({ navigation }) => {
                     />
 
                     <View style={styles.boder}>
-                        <View style={{ flexDirection: 'row', marginTop: 50, marginLeft: 40 }}>
+                        <View style={{  flexDirection: 'row', marginTop: 20, marginLeft: 40 }}>
                             <Image
-                                style={{ width: 130, height: 20, marginTop: 4 }}
+                                style={{ width: 130, height: 15, marginTop: 4, resizeMode: 'cover' }}
                                 source={{
                                     uri: item.iconStart
                                 }}
@@ -132,7 +132,7 @@ const BuyTickets = ({ navigation }) => {
                         </View>
 
                         <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#D65555', borderRadius: 10, padding: 12, alignItems: 'center', alignSelf: 'center', marginBottom: 10 }} onPress={() => {
-                            navigation.navigate('Location');
+                            navigation.navigate('Location', { item, idUser });
                         }}
                         >
                             <Text style={{ height: 26, fontWeight: "500", fontSize: 22, color: '#FFFFFF', }}>Mua vé</Text>
@@ -156,7 +156,8 @@ const styles = StyleSheet.create({
         width: 393,
         height: '100%',
         borderRadius: 58,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginLeft: 5
     },
     container: {
         flex: 1,

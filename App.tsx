@@ -24,9 +24,12 @@ import { ThanhToanProvider } from './src/context/ThanhToanContext'
 import { TinTucProvider } from './src/context/TinTucContext'
 import DetailNews from './src/screens/DetailNews'
 import TicketYeuThich from './src/screens/TicketYeuThich'
+import { StripeProvider } from '@stripe/stripe-react-native';
+import Test from './src/screens/Test'
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
+const STRIPE_KEY =
+  'pk_test_51O5zgSKMZHI0cJ8HdoYy9hJMPIGaX4yv1eX43MfhIzvwyosEg2zkZLYSappFRg3YDVpMAwitRQnhw4JRPXJdvrXI00b6A9VyqK';
 function MyTab() {
   return (
     <Tab.Navigator
@@ -59,7 +62,7 @@ function MyTab() {
 function Yeuthich() {
   return (
     <Tab.Navigator
-    initialRouteName='FMTab'
+      initialRouteName='FMTab'
       screenOptions={({ route }) => ({
         tabBarStyle: { backgroundColor: 'black' },
         headerShown: false,
@@ -86,10 +89,10 @@ function Yeuthich() {
   )
 
 }
-function TinTuc( ) {
+function TinTuc() {
   return (
     <Tab.Navigator
-    initialRouteName='NewsTab'
+      initialRouteName='NewsTab'
       screenOptions={({ route }) => ({
         tabBarStyle: { backgroundColor: 'black' },
         headerShown: false,
@@ -147,40 +150,45 @@ const App = () => {
       <PhimProvider>
         <ThanhToanProvider>
           <TinTucProvider>
-            <NavigationContainer>
-              {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
-                <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-              ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab
-                <Stack.Navigator initialRouteName="Home">
-                  <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
-                  <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
-                  <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
-                  <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
-                  <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
-                  <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
-                  <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-                  <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
-                  <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                  <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-                </Stack.Navigator>
-              ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
-                <Stack.Navigator
-                  initialRouteName="Login"
-                >
+            <StripeProvider publishableKey={STRIPE_KEY}>
+              <NavigationContainer>
+             
+                {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
+                  <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+                ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab
+                  <Stack.Navigator initialRouteName="Home">
+                    <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+                    <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
+                    <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+                    <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
+                    <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+                    <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
+                    <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
+                    <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+                    <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
+                    <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                    <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+                  </Stack.Navigator>
+                ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
+                  <Stack.Navigator
+                    initialRouteName="Login"
+                  >
 
-                  <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                  <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-                  <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
-                  <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
-                  <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
-                  <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
-                  <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
-                  <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
-                  <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
-                  <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-                </Stack.Navigator>
-              )}
-            </NavigationContainer>
+                    <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                    <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+                    <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
+                    <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
+                    <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+                    <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
+                    <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
+                    <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+                    <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+                    <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
+                    <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+                  </Stack.Navigator>
+                )}
+              </NavigationContainer>
+            </StripeProvider>
           </TinTucProvider>
         </ThanhToanProvider>
       </PhimProvider>

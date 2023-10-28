@@ -21,10 +21,21 @@ export const ThanhToanProvider = (props) => {
             return false;
         }
     }
+    const ThanhToan = async (amount) => {
+        try {
+            const respon =  await customAxios().post('/payments/intents',{amount})
+              
+                
+                return respon;
+        } catch (error) {
+            console.log('payments', error)
+            return null;
+        }
+    }
    
 
     return (
-        <ThanhToanContext.Provider value={{ getAllRapPhim}}>
+        <ThanhToanContext.Provider value={{ getAllRapPhim,ThanhToan}}>
             {children}
         </ThanhToanContext.Provider>
     )
