@@ -1,10 +1,10 @@
 import { StyleSheet, SafeAreaView, Text, View, FlatList, Image, TouchableOpacity } from 'react-native'
 import React, { useContext, useState, useEffect } from 'react'
-import movieList from '../data/movieItem';
+
 import { TinTucContext } from '../context/TinTucContext';
 
 const News = ({navigation }) => {
-    const [movie, setMovie] = useState(movieList);
+    const [movie, setMovie] = useState('');
     const { getAllTinTuc } = useContext(TinTucContext);
     const [loading, setLoading] = useState(true); // Thêm state loading
 

@@ -25,7 +25,14 @@ import { TinTucProvider } from './src/context/TinTucContext'
 import DetailNews from './src/screens/DetailNews'
 import TicketYeuThich from './src/screens/TicketYeuThich'
 import { StripeProvider } from '@stripe/stripe-react-native';
-import Test from './src/screens/Test'
+
+import TimeSelect from './src/screens/TimeSelect'
+import SeatSelect from './src/screens/SeatSelect'
+import PayLosing from './src/screens/PayLosing'
+import PaySuccess from './src/screens/PaySuccess'
+import Notification from './src/screens/Notification'
+import DetailNotification from './src/screens/DetailNotification'
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const STRIPE_KEY =
@@ -42,7 +49,7 @@ function MyTab() {
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'HomeTab') {
             return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
-          } else if (route.name === 'LocationTab') {
+          } else if (route.name === 'Notification') {
             return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'FMTab') {
             return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
@@ -52,7 +59,7 @@ function MyTab() {
         },
       })}>
       <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }} ></Stack.Screen>
-      <Stack.Screen name="LocationTab" component={Location} options={{ headerShown: false }} />
+      <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
       <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }} />
       <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }} />
     </Tab.Navigator>
@@ -72,7 +79,7 @@ function Yeuthich() {
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'HomeTab') {
             return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
-          } else if (route.name === 'LocationTab') {
+          } else if (route.name === 'Notification') {
             return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'FMTab') {
             return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
@@ -82,7 +89,7 @@ function Yeuthich() {
         },
       })}>
       <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }} ></Stack.Screen>
-      <Stack.Screen name="LocationTab" component={Location} options={{ headerShown: false }} />
+      <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
       <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }} />
       <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }} />
     </Tab.Navigator>
@@ -102,7 +109,7 @@ function TinTuc() {
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'HomeTab') {
             return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
-          } else if (route.name === 'LocationTab') {
+          } else if (route.name === 'Notification') {
             return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'FMTab') {
             return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
@@ -112,7 +119,37 @@ function TinTuc() {
         },
       })}>
       <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }} ></Stack.Screen>
-      <Stack.Screen name="LocationTab" component={Location} options={{ headerShown: false }} />
+      <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
+      <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }} />
+      <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }} />
+    </Tab.Navigator>
+  )
+
+}
+function ThongBao() {
+  return (
+    <Tab.Navigator
+      initialRouteName='Notification'
+      screenOptions={({ route }) => ({
+        tabBarStyle: { backgroundColor: 'black' },
+        headerShown: false,
+        tabBarShowLabel: false,
+        // tabBarActiveTintColor: 'black',
+        // tabBarInactiveTintColor: 'white',
+        tabBarIcon: ({ focused, color, size }) => {
+          if (route.name === 'HomeTab') {
+            return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
+          } else if (route.name === 'Notification') {
+            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
+          } else if (route.name === 'FMTab') {
+            return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
+          } else if (route.name === 'NewsTab') {
+            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
+          }
+        },
+      })}>
+      <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }} ></Stack.Screen>
+      <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
       <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }} />
       <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }} />
     </Tab.Navigator>
@@ -152,21 +189,27 @@ const App = () => {
           <TinTucProvider>
             <StripeProvider publishableKey={STRIPE_KEY}>
               <NavigationContainer>
-             
+
                 {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
                   <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
                 ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab
                   <Stack.Navigator initialRouteName="Home">
                     <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+                    <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
                     <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
+                    <Stack.Screen name="ThongBao" component={ThongBao} options={{ headerShown: false }} />
+                    <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
                     <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
                     <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
                     <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
                     <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
                     <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
                     <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-                    <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
+                    <Stack.Screen name="PayLosing" component={PayLosing} options={{ headerShown: false }} />
+                    <Stack.Screen name="PaySuccess" component={PaySuccess} options={{ headerShown: false }} />
                     <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                    <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }} />
+                    <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }} />
                     <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
                   </Stack.Navigator>
                 ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
@@ -178,12 +221,18 @@ const App = () => {
                     <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
                     <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
                     <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
+                    <Stack.Screen name="ThongBao" component={ThongBao} options={{ headerShown: false }} />
                     <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+                    <Stack.Screen name="PayLosing" component={PayLosing} options={{ headerShown: false }} />
+                    <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
+                    <Stack.Screen name="PaySuccess" component={PaySuccess} options={{ headerShown: false }} />
                     <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
                     <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
                     <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
                     <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
                     <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
+                    <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }} />
+                    <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }} />
                     <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
                   </Stack.Navigator>
                 )}

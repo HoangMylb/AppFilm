@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native'
 
-
+import { StackActions } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import { ThanhToanContext } from '../context/ThanhToanContext';
 
@@ -26,45 +26,19 @@ const Location = (props) => {
     const nextTo = async () => {
         navigation.navigate('BuyTickets', { item, idUser });
     };
-    const renderItem = ({ item }) => {
-        return (
-
-            <View style={{ marginTop: 10 }}>
-
-                <TouchableOpacity>
-                    <View style={{ flexDirection: 'row' }}>
-                        {item.hinh ? ( // Check if hinhAnh is not empty
-                            <Image
-                                style={{ width: 100, height: 95, resizeMode: 'cover', borderRadius: 10 }}
-                                source={{ uri: item.hinh }}
-                            />
-                        ) : (
-                            // Handle the case when hinhAnh is empty
-                            <Text style={{ color: 'white' }}>Đang tải</Text>
-                        )}
-
-                        <View style={{ marginLeft: 5 }}>
-                            <Text
-                                style={{ color: 'white', fontSize: 18 }}> {item.tenRapPhim}
-                            </Text>
-                            <Text
-                                style={{ color: 'white', fontSize: 16, marginTop: 10, width: 180 }}>
-                                {item.diaChi}
-                            </Text>
-                            <Text
-                                style={{ color: 'white', fontSize: 16, marginTop: 10 }}>
-                                {item.SDT}
-                            </Text>
-                        </View>
-                    </View>
-
-
-                </TouchableOpacity>
-                <View style={{ width: 400, height: 1, backgroundColor: 'white', marginTop: 10 }}></View>
-            </View>
-
-        )
-    }
+    const navigateToTimeSelect = (item, idUser,item1) => {
+        navigation.dispatch(
+          StackActions.replace('TimeSelect', {
+            item: item,
+            idUser: idUser,
+            item1: item1,
+          })
+        );
+      };
+    const nextToo = async (item1) => {
+        navigateToTimeSelect(item, idUser,item1)
+    };
+    
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ flexDirection: 'row' }}>
@@ -80,7 +54,41 @@ const Location = (props) => {
                 style={{ flex: 1 }}
                 data={location}
                 keyExtractor={(item) => item._id}
-                renderItem={renderItem}
+                renderItem={({ item }) => (
+                    <View style={{ marginTop: 10 }}>
+
+                    <TouchableOpacity onPress={() => nextToo(item)}>
+                        <View style={{ flexDirection: 'row' }}>
+                            {item.hinh ? ( // Check if hinhAnh is not empty
+                                <Image
+                                    style={{ width: 100, height: 95, resizeMode: 'cover', borderRadius: 10 }}
+                                    source={{ uri: item.hinh }}
+                                />
+                            ) : (
+                                // Handle the case when hinhAnh is empty
+                                <Text style={{ color: 'white' }}>Đang tải</Text>
+                            )}
+    
+                            <View style={{ marginLeft: 5 }}>
+                                <Text
+                                    style={{ color: 'white', fontSize: 18 }}> {item.tenRapPhim}
+                                </Text>
+                                <Text
+                                    style={{ color: 'white', fontSize: 16, marginTop: 10, width: 180 }}>
+                                    {item.diaChi}
+                                </Text>
+                                <Text
+                                    style={{ color: 'white', fontSize: 16, marginTop: 10 }}>
+                                    {item.SDT}
+                                </Text>
+                            </View>
+                        </View>
+    
+    
+                    </TouchableOpacity>
+                    <View style={{ width: 400, height: 1, backgroundColor: 'white', marginTop: 10 }}></View>
+                </View>
+                )}
             />
 
 

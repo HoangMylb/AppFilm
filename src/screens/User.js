@@ -363,7 +363,7 @@ const handleActiveDangXuat = () => {
           </View>
           <Image
             resizeMode='cover'
-            style={{ aspectRatio: 1, width: 22, height: 22, position: 'absolute', top: 30, left: 35 }}
+            style={{ aspectRatio: 1, width: 16, height: 16, position: 'absolute', top: 35, left: 35 }}
             source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Frefresh2.png?alt=media&token=bb4aed51-115d-450a-a2f5-c6623c13fb00&_gl=1*18lbbxu*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5ODAyMzA1NS4yMS4xLjE2OTgwMjM1MjQuMjguMC4w' }}
 
           />
