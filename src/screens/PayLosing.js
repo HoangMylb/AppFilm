@@ -1,14 +1,88 @@
 import {
     StyleSheet, Text, View,
     SafeAreaView, ScrollView,
-    TouchableOpacity, Image
+    TouchableOpacity, ToastAndroid,Image
 } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { StackActions } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import { format } from 'date-fns';
+import viLocale from 'date-fns/locale/vi';
+import { ThanhToanContext } from '../context/ThanhToanContext'
+import { useStripe } from '@stripe/stripe-react-native';
+const PayLosing = ({navigation}) => {
+    const route = useRoute();
+    const { ThanhToan,newDonHang } = useContext(ThanhToanContext);
+    const { initPaymentSheet, presentPaymentSheet } = useStripe();
+    const user = route.params.user;
+    const phim = route.params.phim;
+    const rapPhim = route.params.rapPhim;
+    const ngayDat = route.params.ngayDat;
+    const xuatChieu = route.params.xuatChieu;
+    const ghe = route.params.ghe;
+    const soLuong = route.params.soLuong;
+    const tien = route.params.tien;
 
-const PayLosing = () => {
+    const formattedNumber = tien.toLocaleString('vi-VN');
+    const nextTo = async () => {
+        navigation.dispatch(StackActions.replace('Home'));
+      };
+      const donHang= async (user, phim,rapPhim, ngayDat,xuatChieu, ghe,  soLuong, tien)=>{
+        const a = await newDonHang(user, phim,rapPhim, ngayDat,xuatChieu, ghe,  soLuong, tien)
+        if (a.success) {
+            
+            ToastAndroid.show("Thanh toán thành công",1)
+        }else{
+            ToastAndroid.show("Thanh toán thất bại",1)
+            
+        }
+    }
+    const navigateToPaySuccess = (tien, ngay) => {
+        navigation.dispatch(
+          StackActions.replace('PaySuccess', {
+            tien: tien,
+            ngay: ngay,
+          })
+        );
+      };
+      const thanhToan = async () => {
+            const a = await ThanhToan(tien);
+            if (a.error) {
+                Alert.alert('Something went wrong');
+                return;
+            }
+            // 2. Initialize the Payment sheet
+            const initResponse = await initPaymentSheet({
+                merchantDisplayName: 'notJust.dev',
+                paymentIntentClientSecret: a.paymentIntent,
+            });
+            if (initResponse.error) {
+                console.log(initResponse.error);
+                Alert.alert('Something went wrong');
+                return;
+            }
+            // 3. Present the Payment Sheet from Stripe
+            const paymentResponse = await presentPaymentSheet();
+
+            if (paymentResponse.error) {
+                ToastAndroid.show("Thanh toán thất bại",1)
+            } else {
+                const now = new Date();
+                const ngayDat = format(now, 'p PP', { locale: viLocale });
+                donHang(user, phim,rapPhim, ngayDat,xuatChieu, ghe,  soLuong, tien)
+                navigateToPaySuccess(formattedNumber,ngayDat)
+               
+            }
+        
+    };
     return (
         <SafeAreaView style={styles.savContainer}>
             <ScrollView>
+            <View style={styles.headerContainer}>
+                    <View
+                        style={styles.congratsImg}>
+                    </View>
+                </View>
                 <View style={styles.articleContainer}>
                     <Image
                         style={styles.articleImg}
@@ -20,27 +94,17 @@ const PayLosing = () => {
                             source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/PayLosing%2FLosing.png?alt=media&token=b2597b31-08a9-42f4-9edc-52a85eb65568&_gl=1*bwlamy*_ga*MzE0OTk3MTQxLjE2OTcyNzI0ODQ.*_ga_CW55HF8NVT*MTY5Nzk3MTM2MS43LjEuMTY5Nzk3MTQwNy4xNC4wLjA.' }}>
                         </Image>
                         <Text style={styles.successLabel}>Thất bại !</Text>
-                        <Text style={styles.paymentSuccessLabel}>Bạn đã thanh toán thất bại cho CinematicVoyage</Text>
+                        <Text style={styles.paymentSuccessLabel}>Bạn chưa thanh toán thất bại cho CinematicVoyage</Text>
                         <Text style={styles.totalPaymentLabel}>Tổng thanh toán</Text>
-                        <Text style={styles.priceLabel}>200.000đ</Text>
+                        <Text style={styles.priceLabel}>{formattedNumber}đ</Text>
                     </View>
                     <View style={styles.bottomContainer}>
-                        <Text style={styles.paymentFor}>Thanh toán cho</Text>
-                        <View style={styles.bottomContent}>
-                            <Image
-                                style={styles.CVImg}
-                                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/PaySuccess%2FCV.png?alt=media&token=33a5da51-c961-4a6d-b1c3-160fcd63aded&_gl=1*1vv7djk*_ga*MzE0OTk3MTQxLjE2OTcyNzI0ODQ.*_ga_CW55HF8NVT*MTY5Nzk2ODI2MC42LjAuMTY5Nzk2ODI2MC42MC4wLjA.' }}>
-                            </Image>
-                            <View style={{
-                                marginTop: 10
-                            }}>
-                                <Text style={styles.CVLabel}>CinematicVoyage</Text>
-                                <Text style={styles.paymentLabel}>Thanh toán 07-06-2023</Text>
-                            </View>
-                            <Text style={styles.timeLabel}>4:08 PM</Text>
-                        </View>
-                        <TouchableOpacity style={styles.doneButton}>
+                    
+                        <TouchableOpacity onPress={thanhToan} style={styles.doneButton}>
                             <Text style={styles.doneLabel}>Thanh toán lại</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={nextTo} style={styles.doneButton}>
+                            <Text style={styles.doneLabel}>Về trang Home</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -91,8 +155,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         fontWeight: '600',
-        lineHeight: 22.4,
-        letterSpacing: -0.16
+       alignSelf:'center'
     },
 
     CVImg: {
@@ -104,11 +167,13 @@ const styles = StyleSheet.create({
     bottomContent: {
         width: '100%',
         height: 65,
-        backgroundColor: '#757575',
+        backgroundColor: '#C0C0C0',
         marginTop: 3,
         borderRadius: 10,
         flexDirection: 'row',
-        position: 'relative'
+        position: 'relative',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     paymentFor: {
@@ -124,7 +189,7 @@ const styles = StyleSheet.create({
         width: '60%',
         height: 100,
         position: 'absolute',
-        top: '67.5%',
+        top: '73.5%',
     },
 
     priceLabel: {
@@ -159,8 +224,6 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 20,
         fontWeight: '600',
-        lineHeight: 28,
-        letterSpacing: -0.2,
         marginTop: 24
     },
 
@@ -168,7 +231,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50,
-        marginTop: 60
+    
     },
 
     contentContainer: {
@@ -178,18 +241,28 @@ const styles = StyleSheet.create({
     },
 
     articleImg: {
-        width: '85%',
-        height: 720,
+        width: '95%',
+        height: 520,
         marginHorizontal: 34,
-        marginTop: -75,
+        marginTop: -50,
         resizeMode: 'cover',
         position: 'relative'
     },
 
     articleContainer: {
         width: '100%',
-        alignItems: 'center',
-        marginTop: 120
+        alignItems: 'center'
+    },
+
+    congratsImg: {
+        width: '100%',
+        height: 80,
+        resizeMode: 'cover',
+        backgroundColor: '#000000'
+    },
+
+    headerContainer: {
+        width: '100%'
     },
 
     savContainer: {

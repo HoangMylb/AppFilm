@@ -7,9 +7,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const FavouriteMovie = ({navigation }) => {
 
     const [movie2, setMovie2] = useState('');
-    const [data2, setData2] = useState('');
+   
     const { getYeuThich, getMangPhim } = useContext(PhimContext);
-
+    const [data2, setData2] = useState('');
     const fetchData = async () => {
         try {
             const storedData = await AsyncStorage.getItem('keepLogedIn');

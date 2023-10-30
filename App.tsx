@@ -24,9 +24,22 @@ import { ThanhToanProvider } from './src/context/ThanhToanContext'
 import { TinTucProvider } from './src/context/TinTucContext'
 import DetailNews from './src/screens/DetailNews'
 import TicketYeuThich from './src/screens/TicketYeuThich'
+import { StripeProvider } from '@stripe/stripe-react-native';
+
+import TimeSelect from './src/screens/TimeSelect'
+import SeatSelect from './src/screens/SeatSelect'
+import PayLosing from './src/screens/PayLosing'
+import PaySuccess from './src/screens/PaySuccess'
+import Notification from './src/screens/Notification'
+import DetailNotification from './src/screens/DetailNotification'
+import Launching from './src/screens/Launching'
+import BuyTicketsSC from './src/screens/BuyTicketsSC'
+import Comings from './src/screens/Comings'
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
+const STRIPE_KEY =
+  'pk_test_51O5zgSKMZHI0cJ8HdoYy9hJMPIGaX4yv1eX43MfhIzvwyosEg2zkZLYSappFRg3YDVpMAwitRQnhw4JRPXJdvrXI00b6A9VyqK';
 function MyTab() {
   return (
     <Tab.Navigator
@@ -39,17 +52,17 @@ function MyTab() {
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'HomeTab') {
             return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
-          } else if (route.name === 'LocationTab') {
-            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
+          } else if (route.name === 'Notification') {
+            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'FMTab') {
             return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'NewsTab') {
-            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
+            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
           }
         },
       })}>
       <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }} ></Stack.Screen>
-      <Stack.Screen name="LocationTab" component={Location} options={{ headerShown: false }} />
+      <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
       <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }} />
       <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }} />
     </Tab.Navigator>
@@ -59,7 +72,7 @@ function MyTab() {
 function Yeuthich() {
   return (
     <Tab.Navigator
-    initialRouteName='FMTab'
+      initialRouteName='FMTab'
       screenOptions={({ route }) => ({
         tabBarStyle: { backgroundColor: 'black' },
         headerShown: false,
@@ -69,27 +82,27 @@ function Yeuthich() {
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'HomeTab') {
             return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
-          } else if (route.name === 'LocationTab') {
-            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
+          } else if (route.name === 'Notification') {
+            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'FMTab') {
             return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'NewsTab') {
-            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
+            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
           }
         },
       })}>
       <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }} ></Stack.Screen>
-      <Stack.Screen name="LocationTab" component={Location} options={{ headerShown: false }} />
+      <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
       <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }} />
       <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }} />
     </Tab.Navigator>
   )
 
 }
-function TinTuc( ) {
+function TinTuc() {
   return (
     <Tab.Navigator
-    initialRouteName='NewsTab'
+      initialRouteName='NewsTab'
       screenOptions={({ route }) => ({
         tabBarStyle: { backgroundColor: 'black' },
         headerShown: false,
@@ -99,17 +112,47 @@ function TinTuc( ) {
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'HomeTab') {
             return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
-          } else if (route.name === 'LocationTab') {
-            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
+          } else if (route.name === 'Notification') {
+            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'FMTab') {
             return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'NewsTab') {
-            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
+            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
           }
         },
       })}>
       <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }} ></Stack.Screen>
-      <Stack.Screen name="LocationTab" component={Location} options={{ headerShown: false }} />
+      <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
+      <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }} />
+      <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }} />
+    </Tab.Navigator>
+  )
+
+}
+function ThongBao() {
+  return (
+    <Tab.Navigator
+      initialRouteName='Notification'
+      screenOptions={({ route }) => ({
+        tabBarStyle: { backgroundColor: 'black' },
+        headerShown: false,
+        tabBarShowLabel: false,
+        // tabBarActiveTintColor: 'black',
+        // tabBarInactiveTintColor: 'white',
+        tabBarIcon: ({ focused, color, size }) => {
+          if (route.name === 'HomeTab') {
+            return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
+          } else if (route.name === 'Notification') {
+            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
+          } else if (route.name === 'FMTab') {
+            return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
+          } else if (route.name === 'NewsTab') {
+            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
+          }
+        },
+      })}>
+      <Stack.Screen name="HomeTab" component={Home} options={{ headerShown: false }} ></Stack.Screen>
+      <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
       <Stack.Screen name="FMTab" component={FavouriteMovie} options={{ headerShown: false }} />
       <Stack.Screen name="NewsTab" component={News} options={{ headerShown: false }} />
     </Tab.Navigator>
@@ -147,40 +190,60 @@ const App = () => {
       <PhimProvider>
         <ThanhToanProvider>
           <TinTucProvider>
-            <NavigationContainer>
-              {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
-                <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-              ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab
-                <Stack.Navigator initialRouteName="Home">
-                  <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
-                  <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
-                  <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
-                  <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
-                  <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
-                  <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
-                  <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-                  <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
-                  <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                  <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-                </Stack.Navigator>
-              ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
-                <Stack.Navigator
-                  initialRouteName="Login"
-                >
+            <StripeProvider publishableKey={STRIPE_KEY}>
+              <NavigationContainer>
 
-                  <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                  <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-                  <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
-                  <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
-                  <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
-                  <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
-                  <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
-                  <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
-                  <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
-                  <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-                </Stack.Navigator>
-              )}
-            </NavigationContainer>
+                {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
+                  <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+                ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab
+                  <Stack.Navigator initialRouteName="Home">
+                    <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+                    <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
+                    <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
+                    <Stack.Screen name="ThongBao" component={ThongBao} options={{ headerShown: false }} />
+                    <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
+                    <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+                    <Stack.Screen name="BuyTicketsSC" component={BuyTicketsSC} options={{ headerShown: false }} />
+                    <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
+                    <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+                    <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
+                    <Stack.Screen name="Comings" component={Comings} options={{ headerShown: false }} />
+                    <Stack.Screen name="Launching" component={Launching} options={{ headerShown: false }} />
+                    <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
+                    <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+                    <Stack.Screen name="PayLosing" component={PayLosing} options={{ headerShown: false }} />
+                    <Stack.Screen name="PaySuccess" component={PaySuccess} options={{ headerShown: false }} />
+                    <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                    <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }} />
+                    <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }} />
+                    <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+                  </Stack.Navigator>
+                ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
+                  <Stack.Navigator
+                    initialRouteName="Login"
+                  >
+
+                    <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                    <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+                    <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
+                    <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
+                    <Stack.Screen name="ThongBao" component={ThongBao} options={{ headerShown: false }} />
+                    <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+                    <Stack.Screen name="PayLosing" component={PayLosing} options={{ headerShown: false }} />
+                    <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
+                    <Stack.Screen name="PaySuccess" component={PaySuccess} options={{ headerShown: false }} />
+                    <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
+                    <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
+                    <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+                    <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+                    <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
+                    <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }} />
+                    <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }} />
+                    <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+                  </Stack.Navigator>
+                )}
+              </NavigationContainer>
+            </StripeProvider>
           </TinTucProvider>
         </ThanhToanProvider>
       </PhimProvider>

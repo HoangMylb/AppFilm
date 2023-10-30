@@ -3,9 +3,19 @@ import {
     SafeAreaView, ScrollView,
     TouchableOpacity, Image
 } from 'react-native'
-import React from 'react'
 
-const PaySuccess = () => {
+import React,{useState,useEffect} from 'react'
+import { StackActions } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+const PaySuccess = ({navigation}) => {
+    const route = useRoute();
+   
+    const tien = route.params.tien;
+    const ngay = route.params.ngay;
+    const nextTo = async () => {
+        navigation.dispatch(StackActions.replace('Home'));
+      };
+      
     return (
         <SafeAreaView style={styles.savContainer}>
             <ScrollView>
@@ -28,24 +38,20 @@ const PaySuccess = () => {
                         <Text style={styles.successLabel}>Thành công !</Text>
                         <Text style={styles.paymentSuccessLabel}>Bạn đã thanh toán thành công cho CinematicVoyage</Text>
                         <Text style={styles.totalPaymentLabel}>Tổng thanh toán</Text>
-                        <Text style={styles.priceLabel}>200.000đ</Text>
+                        <Text style={styles.priceLabel}>{tien}đ</Text>
                     </View>
                     <View style={styles.bottomContainer}>
-                        <Text style={styles.paymentFor}>Thanh toán cho</Text>
+                       
                         <View style={styles.bottomContent}>
-                            <Image
-                                style={styles.CVImg}
-                                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/PaySuccess%2FCV.png?alt=media&token=33a5da51-c961-4a6d-b1c3-160fcd63aded&_gl=1*1vv7djk*_ga*MzE0OTk3MTQxLjE2OTcyNzI0ODQ.*_ga_CW55HF8NVT*MTY5Nzk2ODI2MC42LjAuMTY5Nzk2ODI2MC42MC4wLjA.' }}>
-                            </Image>
                             <View style={{
                                 marginTop: 10
                             }}>
                                 <Text style={styles.CVLabel}>CinematicVoyage</Text>
-                                <Text style={styles.paymentLabel}>Thanh toán 07-06-2023</Text>
+                                <Text style={styles.paymentLabel}>Thanh toán {ngay}</Text>
                             </View>
-                            <Text style={styles.timeLabel}>4:08 PM</Text>
+                            
                         </View>
-                        <TouchableOpacity style={styles.doneButton}>
+                        <TouchableOpacity onPress={nextTo} style={styles.doneButton}>
                             <Text style={styles.doneLabel}>Hoàn thành</Text>
                         </TouchableOpacity>
                     </View>
@@ -97,8 +103,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         fontWeight: '600',
-        lineHeight: 22.4,
-        letterSpacing: -0.16
+       alignSelf:'center'
     },
 
     CVImg: {
@@ -110,11 +115,13 @@ const styles = StyleSheet.create({
     bottomContent: {
         width: '100%',
         height: 65,
-        backgroundColor: '#757575',
+        backgroundColor: '#C0C0C0',
         marginTop: 3,
         borderRadius: 10,
         flexDirection: 'row',
-        position: 'relative'
+        position: 'relative',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     paymentFor: {
@@ -130,7 +137,7 @@ const styles = StyleSheet.create({
         width: '60%',
         height: 100,
         position: 'absolute',
-        top: '67.5%',
+        top: '73.5%',
     },
 
     priceLabel: {
@@ -165,8 +172,6 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 20,
         fontWeight: '600',
-        lineHeight: 28,
-        letterSpacing: -0.2,
         marginTop: 24
     },
 
@@ -174,7 +179,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50,
-        marginTop: 60
+    
     },
 
     contentContainer: {
@@ -184,10 +189,10 @@ const styles = StyleSheet.create({
     },
 
     articleImg: {
-        width: '85%',
-        height: 720,
+        width: '95%',
+        height: 520,
         marginHorizontal: 34,
-        marginTop: -75,
+        marginTop: -50,
         resizeMode: 'cover',
         position: 'relative'
     },
@@ -199,7 +204,7 @@ const styles = StyleSheet.create({
 
     congratsImg: {
         width: '100%',
-        height: 122.39,
+        height: 80,
         resizeMode: 'cover',
         backgroundColor: '#000000'
     },

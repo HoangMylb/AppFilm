@@ -1,112 +1,157 @@
-import {
-    StyleSheet,
-    Text,
-    View,
-    SafeAreaView,
-    Image,
-    FlatList,
-    ScrollView
-} from 'react-native'
-import React, { useState } from 'react'
-import notificationList from '../data/notificationItem';
+import { StyleSheet, SafeAreaView, Text, View, FlatList, Image, TouchableOpacity } from 'react-native'
+import React, { useContext, useState, useEffect } from 'react'
 
-const Notification = () => {
-    const [notification, setNotification] = useState(notificationList);
+import { ThanhToanContext } from '../context/ThanhToanContext';
 
-    const renderItem = ({ item }) => {
-        return (
-            <View style={styles.container}>
-                <View>
-                    <Image style={styles.imageIcon} source={{ uri: item.image }}></Image>
-                </View>
-                <View style={{ marginLeft: 21 }}>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.content}>{item.content}</Text>
-                    <Text style={styles.time}>{item.time}</Text>
-                </View>
-            </View>
-        );
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const Notification = ({ navigation }) => {
+    const [movie, setMovie] = useState('');
+    const [phim, setPhim] = useState('');
+    const [rap, setRap] = useState('');
+    const { DonHangUser, LayPhim, LayRap } = useContext(ThanhToanContext);
+
+    const [data2, setData2] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const fetchData = async () => {
+        try {
+            const storedData = await AsyncStorage.getItem('keepLogedIn');
+            const storedData2 = await AsyncStorage.getItem('userData');
+            if (storedData !== false) {
+                setData2(JSON.parse(storedData2));
+            }
+        } catch (error) {
+            // Xử lý lỗi nếu cần
+        } finally {
+            setIsLoading(false); // Đã tải xong dữ liệu từ AsyncStorage
+        }
     };
+    const getAll = async () => {
+        const a = await DonHangUser(data2._id);
+        if (a.success) {
 
+            const formattedMovie = [];
 
+            for (const item of a.message) {
+                const tenPhim = await getPhim(item.phim);
+                const tenRapPhim = await getRap(item.rapPhim);
+
+                formattedMovie.push({
+                    ...item,
+                    tenPhim,
+                    tenRapPhim,
+                });
+            }
+
+            setMovie(formattedMovie);
+
+            // Đã cập nhật giá trị của movie, bạn có thể log nó ở đây
+        }
+
+        // Đánh dấu rằng đã kết thúc loading
+        setIsLoading(false);
+    }
+
+    const getPhim = async (_id) => {
+        const b = await LayPhim(_id);
+        if (b.success) {
+
+            return b.message.tenPhim;
+
+            // Đã cập nhật giá trị của movie, bạn có thể log nó ở đây
+
+        }
+    }
+    const getRap = async (_id) => {
+        const c = await LayRap(_id);
+        if (c.success) {
+            return c.message.tenRapPhim;
+
+            // Đã cập nhật giá trị của movie, bạn có thể log nó ở đây
+
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+        
+    }, [])
+    useEffect(() => {
+        if (!isLoading) {
+            getAll();
+
+        }
+
+    }, [isLoading])
+    const onPressItem = (item) => {
+        navigation.navigate('DetailNotification', { item });
+    };
     return (
-        <SafeAreaView style={{ backgroundColor: '#18191A', flex: 1 }}>
-            <ScrollView>
-                <View style={styles.headerContainer}>
-                    <Image style={{ width: 44, height: 44, borderRadius: 50, marginVertical: 20 }}
-                        source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Infomation%2FArrow%20Left%20Button.png?alt=media&token=2d5c781c-a330-4755-b2f8-0bc38dd0bf77&_gl=1*kv2sxo*_ga*MzE0OTk3MTQxLjE2OTcyNzI0ODQ.*_ga_CW55HF8NVT*MTY5NzQ2MzQ0Ny4yLjEuMTY5NzQ2NjMxNS42MC4wLjA.' }} />
-                    <Text style={styles.label}>Thông báo </Text>
-                    <Text></Text>
-                    <Text></Text>
-                </View>
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Text style={{ lineHeight: 40, fontWeight: '700', color: 'white', fontSize: 20, alignSelf: 'center' }}>Thông báo</Text>
+            </View>
+            {movie ? ( // Kiểm tra nếu đang loading thì hiển thị thông báo hoặc spinner
                 <FlatList
-                    data={notification}
-                    keyExtractor={item => item.title}
-                    renderItem={renderItem}
+
+                    numColumns={1}
+                    data={movie}
+                    keyExtractor={item => item._id}
+                    renderItem={({ item }) => (
+                        <View style={{ marginBottom: 10 }}>
+                            <TouchableOpacity onPress={() => onPressItem(item)}>
+                                <View style={{ width: '90%', height: 130, backgroundColor: '#222222', marginLeft: 20, borderRadius: 12 }}>
+
+                                    <Text style={{ color: '#339933', fontWeight: '700', fontSize: 20, alignSelf: 'center' }}>Đặt vé thành công!</Text>
+
+                                    <Text style={{ marginLeft: '2%', width: '96%', fontSize: 17, color: 'white' }}>Phim: {item.tenPhim}</Text>
+                                    <Text style={{ marginTop: '5%', marginLeft: '2%', width: '96%', fontSize: 17, color: 'white' }}>Rạp: {item.tenRapPhim}</Text>
+
+
+                                    <Text style={{ marginTop: '5%', marginLeft: '2%', width: '96%', fontSize: 17, color: 'white' }}>Xuất chiếu: {item.xuatChieu}</Text>
+                                    <Text style={{ marginTop: 'auto', marginBottom: '1%', marginLeft: '75%', fontSize: 13, color: 'red', fontWeight: '600' }}>Xem thêm  </Text>
+
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    )}
                 />
-            </ScrollView>
-        </SafeAreaView>
-    );
-};
+
+            ) : (
+                <Text style={{ color: 'white' }}>Đang tải dữ liệu...</Text>
+            )}
+        </View>
+    )
+}
 
 export default Notification
 
+
 const styles = StyleSheet.create({
-    headerContainer: {
-        flex: 1,
-        width: '100%',
+    iconBack: {
+        width: 44,
+        height: 44,
+        backgroundColor: '#fff',
+        borderRadius: 50,
+
+
+    },
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'space-around',
-        flexDirection: 'row'
-    },
-
-    label: {
-        color: '#FFF',
-        fontSize: 20,
-        fontWeight: '700',
-        letterSpacing: -0.2,
-        marginVertical: 29
-        
-    },
-
-    time: {
-        color: '#C54E4E',
-        fontSize: 12,
-        fontWeight: '700',
-        marginTop: 7,
-        marginBottom: 19
-    },
-
-    content: {
-        width: 300,
-        height: 40,
-        fontSize: 14,
-        fontWeight: '700',
-        marginTop: 14,
-        color: '#FFF'
-    },
-
-    title: {
-        fontSize: 14,
-        fontWeight: '700',
-        color: '#FFF'
-    },
-
-    imageIcon: {
-        width: 35,
-        height: 35,
-        backgroundColor: '#ccc',
-        borderRadius: 50
+        width: '100%',
+        height: 44,
+        marginTop: '4%'
     },
 
     container: {
+        display: 'flex',
         flex: 1,
-        flexDirection: 'row',
-        width: '93%',
-        height: '20%',
-        marginHorizontal: 14,
-        borderBottomWidth: 1,
-        marginTop: 46,
-        borderStyle: 'solid',
-        borderColor: '#FFF'
-    }
+        backgroundColor: '#18191A'
+    },
 })
+
+
+
+
