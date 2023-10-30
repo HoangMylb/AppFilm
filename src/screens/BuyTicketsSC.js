@@ -5,7 +5,7 @@ import { useRoute } from '@react-navigation/native';
 import { PhimContext } from '../context/PhimContext';
 import Video from 'react-native-video';
 
-const BuyTickets = ({ navigation }) => {
+const BuyTicketsSC = ({ navigation }) => {
     const { newYeuThich,xoaYeuThich,kiemTraYeuThich } = useContext(PhimContext);
     const [check, setCheck] = useState(0);
     const { getDienVien } = useContext(PhimContext);
@@ -124,19 +124,17 @@ const BuyTickets = ({ navigation }) => {
                                         <Image
                                             source={{ uri: item.hinhAnh }} style={styles.imgdv}
                                         />
-                                        <Text style={{ fontWeight: "500",fontSize: 10 }}> {item.tenDienVien}</Text>
+                                        <Text style={{ fontWeight: "500" ,fontSize: 10}}> {item.tenDienVien}</Text>
                                     </View>
                                 )}
                             />
 
                         </View>
 
-                        <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#D65555', borderRadius: 10, padding: 12, alignItems: 'center', alignSelf: 'center', marginBottom: 10 }} onPress={() => {
-                            navigation.navigate('Location', { item, idUser });
-                        }}
+                        <View style={{ width: 300, height: 50, backgroundColor: '#C0C0C0', borderRadius: 10, padding: 12, alignItems: 'center', alignSelf: 'center', marginBottom: 10 }} 
                         >
-                            <Text style={{ height: 26, fontWeight: "500", fontSize: 22, color: '#FFFFFF', }}>Mua vé</Text>
-                        </TouchableOpacity>
+                            <Text style={{ height: 26, fontWeight: "500", fontSize: 22, color: '#FFFFFF', }}>Sắp chiếu</Text>
+                        </View>
 
                     </View>
                 </View>
@@ -145,7 +143,7 @@ const BuyTickets = ({ navigation }) => {
     )
 }
 
-export default BuyTickets
+export default BuyTicketsSC
 
 const styles = StyleSheet.create({
     imgdv: {

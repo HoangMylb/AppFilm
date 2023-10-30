@@ -32,6 +32,9 @@ import PayLosing from './src/screens/PayLosing'
 import PaySuccess from './src/screens/PaySuccess'
 import Notification from './src/screens/Notification'
 import DetailNotification from './src/screens/DetailNotification'
+import Launching from './src/screens/Launching'
+import BuyTicketsSC from './src/screens/BuyTicketsSC'
+import Comings from './src/screens/Comings'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,11 +53,11 @@ function MyTab() {
           if (route.name === 'HomeTab') {
             return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'Notification') {
-            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
+            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'FMTab') {
             return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'NewsTab') {
-            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
+            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
           }
         },
       })}>
@@ -80,11 +83,11 @@ function Yeuthich() {
           if (route.name === 'HomeTab') {
             return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'Notification') {
-            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
+            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'FMTab') {
             return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'NewsTab') {
-            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
+            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
           }
         },
       })}>
@@ -110,11 +113,11 @@ function TinTuc() {
           if (route.name === 'HomeTab') {
             return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'Notification') {
-            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
+            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'FMTab') {
             return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'NewsTab') {
-            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
+            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
           }
         },
       })}>
@@ -140,11 +143,11 @@ function ThongBao() {
           if (route.name === 'HomeTab') {
             return <MaterialCommunityIcons name="home-variant" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'Notification') {
-            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
+            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'FMTab') {
             return <Feather name="heart" size={size} color={focused ? 'white' : 'gray'} />;
           } else if (route.name === 'NewsTab') {
-            return <Ionicons name="notifications" size={size} color={focused ? 'white' : 'gray'} />;
+            return <MaterialCommunityIcons name="ticket-confirmation-outline" size={size} color={focused ? 'white' : 'gray'} />;
           }
         },
       })}>
@@ -200,9 +203,12 @@ const App = () => {
                     <Stack.Screen name="ThongBao" component={ThongBao} options={{ headerShown: false }} />
                     <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
                     <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+                    <Stack.Screen name="BuyTicketsSC" component={BuyTicketsSC} options={{ headerShown: false }} />
                     <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
                     <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
                     <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
+                    <Stack.Screen name="Comings" component={Comings} options={{ headerShown: false }} />
+                    <Stack.Screen name="Launching" component={Launching} options={{ headerShown: false }} />
                     <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
                     <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
                     <Stack.Screen name="PayLosing" component={PayLosing} options={{ headerShown: false }} />

@@ -17,7 +17,67 @@ export const PhimProvider = (props) => {
                 return { success: false, message: respon.message }
             }
         } catch (error) {
-            console.log('getIDContext', error)
+            console.log('PhimHome', error)
+            return false;
+        }
+    }
+    const phimDangChieu = async (_id) => {
+        try {
+            const respon =  await customAxios().get('/phim/PhimDangChieu')
+            if (respon.success) {   
+                
+                return { success: true, message: respon.message }
+            }
+            else {
+                return { success: false, message: respon.message }
+            }
+        } catch (error) {
+            console.log('PhimDangChieu', error)
+            return false;
+        }
+    }
+    const getPhimHomeSC = async (_id) => {
+        try {
+            const respon =  await customAxios().get('/phim/PhimHomeSC')
+            if (respon.success) {   
+                
+                return { success: true, message: respon.message }
+            }
+            else {
+                return { success: false, message: respon.message }
+            }
+        } catch (error) {
+            console.log('PhimHomeSC', error)
+            return false;
+        }
+    }
+    const phimSapChieu = async (_id) => {
+        try {
+            const respon =  await customAxios().get('/phim/PhimSapChieu')
+            if (respon.success) {   
+                
+                return { success: true, message: respon.message }
+            }
+            else {
+                return { success: false, message: respon.message }
+            }
+        } catch (error) {
+            console.log('PhimSapChieu', error)
+            return false;
+        }
+    }
+    const getAllDV = async (_id) => {
+        try {
+            const respon =  await customAxios().get('/dienVien/getAll')
+            if (respon.success) {   
+                
+                return { success: true, message: respon.message }
+            }
+            else {
+                return { success: false, message: respon.message }
+            }
+        } catch (error) {
+            console.log('PhimSapChieu', error)
             return false;
         }
     }
@@ -116,7 +176,7 @@ export const PhimProvider = (props) => {
 }
 
     return (
-        <PhimContext.Provider value={{ getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich,getMangPhim,kiemTraYeuThich}}>
+        <PhimContext.Provider value={{ getAllDV,phimSapChieu, getPhimHomeSC,phimDangChieu,getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich,getMangPhim,kiemTraYeuThich}}>
             {children}
         </PhimContext.Provider>
     )
