@@ -132,7 +132,7 @@ const TicketYeuThich = ({ navigation }) => {
                         </View>
 
                         <TouchableOpacity style={{ width: 300, height: 50, backgroundColor: '#D65555', borderRadius: 10, padding: 12, alignItems: 'center', alignSelf: 'center', marginBottom: 10 }} onPress={() => {
-                            navigation.navigate('Location');
+                            navigation.navigate('Location', { item, idUser });
                         }}
                         >
                             <Text style={{ height: 26, fontWeight: "500", fontSize: 22, color: '#FFFFFF', }}>Mua vé</Text>
