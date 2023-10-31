@@ -337,7 +337,7 @@ const handleActiveDangXuat = () => {
               source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Arrow%20Left%20Button2.png?alt=media&token=4ecc2c70-56d8-4da2-abac-750f6ca28639&_gl=1*8qq0vj*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzY3MjY4Ni40LjEuMTY5NzY3Mjk3Mi41NC4wLjA.' }}
             />
           </TouchableOpacity>
-          <Text style={{ fontSize: 20, fontWeight: '700', color: 'white', marginTop: 14, marginLeft: '20%' }}>Thông tin cá nhân</Text>
+          <Text style={{ fontSize: 20, fontWeight: '700', color: 'white', marginTop: 14, marginLeft: '20%' }}>Thông tin cá nhân </Text>
         </View>
 
 

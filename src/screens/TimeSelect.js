@@ -77,7 +77,7 @@ const TimeSelect = ({ navigation }) => {
     return (
       <TouchableOpacity onPress={() => toggleSelection(item.id)}>
 
-        <View style={{ width: 60, height: 60, backgroundColor: item.selected ? "#E38025" : "#3B3428", borderRadius: 30, marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ width: 75, height: 75, backgroundColor: item.selected ? "#E38025" : "#3B3428", borderRadius: 80, marginLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ color: "#FFFFFF" }}>{item.day}</Text>
           <Text style={{ color: "#FFFFFF" }}>{item.month}</Text>
 
@@ -90,8 +90,8 @@ const TimeSelect = ({ navigation }) => {
   const renderItem1 = ({ item }) => {
 
     return (
-      <View style={{ marginLeft: 20, marginTop: 10 }}>
-        <TouchableOpacity onPress={() => toggleSelection1(item.id)} style={{ width: 50, height: 30, backgroundColor: item.selected ? "#E38025" : "#3B3428", borderRadius: 5 }}>
+      <View style={{ marginLeft: 20, marginTop: 20 }}>
+        <TouchableOpacity onPress={() => toggleSelection1(item.id)} style={{ width: 60, height: 40, backgroundColor: item.selected ? "#E38025" : "#3B3428", borderRadius: 8 }}>
           <View style={{ alignItems: 'center' }}>
             <Text style={{ color: "#FFFFFF", alignItems: 'center', marginTop: 9 }}>{item.time}</Text>
           </View>
@@ -130,20 +130,20 @@ const TimeSelect = ({ navigation }) => {
       <ScrollView>
         <View style={{ position: 'relative' }}>
           <Image
-            style={{ width: 300, height: 480, resizeMode: 'cover', alignSelf: 'center' }}
+            style={{ width: '100%', height: 480, resizeMode: 'cover', alignSelf: 'center' }}
             source={{
               uri: item.poster
             }}
           />
-          <TouchableOpacity onPress={nextToo} style={{ position: 'absolute', marginLeft: 20, marginTop: 30 }}>
+          <TouchableOpacity onPress={nextToo} style={{ position: 'absolute', marginLeft: 20, marginTop: 20 }}>
             <Image style={{ width: 44, height: 44 }}
               source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Arrow%20Left%20Button2.png?alt=media&token=4ecc2c70-56d8-4da2-abac-750f6ca28639&_gl=1*8qq0vj*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzY3MjY4Ni40LjEuMTY5NzY3Mjk3Mi41NC4wLjA.' }}
             />
           </TouchableOpacity>
         </View>
-        <Text style={{ color: "#FFFFFF", padding: 10, fontSize: 20, fontWeight: "600" }}>Ngày và giờ</Text>
+        <Text style={{ color: "#FFFFFF",margin:20, fontSize: 20, fontWeight: "600" }}>Ngày và giờ</Text>
 
-        <View style={{ marginLeft: 10, marginTop: 5 }}>
+        <View style={{ marginHorizontal: 2}}>
           <FlatList
             horizontal={true}
             data={data}
@@ -151,20 +151,21 @@ const TimeSelect = ({ navigation }) => {
             keyExtractor={(item) => item.id.toString()}
           />
         </View>
+        <View style={{ marginHorizontal: 5}}>
         <FlatList
           horizontal={true}
           data={data1}
           renderItem={renderItem1}
           keyExtractor={(item1) => item1.id.toString()}
         />
-       
+       </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          <View>
-            <TouchableOpacity onPress={nextTo} style={{ width: 217, height: 48, backgroundColor: "#E38025", borderRadius: 10, alignItems: 'center', textAlign: "center", marginTop: 10, marginBottom: 10 }}>
+       
+            <TouchableOpacity onPress={nextTo} style={{ width: 217, height: 48, backgroundColor: "#E38025", borderRadius: 10, alignItems: 'center', textAlign: "center", marginVertical: 40 }}>
               <Text style={{ fontSize: 17, lineHeight: 25.5, fontWeight: 600, color: "white", marginTop: 12 }}>Đặt vé</Text>
             </TouchableOpacity>
-          </View>
+       
         </View>
       </ScrollView>
     </SafeAreaView>

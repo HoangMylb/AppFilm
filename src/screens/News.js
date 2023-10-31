@@ -25,10 +25,12 @@ const News = ({navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={{ lineHeight: 40, fontWeight: '700', color: 'white', fontSize: 20, alignSelf: 'center' }}>Tin Tức</Text>
+                <Text style={{ lineHeight: 30, fontWeight: '700', color: 'white', fontSize: 20, alignItems:'center',justifyContent:'center' }}>Tin Tức </Text>
             </View>
             {loading ? ( // Kiểm tra nếu đang loading thì hiển thị thông báo hoặc spinner
-                <Text style={{ color: 'white' }}>Đang tải dữ liệu...</Text>
+                <View style = {{flex: 1,justifyContent:'center',alignItems:'center'}}>
+                <Text style={styles.loadingText}>Đang tải dữ liệu... </Text>
+                </View>
             ) : (
                 <FlatList
 
@@ -38,15 +40,15 @@ const News = ({navigation }) => {
                     renderItem={({ item }) => (
                         <View style={{ marginBottom: 10 }}>
                             <TouchableOpacity  onPress={() => onPressItem(item)}>
-                                <View style={{ width: '90%', height: 255, backgroundColor: 'white', marginTop: 20, marginLeft: 20, borderRadius: 12 }}>
+                                <View style={{ width: '90%', height: 255, backgroundColor: '#222220', marginTop: 20, marginLeft: 20, borderRadius: 12 }}>
                                     {item.image ? (
                                         <Image style={{ width: '100%', height: 180, resizeMode: 'cover' }} source={{ uri: item.image }} />
                                     ) : (
                                         <Text style={{ color: 'white' }}>Đang tải</Text>
                                     )}
-                                    <Text style={{ marginTop: '2%', marginLeft: '2%', width: '96%', fontSize: 17, color: 'black' }}>{item.title}</Text>
+                                    <Text style={{ marginTop: '2%', marginLeft: '2%', width: '96%', fontSize: 17, color: 'white' }}>{item.title}</Text>
 
-                                    <Text style={{ marginTop: 'auto', marginBottom: '1%', marginLeft: '75%', fontSize: 13, color: 'red', fontWeight: '600' }}>Xem thêm  </Text>
+                                    <Text style={{ marginTop: 'auto', marginBottom: '2%', marginLeft: '75%', fontSize: 13, color: '#E38025', fontWeight: '600' }}>Xem thêm  </Text>
 
                                 </View>
                             </TouchableOpacity>

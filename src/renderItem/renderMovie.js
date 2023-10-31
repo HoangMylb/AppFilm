@@ -23,7 +23,7 @@ const MovieItem = ({ item , navigation, idUser }) => {
           />
         )}
 
-        <Text style={{ color: 'white', fontSize: 16 }}>{item.tenPhim}</Text>
+        <Text style={{ color: 'white', fontSize: 14 }}>{item.tenPhim}</Text>
         {!item.iconStart ? (<Text style={{ color: 'white', fontSize: 16 }}>Đang tải</Text>
         ) : (
           <Image

@@ -240,10 +240,7 @@ const SeatSelect = ({ navigation }) => {
                                 {renderRow(30, 36)}
                                 {renderRow(36, 42)}
                                 {renderRow(42, 48)}
-
                             </View>
-
-
                         </View>
 
                     </View>

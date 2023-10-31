@@ -23,7 +23,7 @@ const MovieItem2 = ({ item , navigation, idUser }) => {
           />
         )}
 
-        <Text style={{ color: 'white', fontSize: 16 }}>{item.tenPhim}</Text>
+        <Text style={{ color: 'white', fontSize: 14 }}>{item.tenPhim}</Text>
       </View>
     </TouchableOpacity>
   );

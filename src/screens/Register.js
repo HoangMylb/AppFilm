@@ -95,7 +95,7 @@ const Register = (props) => {
               }}
               style={styles.logo}
             />
-            <Text style={styles.title}>Đăng ký thành viên</Text>
+            <Text style={styles.title}>Đăng ký thành viên </Text>
           </View>
           {/* Form đăng ký */}
           <View style={styles.formContainer}>
@@ -185,7 +185,7 @@ const Register = (props) => {
                 style={styles.inputIcon}
                 source={{
                   uri:
-                    'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
+                    'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2Fcalender.png?alt=media&token=52811058-2d3a-4fcd-8b2f-202c20f95924&_gl=1*1eif0sl*_ga*ODc4NjkwNDYzLjE2OTc4ODI4NzE.*_ga_CW55HF8NVT*MTY5ODc0OTY3OC44LjEuMTY5ODc0OTk1Ny40My4wLjA.',
                 }}
               />
               {showPicker &&(
@@ -221,7 +221,7 @@ const Register = (props) => {
                 style={styles.inputIcon}
                 source={{
                   uri:
-                    'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
+                    'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/logoPassword.png?alt=media&token=3b71665d-b37b-49b8-9cfa-d98b52532b7f&_gl=1*1wwkmox*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5Njk0Njg5OS4yNi4xLjE2OTY5NDgzNjYuNDUuMC4w',
                 }}
               />
               <TextInput
@@ -238,7 +238,7 @@ const Register = (props) => {
                 style={styles.inputIcon}
                 source={{
                   uri:
-                    'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
+                    'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/logoPassword.png?alt=media&token=3b71665d-b37b-49b8-9cfa-d98b52532b7f&_gl=1*1wwkmox*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5Njk0Njg5OS4yNi4xLjE2OTY5NDgzNjYuNDUuMC4w',
                 }}
               />
               <TextInput
@@ -258,13 +258,13 @@ const Register = (props) => {
               <TouchableOpacity
                  onPress={clickNextTo}
                 style={{
-                  borderWidth: 1,
                   width: 95,
                   height: 25,
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginLeft: 8,
-                  borderColor: '#FF1F11',
+                  borderRadius: 8,
+                  backgroundColor: '#E38025',
                 }}>
                 <Text style={styles.txtRegister}> Đăng nhập</Text>
               </TouchableOpacity>
@@ -358,14 +358,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 40,
     width: '90%',
-    backgroundColor: '#D65555',
+    backgroundColor: '#E38025',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,
   },
   btnTxt: {
     fontSize: 18,
-    color: 'black',
+    color: 'white',
     fontFamily: 'Kanit',
     fontWeight: 'bold',
   },
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   txtRegister: {
-    color: '#FF1F11',
+    color: 'white',
     fontSize: 15,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
