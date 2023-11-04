@@ -5,8 +5,8 @@ import { useRoute } from '@react-navigation/native';
 import { PhimContext } from '../context/PhimContext';
 import Video from 'react-native-video';
 
-const BuyTicketsSC = ({ navigation }) => {
-    const { newYeuThich, xoaYeuThich, kiemTraYeuThich } = useContext(PhimContext);
+const TicketYeuThichSC = ({ navigation }) => {
+    const { newYeuThich,xoaYeuThich,kiemTraYeuThich } = useContext(PhimContext);
     const [check, setCheck] = useState(0);
     const { getDienVien } = useContext(PhimContext);
     const [dataDienVien, setDataDienVien] = useState('')
@@ -17,16 +17,16 @@ const BuyTicketsSC = ({ navigation }) => {
     const isIcon = async () => {
         const newCheckValue = check + 1;
         setCheck(newCheckValue);
-        if (newCheckValue === 1) {
-            await newYeuThich(idUser, item._id);
+        if (newCheckValue===1) {
+            await newYeuThich(idUser,item._id);
             ToastAndroid.show("Thêm yêu thích thành công", 1);
         }
-        if (newCheckValue >= 2) {
+        if (newCheckValue>=2) {
             setCheck(0);
-            await xoaYeuThich(idUser, item._id);
+            await xoaYeuThich(idUser,item._id);
             ToastAndroid.show("Xóa yêu thích thành công", 1);
         }
-    };
+      };
     const dienVien = async () => {
         const a = await getDienVien(item.dienVien);
         if (a.success) {
@@ -38,23 +38,23 @@ const BuyTicketsSC = ({ navigation }) => {
 
     };
     const nextTo = async () => {
-        navigation.dispatch(StackActions.replace('Home'));
+        navigation.dispatch(StackActions.replace('YeuThich'));
     };
 
     useEffect(() => {
         const ktYeuThich = async () => {
-            const a = await kiemTraYeuThich(idUser, item._id);
-            if (a.success) {
-                setCheck(1);
-
-            } else {
-                setCheck(0);
-
-            }
-            setcheckYT(a);
+           const a = await kiemTraYeuThich(idUser,item._id);
+           if (a.success) {
+            setCheck(1);
+          
+           }else{
+            setCheck(0);
+            
+           }
+           setcheckYT(a);
         };
         ktYeuThich();
-
+        
         dienVien();
     }, []);
     useEffect(() => {
@@ -82,9 +82,9 @@ const BuyTicketsSC = ({ navigation }) => {
                     />
 
                     <View style={styles.boder}>
-                        <View style={{ flexDirection: 'row', marginTop: 20, marginLeft: 40 }}>
+                        <View style={{ flexDirection: 'row', marginTop: 50, marginLeft: 40 }}>
                             <Image
-                                style={{ width: 130, height: 15, marginTop: 4, resizeMode: 'cover' }}
+                                style={{ width: 130, height: 20, marginTop: 4 }}
                                 source={{
                                     uri: item.iconStart
                                 }}
@@ -98,7 +98,7 @@ const BuyTicketsSC = ({ navigation }) => {
                                     style={{ width: 20, height: 20, top: -20, left: 330, position: 'absolute' }}
                                     source={{
 
-                                        uri: check === 0 ? 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/BuyTickets%2Ficonlove.png?alt=media&token=66b275d2-89e7-4791-936d-8d15715da0ec&_gl=1*jcu963*_ga*MTI1MTA0NjU4MC4xNjg5OTM2NTk0*_ga_CW55HF8NVT*MTY5Njk1MzgwOC4xMC4xLjE2OTY5NTM4NzAuNjAuMC4w'
+                                        uri: check === 0? 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/BuyTickets%2Ficonlove.png?alt=media&token=66b275d2-89e7-4791-936d-8d15715da0ec&_gl=1*jcu963*_ga*MTI1MTA0NjU4MC4xNjg5OTM2NTk0*_ga_CW55HF8NVT*MTY5Njk1MzgwOC4xMC4xLjE2OTY5NTM4NzAuNjAuMC4w'
                                             : 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/FavouriteMovie%2Fimage%2013.png?alt=media&token=086dcd3c-ef65-4fe7-9842-aaf71cf05a69&_gl=1*lvndtu*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5ODA5OTY5NC4yNi4xLjE2OTgxMDMwMDIuNDUuMC4w'
                                     }}
 
@@ -115,7 +115,7 @@ const BuyTicketsSC = ({ navigation }) => {
 
                         <View  >
                             <FlatList
-                                style={{ marginLeft: 30, marginBottom: 10, width: '80%' }}
+                                style={{ marginLeft: 30, marginBottom: 10 ,width: '80%'}}
                                 horizontal
                                 data={dataDienVien}
                                 keyExtractor={(item, index) => item._id + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
@@ -124,7 +124,7 @@ const BuyTicketsSC = ({ navigation }) => {
                                         <Image
                                             source={{ uri: item.hinhAnh }} style={styles.imgdv}
                                         />
-                                        <Text style={{ fontWeight: "500", fontSize: 10 }}> {item.tenDienVien}</Text>
+                                        <Text style={{ fontWeight: "500" }}> {item.tenDienVien}</Text>
                                     </View>
                                 )}
                             />
@@ -143,7 +143,7 @@ const BuyTicketsSC = ({ navigation }) => {
     )
 }
 
-export default BuyTicketsSC
+export default TicketYeuThichSC
 
 const styles = StyleSheet.create({
     imgdv: {
@@ -154,8 +154,7 @@ const styles = StyleSheet.create({
         width: 393,
         height: '100%',
         borderRadius: 58,
-        alignSelf: 'center',
-        marginLeft: 5
+        alignSelf: 'center'
     },
     container: {
         flex: 1,

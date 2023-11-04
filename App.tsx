@@ -39,6 +39,7 @@ import SplashScreen2 from './src/screens/SplashScreen2'
 import ForgetpassWordOtp from './src/screens/ForgetpassWordOtp'
 import ForgotpassWord from './src/screens/ForgotpassWord'
 import SubmitPassword from './src/screens/SubmitPassword'
+import TicketYeuThichSC from './src/screens/TicketYeuThichSC'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -210,6 +211,7 @@ const App = () => {
                     <Stack.Screen name="ForgetpassWordOtp" component={ForgetpassWordOtp} options={{ headerShown: false }} />
                     <Stack.Screen name="ForgotpassWord" component={ForgotpassWord} options={{ headerShown: false }} />
                     <Stack.Screen name="SubmitPassword" component={SubmitPassword} options={{ headerShown: false }} />
+                    <Stack.Screen name="TicketYeuThichSC" component={TicketYeuThichSC} options={{ headerShown: false }} />
 
                     <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
                     <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
@@ -243,6 +245,7 @@ const App = () => {
                     <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
                     <Stack.Screen name="PaySuccess" component={PaySuccess} options={{ headerShown: false }} />
                     <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
+                    <Stack.Screen name="TicketYeuThichSC" component={TicketYeuThichSC} options={{ headerShown: false }} />
                     <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
                     <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
                     <Stack.Screen name="News" component={News} options={{ headerShown: false }} />

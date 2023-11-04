@@ -68,14 +68,20 @@ const FavouriteMovie = ({navigation }) => {
     }
 
     const onPressItem = (item) => {
-        navigation.navigate('TicketsYeuThich', { item, idUser: data2._id });
+        console.log("Item: "+item.trangThai);
+        if (item.trangThai==="Đang chiếu") {
+            navigation.navigate('TicketsYeuThich', { item, idUser: data2._id });
+        }else{
+            navigation.navigate('TicketYeuThichSC', { item, idUser: data2._id });
+        }
+        
     };
     return (
         <View style={styles.container}>
             <Text style={{ fontSize: 20, fontWeight: '700', alignSelf: 'center', color: 'white', marginTop: 20 }}>Phim yêu thích </Text>
 
             <FlatList
-
+            style={{alignSelf: 'center'}}
                 numColumns={2}
                 data={movie2}
                 keyExtractor={item => item._id}
@@ -83,7 +89,7 @@ const FavouriteMovie = ({navigation }) => {
                     <View>
                         <TouchableOpacity onPress={() => onPressItem(item)}>
                             <View style={{ backgroundColor: 'black', margin: 20, borderRadius: 12, }}>
-                                <Image style={{ width: 140, height: 220, resizeMode: 'cover', borderRadius: 12, borderTopLeftRadius: 12, borderTopRightRadius: 12 }} src={item.poster}/>
+                                <Image style={{ width: 120, height: 200, resizeMode: 'cover', borderRadius: 12, borderTopLeftRadius: 12, borderTopRightRadius: 12 }} src={item.poster}/>
 
                                 <Image
                                     style={{ width: 20, height: 20, margin: 5 }}

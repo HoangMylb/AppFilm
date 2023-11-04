@@ -18,10 +18,11 @@ import validator from 'validator';
 import { StackActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = (props) => {
-  
+
   const { navigation } = props;
   const [userName, setUserName] = useState('')
   const [passWord, setPassWord] = useState('')
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const { login } = useContext(UserContext);
   const handleValidation = () => {
     if (validator.isEmail(userName)) {
@@ -43,10 +44,10 @@ const Login = (props) => {
 
           AsyncStorage.setItem('keepLogedIn', JSON.stringify(true));
           AsyncStorage.setItem('userData', JSON.stringify(userData));
-          console.log(" res.khach: "+ JSON.stringify(res.khach));
-          console.log("userData được lưu: "+ JSON.stringify(userData));
+          console.log(" res.khach: " + JSON.stringify(res.khach));
+          console.log("userData được lưu: " + JSON.stringify(userData));
           navigation.dispatch(StackActions.replace('Home'));
-          
+
           ToastAndroid.show("Đăng nhập thành công", 1);
         } else {
           ToastAndroid.show("Sai tài khoản hoặc mật khẩu", 1);
@@ -107,11 +108,18 @@ const Login = (props) => {
                 <TextInput
                   style={styles.input}
                   placeholder="Mật khẩu"
-                  secureTextEntry={true}
+                  secureTextEntry={isPasswordHidden}
                   placeholderTextColor="black"
                   value={passWord}
                   onChangeText={setPassWord}
                 />
+                <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '85%' }} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
+                  <Image
+                    style={{ width: 29, height: 20, }}
+                    source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.' }}
+
+                  />
+                </TouchableOpacity>
               </View>
               <TouchableOpacity onPress={nextForgot} style={styles.forgotPassword}>
                 <Text style={{ color: '#E38025' }}>Quên mật khẩu</Text>
@@ -151,14 +159,14 @@ const Login = (props) => {
               <TouchableOpacity
                 onPress={clickNextTo}
                 style={{
-                 
+
                   width: 95,
                   height: 25,
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginLeft: 8,
-                 backgroundColor: '#E38025',
-                 borderRadius: 5
+                  backgroundColor: '#E38025',
+                  borderRadius: 5
                 }}>
                 <Text style={styles.txtRegister}> Đăng ký</Text>
               </TouchableOpacity>
@@ -210,7 +218,8 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 40,
     backgroundColor: 'white',
-    marginTop: 10
+    marginTop: 10,
+    position: 'relative'
   },
   inputIcon: {
     width: 15, // Điều chỉnh kích thước của biểu tượng Email
@@ -247,7 +256,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Kanit',
     fontWeight: 'bold',
-    
+
   },
   // --------------------------
   loginSocial: {
@@ -270,9 +279,9 @@ const styles = StyleSheet.create({
   imgSocial2: {
     width: 50, // Độ rộng của đường viên
     height: 50, // Độ cao của đường viên
-    
-  
-   
+
+
+
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10

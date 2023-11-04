@@ -26,7 +26,8 @@ const Register = (props) => {
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [showPicker, setshowPicker] = useState(false)
   const [rePassWord, setRePassWord] = useState('');
- 
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const [isPasswordHidden1, setIsPasswordHidden1] = useState(true);
   //hàm của giới tính
   const handleGenderPress = selectedGender => {
     if (selectedGender === gender) {
@@ -228,9 +229,17 @@ const Register = (props) => {
                 style={styles.input}
                 placeholder="Mật khẩu"
                 placeholderTextColor="black"
+                secureTextEntry={isPasswordHidden}
                 value={passWord}
                 onChangeText={setpassWord}
               />
+              <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '85%' }} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
+                  <Image
+                    style={{ width: 29, height: 20, }}
+                    source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.' }}
+
+                  />
+                </TouchableOpacity>
             </View>
             {/* Input confirm password */}
             <View style={styles.inputAccount}>
@@ -244,10 +253,18 @@ const Register = (props) => {
               <TextInput
                 style={styles.input}
                 placeholder="Xác nhận mật khẩu"
+                secureTextEntry={isPasswordHidden1}
                 placeholderTextColor="black"
                 value={rePassWord}
                 onChangeText={setRePassWord}
               />
+              <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '85%' }} onPress={() => setIsPasswordHidden1(!isPasswordHidden1)}>
+                  <Image
+                    style={{ width: 29, height: 20, }}
+                    source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.' }}
+
+                  />
+                </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.btnAccount} onPress={clickNext}>
               <Text style={styles.btnTxt}>Đăng ký</Text>
@@ -307,6 +324,7 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: 'white',
     margin: 10,
+    position: 'relative'
   },
   inputIcon: {
     width: 15, // Điều chỉnh kích thước của biểu tượng Email
