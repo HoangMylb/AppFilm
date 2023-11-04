@@ -105,7 +105,6 @@ const Home = (props) => {
       setDirector(a.message)
     } else {
       console.log("Khong lay duoc DienVien: " + JSON.stringify(a.success));
-
     }
 
   };
@@ -160,12 +159,6 @@ const Home = (props) => {
             {/* Danh sách phim đang chiếu */}
             <View style={styles.headerMovie}>
               <Text style={{ fontSize: 24, color: 'white' }}>Đang chiếu</Text>
-              <Image
-                style={{ width: 77, height: 1 }}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Line.png?alt=media&token=5e09f7de-ab43-40cd-a64a-60ecceeff5c5&_gl=1*w0d55j*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY8NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkxMTU4NS40My4wLjA.',
-                }}
-              />
               <TouchableOpacity onPress={clickNextAll}>
                 <Text style={{ fontSize: 13, color: '#E38025' }}>
                   Xem tất cả &gt;
@@ -188,12 +181,6 @@ const Home = (props) => {
             {/* Danh sách phim đang chiếu */}
             <View style={styles.headerMovie}>
               <Text style={{ fontSize: 24, color: 'white' }}>Sắp chiếu</Text>
-              <Image
-                style={{ width: 77, height: 1 }}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Line.png?alt=media&token=5e09f7de-ab43-40cd-a64a-60ecceeff5c5&_gl=1*w0d55j*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY8NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkxMTU4NS40My4wLjA.',
-                }}
-              />
               <TouchableOpacity onPress={clickNextAll2}>
                 <Text style={{ fontSize: 13, color: '#E38025' }}>
                   Xem tất cả &gt;
@@ -211,15 +198,13 @@ const Home = (props) => {
               )}
             />
           </View>
-          {/* Danh sách phim thứ 2 */}
+          {/* Danh sách dien vien */}
           <View style={styles.director}>
             {/* Tiêu đề */}
             <View style={styles.headerDirector}>
-              <Text style={{ fontSize: 24, color: 'white' }}>Diễn viên   </Text>
+              <Text style={{ fontSize: 24, color: 'white' }}>Diễn viên</Text>
             </View>
-            {/* Danh sách phim */}
             <FlatList
-
               horizontal
               data={director}
               keyExtractor={(item, index) => item.Dic + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
@@ -304,6 +289,10 @@ const styles = StyleSheet.create({
   },
 
   actor: {
+    marginBottom: 20,
+  },
+
+  director: {
     marginBottom: 20,
   }
 });

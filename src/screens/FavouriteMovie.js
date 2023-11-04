@@ -82,11 +82,11 @@ const FavouriteMovie = ({navigation }) => {
                 renderItem={({ item }) => (
                     <View>
                         <TouchableOpacity onPress={() => onPressItem(item)}>
-                            <View style={{ backgroundColor: 'black', marginTop: 20, marginLeft: 30, borderRadius: 12, alignSelf: 'center' }}>
-                                <Image style={{ width: 120, height: 200, resizeMode: 'cover', borderRadius: 12, borderTopLeftRadius: 12, borderTopRightRadius: 12 }} src={item.poster}/>
+                            <View style={{ backgroundColor: 'black', margin: 20, borderRadius: 12, }}>
+                                <Image style={{ width: 140, height: 220, resizeMode: 'cover', borderRadius: 12, borderTopLeftRadius: 12, borderTopRightRadius: 12 }} src={item.poster}/>
 
                                 <Image
-                                    style={{ width: 20, height: 20 }}
+                                    style={{ width: 20, height: 20, margin: 5 }}
                                     source={{
 
                                         uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/FavouriteMovie%2Fimage%2013.png?alt=media&token=086dcd3c-ef65-4fe7-9842-aaf71cf05a69&_gl=1*lvndtu*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5ODA5OTY5NC4yNi4xLjE2OTgxMDMwMDIuNDUuMC4w'
@@ -110,22 +110,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#E5C4C4',
         opacity: 0.7,
         borderRadius: 50,
-
-
     },
-    header: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
-        height: 44,
-        marginTop: '4%'
-    },
-
     container: {
-        display: 'flex',
         flex: 1,
-        backgroundColor: '#18191A'
+        backgroundColor: '#18191A',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 })
 
