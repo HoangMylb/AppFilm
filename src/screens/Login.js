@@ -59,6 +59,10 @@ const Login = (props) => {
   const clickNextTo = () => {
     navigation.navigate('Register');
   };
+  const nextForgot = () => {
+    navigation.navigate('ForgotpassWord');
+  };
+
   return (
     <View style={styles.Background}>
       <SafeAreaView style={styles.container}>
@@ -109,7 +113,7 @@ const Login = (props) => {
                   onChangeText={setPassWord}
                 />
               </View>
-              <TouchableOpacity style={styles.forgotPassword}>
+              <TouchableOpacity onPress={nextForgot} style={styles.forgotPassword}>
                 <Text style={{ color: '#E38025' }}>Quên mật khẩu</Text>
               </TouchableOpacity>
               {/* Button Login  */}

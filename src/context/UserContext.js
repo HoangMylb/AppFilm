@@ -132,10 +132,10 @@ export const UserProvider = (props) => {
         try {
             const respon =  await customAxios().post('/khachhang/SuaPassWord', { _id: _id, passWord, rePassWord});
             if (respon.success) {           
-                return { success: true, message: respon.message }
+                return { success: true, message: respon.message,message1: respon.message1 }
             }
             else {
-                return { success: false, message: respon.message }
+                return { success: false, message: respon.message,message1: respon.message1 }
             }
         } catch (error) {
             console.log('SuaPassWord', error)
@@ -156,8 +156,72 @@ export const UserProvider = (props) => {
             return false;
         }
     }
+    const checkOTP = async (userName) => {
+        try {
+            const respon = await customAxios().get(`/khachhang/checkOTP?userName=${userName}`);
+            if (respon.success) {
+               
+                return { success: true, message: respon.message  };
+            }
+            else {
+                
+                return { success: false, message: respon.message  };
+            }
+        } catch (error) {
+            console.log('checkOTP', error)
+            return false;
+        }
+    }
+    
+    const sendOTP = async (email, trangThai) => {
+        try {
+            const respon = await customAxios().post('/otp/signup', { email, trangThai});
+            if (respon.status) {
+     
+                return { success: true, message: respon.data };
+            }
+            else {
+                
+                return { success: false , message: null };
+            }
+        } catch (error) {
+            console.log('login', error)
+            return false;
+        }
+    }
+    const verifyOTP = async (userId, otp) => {
+        try {
+            const respon = await customAxios().post('/otp/verifyOTP', { userId, otp});
+            if (respon.status) {
+     
+                return { success: true, message: respon.message };
+            }
+            else {
+                
+                return { success: false , message: respon.message };
+            }
+        } catch (error) {
+            console.log('login', error)
+            return false;
+        }
+    }
+    const getByUser = async (userName) => {
+        try {
+            const respon =  await customAxios().get(`/khachhang/getUser?userName=${userName}`)
+            if (respon.success) {   
+                
+                return { success: true, message: respon.message }
+            }
+            else {
+                return { success: false, message: respon.message }
+            }
+        } catch (error) {
+            console.log('getID', error)
+            return false;
+        }
+    }
     return (
-        <UserContext.Provider value={{ login,register,suaHinhAnh,suaHoTen,suaPassWord, getId, suaSDT,suaNgaySinh,suaEmail,suaGioiTinh  }}>
+        <UserContext.Provider value={{getByUser,verifyOTP,sendOTP,checkOTP, login,register,suaHinhAnh,suaHoTen,suaPassWord, getId, suaSDT,suaNgaySinh,suaEmail,suaGioiTinh  }}>
             {children}
         </UserContext.Provider>
     )
