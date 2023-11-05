@@ -29,7 +29,7 @@ const News = ({navigation }) => {
             </View>
             {loading ? ( // Kiểm tra nếu đang loading thì hiển thị thông báo hoặc spinner
                 <View style = {{flex: 1,justifyContent:'center',alignItems:'center'}}>
-                <Text style={styles.loadingText}>Đang tải dữ liệu... </Text>
+                <Text style={{color:'white'}}>Đang tải dữ liệu... </Text>
                 </View>
             ) : (
                 <FlatList
