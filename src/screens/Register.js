@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableWithoutFeedback, ScrollView, TouchableOpacity, Pressable, Platform, ToastAndroid
 } from 'react-native';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { UserContext } from '../context/UserContext';
 const Register = (props) => {
@@ -28,6 +28,16 @@ const Register = (props) => {
   const [rePassWord, setRePassWord] = useState('');
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [isPasswordHidden1, setIsPasswordHidden1] = useState(true);
+  //bien thong bao loi
+  const [tenKhachHangError, setTenKhachHangError] = useState(null);
+  const [passError, setPassError] = useState(null);
+  const [userNameError, setUserNameError] = useState(null);
+  const [genderError, setGenderError] = useState(null);
+  const [SDTError, setSDTError] = useState(null);
+  const [dateError, setDateError] = useState(null);
+  const [rePassWordError, setRePassWordError] = useState(null);
+  const [userNameError2, setUserNameError2] = useState(null);
+  const [SDTError2, setSDTError2] = useState(null);
   //hàm của giới tính
   const handleGenderPress = selectedGender => {
     if (selectedGender === gender) {
@@ -37,18 +47,18 @@ const Register = (props) => {
     }
   };
   //hàm của date và dateOfBirth
-  const toggleDatepicker = ()=>{
+  const toggleDatepicker = () => {
     setshowPicker(!showPicker);
   }
-  const onChange = ( {type}, selectedDate)=>{
-    if (type=="set") {
+  const onChange = ({ type }, selectedDate) => {
+    if (type == "set") {
       const currentDate = selectedDate;
       setDateOfBirth(currentDate);
-      if (Platform.OS==="android") {
+      if (Platform.OS === "android") {
         toggleDatepicker();
         setDate(currentDate.toDateString())
       }
-    }else{
+    } else {
       toggleDatepicker();
     }
   }
@@ -59,27 +69,80 @@ const Register = (props) => {
       const month = dateObject.getMonth() + 1; // Tháng bắt đầu từ 0, nên cộng thêm 1
       const year = dateObject.getFullYear();
       return `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month}-${year}`;
-    }else{
+    } else {
       formatDate(dateOfBirth);
     }
-};
+  };
   //checkPassWord
-  
+
   //hàm đăng ký
   const clickNext = async () => {
-  
-    const res = await register(tenKhachHang ,userName , passWord, rePassWord, SDT,formatDate(date), vaiTro, gender, hinhAnh);
-    if (res.success) { 
-        navigation.navigate('Login');
-      ToastAndroid.show( "Đăng ký thành công", ToastAndroid.LONG);   
-      
+
+    const res = await register(tenKhachHang, userName, passWord, rePassWord, SDT, formatDate(date), vaiTro, gender, hinhAnh);
+    if (res.success) {
+      navigation.navigate('Login');
+      ToastAndroid.show("Đăng ký thành công", ToastAndroid.LONG);
+
     } else {
-      res.message.map((message, index) => {
-        ToastAndroid.show(message, ToastAndroid.SHORT);
-      });
+      //user
+      if (res.messageUser) {
+        setUserNameError(res.messageUser)
+      } else {
+        setUserNameError('')
+      }
+      if (res.messageUser2) {
+        setUserNameError2(res.messageUser2)
+      } else {
+        setUserNameError2('')
+      }
+      //SDT
+      if (res.messageSDT) {
+        setSDTError(res.messageSDT)
+      } else {
+        setSDTError('')
+      }
+      if (res.messageSDT2) {
+        setSDTError2(res.messageSDT2)
+      } else {
+        setSDTError2('')
+      }
+      //ten
+      if (res.messageTen) {
+        setTenKhachHangError(res.messageTen)
+      } else {
+        setTenKhachHangError('')
+      }
+      //pass
+      if (res.messagePass) {
+        setPassError(res.messagePass)
+      } else {
+        setPassError('')
+      }
+      //gioitinh
+      if (res.messageGender) {
+        setGenderError(res.messageGender)
+      } else {
+        setGenderError('')
+      }
+      //date
+      if (res.messageDate) {
+        setDateError(res.messageDate)
+      } else {
+        setDateError('')
+      }
+      //repass
+      if (res.messageRePass) {
+        setRePassWordError(res.messageRePass)
+      } else {
+        setRePassWordError('')
+      }
+
+
+
     }
 
   };
+
   const clickNextTo = () => {
     navigation.navigate('Login');
   };
@@ -101,7 +164,7 @@ const Register = (props) => {
           {/* Form đăng ký */}
           <View style={styles.formContainer}>
             {/* Input Họ và tên*/}
-            <View style={styles.inputAccount}>
+            <View style={[styles.inputAccount]}>
               <Image
                 style={styles.inputIcon}
                 source={{
@@ -117,8 +180,12 @@ const Register = (props) => {
                 onChangeText={settenKhachHang}
               />
             </View>
+            {tenKhachHangError ? (
+              <Text style={{ marginVertical: 5, marginLeft: '10%', color: 'red', fontSize: 11, alignSelf: 'flex-start' }}>{tenKhachHangError}</Text>
+            ) : (<Text style={{ marginVertical: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+            )}
             {/* Input Email*/}
-            <View style={styles.inputAccount}>
+            <View style={[styles.inputAccount]}>
               <Image
                 style={styles.inputIcon}
                 source={{
@@ -134,8 +201,13 @@ const Register = (props) => {
                 onChangeText={setuserName}
               />
             </View>
+            {userNameError ? (
+              <Text style={{ marginVertical: 5, marginLeft: '10%', color: 'red', fontSize: 11, alignSelf: 'flex-start' }}>{userNameError}</Text>
+            ) : userNameError2?(<Text style={{ marginVertical: 5, marginLeft: '10%', color: 'red', fontSize: 11, alignSelf: 'flex-start' }}>{userNameError2}</Text>)
+            : (<Text style={{ marginVertical: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+            )}
             {/* Input số điện thoại*/}
-            <View style={styles.inputAccount}>
+            <View style={[styles.inputAccount, ]}>
               <Image
                 style={styles.inputIcon}
                 source={{
@@ -152,8 +224,13 @@ const Register = (props) => {
                 keyboardType='numeric'
               />
             </View>
+            {SDTError ? (
+              <Text style={{ marginVertical: 5, marginLeft: '10%', color: 'red', fontSize: 11, alignSelf: 'flex-start' }}>{SDTError}</Text>
+            ) :SDTError2?(<Text style={{ marginVertical: 5, marginLeft: '10%', color: 'red', fontSize: 11, alignSelf: 'flex-start' }}>{SDTError2}</Text>)
+            : (<Text style={{ marginVertical: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+            )}
             {/* Input Giới tính*/}
-            <View style={styles.genderContainer}>
+            <View style={[styles.genderContainer]}>
               <Text style={styles.sex}>Giới tính (Tùy chọn)</Text>
               <View style={styles.radioOptionsContainer}>
                 <TouchableWithoutFeedback onPress={() => handleGenderPress('Nam')}>
@@ -180,8 +257,12 @@ const Register = (props) => {
                 </TouchableWithoutFeedback>
               </View>
             </View>
+            {genderError ? (
+              <Text style={{ marginVertical: 5, marginLeft: '10%', color: 'red', fontSize: 11, alignSelf: 'flex-start' }}>{genderError}</Text>
+            ) : (<Text style={{ marginVertical: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+            )}
             {/* Input ngày sinh */}
-            <View style={styles.inputAccount}>
+            <View style={[styles.inputAccount]}>
               <Image
                 style={styles.inputIcon}
                 source={{
@@ -189,35 +270,39 @@ const Register = (props) => {
                     'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2Fcalender.png?alt=media&token=52811058-2d3a-4fcd-8b2f-202c20f95924&_gl=1*1eif0sl*_ga*ODc4NjkwNDYzLjE2OTc4ODI4NzE.*_ga_CW55HF8NVT*MTY5ODc0OTY3OC44LjEuMTY5ODc0OTk1Ny40My4wLjA.',
                 }}
               />
-              {showPicker &&(
+              {showPicker && (
                 <DateTimePicker
-              mode='date'
-              display='spinner'
-              value={dateOfBirth}
-              onChange={onChange}
-              maximumDate={new Date('2023-12-31')}
-              minimumDate={new Date('1900-1-1')}
-              />
+                  mode='date'
+                  display='spinner'
+                  value={dateOfBirth}
+                  onChange={onChange}
+                  maximumDate={new Date('2023-12-31')}
+                  minimumDate={new Date('1900-1-1')}
+                />
               )}
-              {!showPicker &&(
+              {!showPicker && (
                 <Pressable
-                style={{ width: '90%'}}
-                onPress={toggleDatepicker}
-              >
-                <TextInput
-                style={styles.input}
-                placeholder="Ngày sinh"
-                value={formatDate(date)}
-                onChangeText={setDate}
-                placeholderTextColor="black"
-                editable={false}
-              />
-              </Pressable>
+                  style={{ width: '90%' }}
+                  onPress={toggleDatepicker}
+                >
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Ngày sinh"
+                    value={formatDate(date)}
+                    onChangeText={setDate}
+                    placeholderTextColor="black"
+                    editable={false}
+                  />
+                </Pressable>
               )}
-              
+
             </View>
+            {dateError ? (
+              <Text style={{ marginVertical: 5, marginLeft: '10%', color: 'red', fontSize: 11, alignSelf: 'flex-start' }}>{dateError}</Text>
+            ) : (<Text style={{ marginVertical: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+            )}
             {/* Input password */}
-            <View style={styles.inputAccount}>
+            <View style={[styles.inputAccount]}>
               <Image
                 style={styles.inputIcon}
                 source={{
@@ -234,15 +319,19 @@ const Register = (props) => {
                 onChangeText={setpassWord}
               />
               <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '85%' }} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
-                  <Image
-                    style={{ width: 29, height: 20, }}
-                    source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.' }}
+                <Image
+                  style={{ width: 29, height: 20, }}
+                  source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.' }}
 
-                  />
-                </TouchableOpacity>
+                />
+              </TouchableOpacity>
             </View>
+            {passError ? (
+              <Text style={{ marginVertical: 5, marginLeft: '10%', color: 'red', fontSize: 11, alignSelf: 'flex-start' }}>{passError}</Text>
+            ) : (<Text style={{ marginVertical: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+            )}
             {/* Input confirm password */}
-            <View style={styles.inputAccount}>
+            <View style={[styles.inputAccount]}>
               <Image
                 style={styles.inputIcon}
                 source={{
@@ -259,13 +348,17 @@ const Register = (props) => {
                 onChangeText={setRePassWord}
               />
               <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '85%' }} onPress={() => setIsPasswordHidden1(!isPasswordHidden1)}>
-                  <Image
-                    style={{ width: 29, height: 20, }}
-                    source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.' }}
+                <Image
+                  style={{ width: 29, height: 20, }}
+                  source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.' }}
 
-                  />
-                </TouchableOpacity>
+                />
+              </TouchableOpacity>
             </View>
+            {rePassWordError ? (
+              <Text style={{ marginVertical: 5, marginLeft: '10%', color: 'red', fontSize: 11, alignSelf: 'flex-start' }}>{rePassWordError}</Text>
+            ) : (<Text style={{ marginVertical: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+            )}
             <TouchableOpacity style={styles.btnAccount} onPress={clickNext}>
               <Text style={styles.btnTxt}>Đăng ký</Text>
             </TouchableOpacity>
@@ -273,7 +366,7 @@ const Register = (props) => {
               <Text style={styles.txtQuestion}>Tài khoản đã được đăng ký !
               </Text>
               <TouchableOpacity
-                 onPress={clickNextTo}
+                onPress={clickNextTo}
                 style={{
                   width: 95,
                   height: 25,
@@ -309,7 +402,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     color: 'white',
-    fontWeight:'800'
+    fontWeight: '800'
   },
   formContainer: {
     justifyContent: 'space-around',
@@ -323,8 +416,8 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 40,
     backgroundColor: 'white',
-    margin: 10,
-    position: 'relative'
+    position: 'relative',
+
   },
   inputIcon: {
     width: 15, // Điều chỉnh kích thước của biểu tượng Email
@@ -333,7 +426,7 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 14,
-    marginLeft: 5, 
+    marginLeft: 5,
     color: 'black',// Khoảng cách giữa TextInput và placeholder
     width: '85%'
   },
@@ -345,7 +438,7 @@ const styles = StyleSheet.create({
   sex: {
     fontSize: 18, // Điều chỉnh kích thước văn bản
     marginBottom: 10, // Tạo khoảng cách giữa văn bản và các radio buttons
-    color:'white'
+    color: 'white'
   },
   radioOptionsContainer: {
     flexDirection: 'row', // Sắp xếp các radio button theo chiều ngang
@@ -369,7 +462,7 @@ const styles = StyleSheet.create({
   },
   radioLabel: {
     marginLeft: 5,
-    color:'white'
+    color: 'white'
   },
   // Button 
   btnAccount: {
@@ -379,7 +472,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E38025',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 20,
   },
   btnTxt: {
     fontSize: 18,

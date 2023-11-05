@@ -22,7 +22,10 @@ const Login = (props) => {
   const { navigation } = props;
   const [userName, setUserName] = useState('')
   const [passWord, setPassWord] = useState('')
+  const [emailError, setEmailError] = useState(null);
+  const [passError, setPassError] = useState(null);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  // context
   const { login } = useContext(UserContext);
   const handleValidation = () => {
     if (validator.isEmail(userName)) {
@@ -34,10 +37,17 @@ const Login = (props) => {
     }
   };
   const clickNext = async () => {
-    if (userName == "" || passWord == "") {
-      ToastAndroid.show("Không để trống Email hoặc PassWord", 2);
-    } else {
+    if (userName == ""  ) {
+      setEmailError('Không để trống Email')
+      setPassError('')
+    } else if(passWord == ""){
+      setEmailError('')
+      setPassError('Không để trống PassWord')
+    }
+    else {
       if (handleValidation()) {
+        setEmailError('')
+        
         const res = await login(userName, passWord);
         if (res.success) {
           const userData = res.khach;
@@ -53,7 +63,8 @@ const Login = (props) => {
           ToastAndroid.show("Sai tài khoản hoặc mật khẩu", 1);
         }
       } else {
-        ToastAndroid.show("Email không hợp lệ", 1);
+        setEmailError("Email không hợp lệ")
+        setPassError('')
       }
     }
   };
@@ -82,7 +93,7 @@ const Login = (props) => {
           <View style={styles.loginForm}>
             <View style={styles.loginAccount}>
               {/* Input email*/}
-              <View style={styles.inputAccount}>
+              <View style={[styles.inputAccount,{borderColor: emailError ? 'red' : '#000000', borderWidth: 1  }]}>
                 <Image
                   style={styles.inputIcon}
                   source={{
@@ -97,8 +108,12 @@ const Login = (props) => {
                   onChangeText={setUserName}
                 />
               </View>
+              {emailError ? (
+                <Text style={{ marginTop: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}>{emailError}</Text>
+              ) : (<Text style={{ marginTop: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+              )}
               {/* Input password*/}
-              <View style={styles.inputAccount}>
+              <View style={[styles.inputAccount,{borderColor: passError ? 'red' : '#000000', borderWidth: 1  }]}>
                 <Image
                   style={styles.inputIcon}
                   source={{
@@ -121,6 +136,10 @@ const Login = (props) => {
                   />
                 </TouchableOpacity>
               </View>
+              {passError ? (
+                <Text style={{ marginTop: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}>{passError}</Text>
+              ) : (<Text style={{ marginTop: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+              )}
               <TouchableOpacity onPress={nextForgot} style={styles.forgotPassword}>
                 <Text style={{ color: '#E38025' }}>Quên mật khẩu</Text>
               </TouchableOpacity>
@@ -197,7 +216,7 @@ const styles = StyleSheet.create({
     height: '40%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15
+    marginTop: 0
   },
   logo: {
     width: '40%',
@@ -205,6 +224,7 @@ const styles = StyleSheet.create({
   },
   // --------------------------
   scrollView: {
+
   },
   // Component chứa login form
   loginAccount: {
@@ -284,7 +304,7 @@ const styles = StyleSheet.create({
 
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 10
+    marginHorizontal: 10
   },
   txtQuestion: {
     color: 'white',
