@@ -47,11 +47,11 @@ const Login = (props) => {
     else {
       if (handleValidation()) {
         setEmailError('')
-        
+        setPassError('')
         const res = await login(userName, passWord);
         if (res.success) {
           const userData = res.khach;
-
+          console.log("res.khach: "+res.khach);
           AsyncStorage.setItem('keepLogedIn', JSON.stringify(true));
           AsyncStorage.setItem('userData', JSON.stringify(userData));
           console.log(" res.khach: " + JSON.stringify(res.khach));

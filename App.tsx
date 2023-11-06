@@ -40,6 +40,7 @@ import ForgetpassWordOtp from './src/screens/ForgetpassWordOtp'
 import ForgotpassWord from './src/screens/ForgotpassWord'
 import SubmitPassword from './src/screens/SubmitPassword'
 import TicketYeuThichSC from './src/screens/TicketYeuThichSC'
+import Test from './src/screens/Test'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -189,15 +190,17 @@ const App = () => {
   console.log("dataApp: " + data);
   return (
 
+    // <PhimProvider>
+    // <Test/>
+    // </PhimProvider> 
 
-    //<Location/>
     <UserProvider>
       <PhimProvider>
         <ThanhToanProvider>
           <TinTucProvider>
             <StripeProvider publishableKey={STRIPE_KEY}>
               <NavigationContainer>
-
+              <Stack.Screen name="Test" component={Test} options={{ headerShown: false }} />
                 {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
                   <Stack.Screen name="Splash2" component={SplashScreen2} options={{ headerShown: false }} />
                 ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab

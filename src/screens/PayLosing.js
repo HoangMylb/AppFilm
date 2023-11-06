@@ -10,9 +10,11 @@ import { format } from 'date-fns';
 import viLocale from 'date-fns/locale/vi';
 import { ThanhToanContext } from '../context/ThanhToanContext'
 import { useStripe } from '@stripe/stripe-react-native';
+import { PhimContext } from '../context/PhimContext';
 const PayLosing = ({navigation}) => {
     const route = useRoute();
     const { ThanhToan,newDonHang } = useContext(ThanhToanContext);
+    const { getSeat, updateSeat } = useContext(PhimContext);
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const user = route.params.user;
     const phim = route.params.phim;
@@ -22,7 +24,8 @@ const PayLosing = ({navigation}) => {
     const ghe = route.params.ghe;
     const soLuong = route.params.soLuong;
     const tien = route.params.tien;
-
+    const idPhong = route.params.idPhong;
+    const idGhe = route.params.idGhe;
     const formattedNumber = tien.toLocaleString('vi-VN');
     const nextTo = async () => {
         navigation.dispatch(StackActions.replace('Home'));
@@ -45,6 +48,9 @@ const PayLosing = ({navigation}) => {
           })
         );
       };
+      const updateSeated = async () => {
+        await updateSeat(idPhong, idGhe,phim, rapPhim);
+    }
       const thanhToan = async () => {
             const a = await ThanhToan(tien);
             if (a.error) {
@@ -70,6 +76,7 @@ const PayLosing = ({navigation}) => {
                 const now = new Date();
                 const ngayDat = format(now, 'p PP', { locale: viLocale });
                 donHang(user, phim,rapPhim, ngayDat,xuatChieu, ghe,  soLuong, tien)
+                updateSeated();
                 navigateToPaySuccess(formattedNumber,ngayDat)
                
             }
