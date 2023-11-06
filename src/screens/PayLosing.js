@@ -49,7 +49,8 @@ const PayLosing = ({navigation}) => {
         );
       };
       const updateSeated = async () => {
-        await updateSeat(idPhong, idGhe,phim, rapPhim);
+        const ghe = idGhe.map((seat) => seat._id);
+        await updateSeat(idPhong, ghe,phim, rapPhim);
     }
       const thanhToan = async () => {
             const a = await ThanhToan(tien);

@@ -64,7 +64,7 @@ const User = (props) => {
           console.log("File available at", url);
           // Lưu đường dẫn vào state
 
-          
+
           setDowload(url);
 
         });
@@ -113,7 +113,7 @@ const User = (props) => {
     }
     if (dowload) {
       changeHinhAnh();
-     
+
     }
 
   }, [isLoading, dowload]);
@@ -158,7 +158,7 @@ const User = (props) => {
   };
   //hàm ẩn modal của tất cả
   const handleAlertAction = () => {
-  
+
     hideAlert();
   };
   //biến của đăng xuất
@@ -175,12 +175,12 @@ const User = (props) => {
   const [showPicker, setshowPicker] = useState(false)
   const [newPassWord, setNewPassWord] = useState('');
   const [rePassWord, setRePassWord] = useState('');
- //biến của update
- const [tenKhachHang2, setTenKhachHang2] = useState('');
- const [SDT2, setSDT2] = useState('');
- const [date2, setDate2] = useState('');
- const [userName2, setuserName2] = useState('');
- const [gender2, setGender2] = useState('');
+  //biến của update
+  const [tenKhachHang2, setTenKhachHang2] = useState('');
+  const [SDT2, setSDT2] = useState('');
+  const [date2, setDate2] = useState('');
+  const [userName2, setuserName2] = useState('');
+  const [gender2, setGender2] = useState('');
   //hàm xử lý của họ tên
   const changeHoTen = async () => {
     const res = await suaHoTen(data2._id, tenKhachHang2);
@@ -261,8 +261,8 @@ const User = (props) => {
       ToastAndroid.show("" + res.message, 1);
     }
   };
-  
- 
+
+
 
   //hàm của giới tính
   const handleGenderPress = selectedGender => {
@@ -302,19 +302,19 @@ const User = (props) => {
   };
 
 
-//hiện hoặc ẩn modal đăng xuất
-const handleDangXuat = () => {
-  setIsEditing(true);
-};
-const handleCancel = () => {
-  setIsEditing(false);
-};
-// Xử lý đăng xuất
-const handleActiveDangXuat = () => {
-  AsyncStorage.setItem("keepLogedIn", "")
-  setIsEditing(false);
-  navigation.dispatch(StackActions.replace('Login'));
-};
+  //hiện hoặc ẩn modal đăng xuất
+  const handleDangXuat = () => {
+    setIsEditing(true);
+  };
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
+  // Xử lý đăng xuất
+  const handleActiveDangXuat = () => {
+    AsyncStorage.setItem("keepLogedIn", "")
+    setIsEditing(false);
+    navigation.dispatch(StackActions.replace('Login'));
+  };
 
   return (
 
@@ -453,7 +453,7 @@ const handleActiveDangXuat = () => {
         </View>
 
 
-       
+
         <TouchableOpacity style={styles.btnDangXuat} onPress={handleDangXuat}>
           <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Kanit', fontWeight: '700' }}>Đăng xuất</Text>
         </TouchableOpacity>
@@ -511,7 +511,7 @@ const handleActiveDangXuat = () => {
                   style={styles.input}
                   placeholder="Họ và tên"
                   placeholderTextColor="black"
-                  
+
                   onChangeText={setTenKhachHang2}
                 />
               </View>
@@ -552,7 +552,7 @@ const handleActiveDangXuat = () => {
                   style={styles.input}
                   placeholder="Số điện thoại"
                   placeholderTextColor="black"
-                  
+
                   onChangeText={setSDT2}
                   keyboardType='numeric'
                 />
@@ -831,7 +831,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'black',
     paddingLeft: 20,
-
+    alignSelf: 'center',
     paddingTop: 10,
     backgroundColor: 'white'
   },
