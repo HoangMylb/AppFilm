@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "453299861632",
+    "firebase_url": "https://fir-cinemaapp-dcbcf-default-rtdb.firebaseio.com",
+    "project_id": "fir-cinemaapp-dcbcf",
+    "storage_bucket": "fir-cinemaapp-dcbcf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453299861632:android:17a0815b0997d2c23b0e65",
+        "android_client_info": {
+          "package_name": "com.cvapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453299861632-cgilf8fu2h4h3v4qmhch08brlfvpb85o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cvapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "453299861632-2rgp3trk74pnt4p52i7eba5bsjf8nv7v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo7-z_rr1C9wkIgbjGSqw-A29m6lo77gM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453299861632-2rgp3trk74pnt4p52i7eba5bsjf8nv7v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
