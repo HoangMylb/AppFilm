@@ -1,4 +1,5 @@
 import { StyleSheet, ToastAndroid, Text, View, SafeAreaView, Image, TouchableOpacity,Alert, FlatList, ScrollView } from 'react-native'
+import { StyleSheet, ToastAndroid, Text, View,Alert, SafeAreaView, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import LinearGradient from 'react-native-linear-gradient';
 import { StackActions } from '@react-navigation/native';
@@ -29,6 +30,7 @@ const SeatSelect = ({ navigation }) => {
     const [totalSeats, setTotalSeats] = useState(0);
     const [idPhong, setidPhong] = useState('')
     const [ArrayGhe, setArrayGhe] = useState('')
+    
     let idGheArray;
     useEffect(() => {
         const seat = async () => {
@@ -40,6 +42,7 @@ const SeatSelect = ({ navigation }) => {
     }, []);
     const updateSeated = async () => {
         const ghe = selectedSeats.map((seat) => seat._id);
+   
         await updateSeat(idPhong, ghe,item._id, item1._id,thangSeat,gio);
     }
     const selectSeat = (index) => {
@@ -155,7 +158,7 @@ const SeatSelect = ({ navigation }) => {
             if (paymentResponse.error) {
                 const now = new Date();
                 const ngayDat = format(now, 'p PP', { locale: viLocale });
-                navigateToPayLosing(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, tongTien, idPhong, idGheArray)
+                navigateToPayLosing(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, tongTien, idPhong, selectedSeats)
                 ToastAndroid.show("Thanh toán thất bại", 1)
             } else {
                 updateSeated();

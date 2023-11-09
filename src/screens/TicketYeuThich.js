@@ -51,7 +51,7 @@ const BuyTickets = ({ navigation }) => {
   };
 
   const nextTo = async () => {
-    navigation.dispatch(StackActions.replace('Home'));
+    navigation.dispatch(StackActions.replace('YeuThich'));
   };
 
   useEffect(() => {

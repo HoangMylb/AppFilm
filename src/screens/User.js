@@ -66,7 +66,6 @@ const User = props => {
         getDownloadURL(uploadTask.snapshot.ref).then(async url => {
           console.log('File available at', url);
           // Lưu đường dẫn vào state
-
           setDowload(url);
         });
       },
@@ -122,6 +121,7 @@ const User = props => {
     }
     if (dowload) {
       changeHinhAnh();
+
     }
   }, [isLoading, dowload]);
   const nextTo = async () => {
@@ -314,7 +314,10 @@ const User = props => {
   };
   // Xử lý đăng xuất
   const handleActiveDangXuat = () => {
+
     AsyncStorage.setItem('keepLogedIn', '');
+
+    AsyncStorage.setItem("keepLogedIn", "")
     setIsEditing(false);
     navigation.dispatch(StackActions.replace('Login'));
   };
@@ -577,6 +580,8 @@ const User = props => {
           </View>
         </View>
 
+
+
         <TouchableOpacity style={styles.btnDangXuat} onPress={handleDangXuat}>
           <Text
             style={{
@@ -646,6 +651,7 @@ const User = props => {
                   style={styles.input}
                   placeholder="Họ và tên"
                   placeholderTextColor="black"
+
                   onChangeText={setTenKhachHang2}
                 />
               </View>
@@ -970,7 +976,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'black',
     paddingLeft: 20,
-
+    alignSelf: 'center',
     paddingTop: 10,
     backgroundColor: 'white',
   },
