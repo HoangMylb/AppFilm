@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -10,18 +10,22 @@ import {
   Alert,
   Modal,
   Button,
-  TouchableWithoutFeedback, ActivityIndicator, Pressable, Platform, ToastAndroid
-
+  TouchableWithoutFeedback,
+  ActivityIndicator,
+  Pressable,
+  Platform,
+  ToastAndroid,
 } from 'react-native';
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
-import { storage } from "../../firebaseConfig";
-import { UserContext } from '../context/UserContext';
-import { StackActions } from '@react-navigation/native';
+import {storage} from '../../firebaseConfig';
+import {UserContext} from '../context/UserContext';
+import {StackActions} from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const User = (props) => {
-  const { navigation } = props;
+import { ScrollView } from 'react-native';
+const User = props => {
+  const {navigation} = props;
   // bắt đầu các hàm thay đổi hình đại diện
   const [dowload, setDowload] = useState('');
   async function pickImage() {
@@ -37,42 +41,48 @@ const User = (props) => {
         await uploadImage(uri);
       }
     } catch (error) {
-      ToastAndroid.show("Hủy chọn ảnh", 1);
-
+      ToastAndroid.show('Hủy chọn ảnh', 1);
     }
   }
 
   async function uploadImage(uri) {
     const response = await fetch(uri);
     const blob = await response.blob();
-    const storageRef = ref(storage, "Stuff/" + new Date().getTime());
+    const storageRef = ref(storage, 'Stuff/' + new Date().getTime());
     const uploadTask = uploadBytesResumable(storageRef, blob);
 
     // listen for events
     uploadTask.on(
-      "state_changed",
-      (snapshot) => {
+      'state_changed',
+      snapshot => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
+        console.log('Upload is ' + progress + '% done');
       },
-      (error) => {
+      error => {
         // handle error
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-          console.log("File available at", url);
+        getDownloadURL(uploadTask.snapshot.ref).then(async url => {
+          console.log('File available at', url);
           // Lưu đường dẫn vào state
 
-          
           setDowload(url);
-
         });
-      }
+      },
     );
   }
   //kết thúc các hàm thay đổi hình đại diện
-  const { suaHoTen, getId, suaSDT, suaPassWord, suaNgaySinh, suaEmail, suaGioiTinh, suaHinhAnh } = useContext(UserContext);
+  const {
+    suaHoTen,
+    getId,
+    suaSDT,
+    suaPassWord,
+    suaNgaySinh,
+    suaEmail,
+    suaGioiTinh,
+    suaHinhAnh,
+  } = useContext(UserContext);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [data2, setData2] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -92,18 +102,17 @@ const User = (props) => {
   const nextToo = async () => {
     const a = await getId(data2._id);
     if (a.success) {
-      console.log("getIda1: " + JSON.stringify(a.message._id));
-      setTenKhachHang(a.message.tenKhachHang)
-      setDate(a.message.ngaySinh)
-      setGender(a.message.gioiTinh)
-      setuserName(a.message.userName)
-      setpassWord(a.message.passWord)
-      setSDT(a.message.SDT)
-      sethinhAnh(a.message.hinhAnh)
+      console.log('getIda1: ' + JSON.stringify(a.message._id));
+      setTenKhachHang(a.message.tenKhachHang);
+      setDate(a.message.ngaySinh);
+      setGender(a.message.gioiTinh);
+      setuserName(a.message.userName);
+      setpassWord(a.message.passWord);
+      setSDT(a.message.SDT);
+      sethinhAnh(a.message.hinhAnh);
     } else {
-      console.log("getIdSai: " + JSON.stringify(a.success));
+      console.log('getIdSai: ' + JSON.stringify(a.success));
     }
-
   };
 
   useEffect(() => {
@@ -113,9 +122,7 @@ const User = (props) => {
     }
     if (dowload) {
       changeHinhAnh();
-     
     }
-
   }, [isLoading, dowload]);
   const nextTo = async () => {
     navigation.dispatch(StackActions.replace('Home'));
@@ -148,7 +155,7 @@ const User = (props) => {
     setTenKhachHang2('');
     setRePassWord('');
     setSDT2('');
-    setDate2('')
+    setDate2('');
     setAlertHoTen(false);
     setAlertSDT(false);
     setAlertEmail(false);
@@ -158,7 +165,6 @@ const User = (props) => {
   };
   //hàm ẩn modal của tất cả
   const handleAlertAction = () => {
-  
     hideAlert();
   };
   //biến của đăng xuất
@@ -168,28 +174,28 @@ const User = (props) => {
   const [userName, setuserName] = useState('');
   const [passWord, setpassWord] = useState('');
   const [SDT, setSDT] = useState('');
-  const [hinhAnh, sethinhAnh] = useState('')
+  const [hinhAnh, sethinhAnh] = useState('');
   const [gender, setGender] = useState('');
   const [date, setDate] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
-  const [showPicker, setshowPicker] = useState(false)
+  const [showPicker, setshowPicker] = useState(false);
   const [newPassWord, setNewPassWord] = useState('');
   const [rePassWord, setRePassWord] = useState('');
- //biến của update
- const [tenKhachHang2, setTenKhachHang2] = useState('');
- const [SDT2, setSDT2] = useState('');
- const [date2, setDate2] = useState('');
- const [userName2, setuserName2] = useState('');
- const [gender2, setGender2] = useState('');
+  //biến của update
+  const [tenKhachHang2, setTenKhachHang2] = useState('');
+  const [SDT2, setSDT2] = useState('');
+  const [date2, setDate2] = useState('');
+  const [userName2, setuserName2] = useState('');
+  const [gender2, setGender2] = useState('');
   //hàm xử lý của họ tên
   const changeHoTen = async () => {
     const res = await suaHoTen(data2._id, tenKhachHang2);
     if (res.success) {
       hideAlert();
-      setTenKhachHang(tenKhachHang2)
-      ToastAndroid.show("Cập nhật thành công", 1);
+      setTenKhachHang(tenKhachHang2);
+      ToastAndroid.show('Cập nhật thành công', 1);
     } else {
-      ToastAndroid.show("" + res.message, 1);
+      ToastAndroid.show('' + res.message, 1);
     }
   };
   //hàm xử lý của SDT
@@ -197,10 +203,10 @@ const User = (props) => {
     const res = await suaSDT(data2._id, SDT2);
     if (res.success) {
       hideAlert();
-      setSDT(SDT2)
-      ToastAndroid.show("Cập nhật thành công", 1);
+      setSDT(SDT2);
+      ToastAndroid.show('Cập nhật thành công', 1);
     } else {
-      ToastAndroid.show("" + res.message, 1);
+      ToastAndroid.show('' + res.message, 1);
     }
   };
   //hàm xử lý của NgaySinh
@@ -210,9 +216,9 @@ const User = (props) => {
     if (res.success) {
       setDate(date2);
       hideAlert();
-      ToastAndroid.show("Cập nhật thành công", 1);
+      ToastAndroid.show('Cập nhật thành công', 1);
     } else {
-      ToastAndroid.show("" + res.message, 1);
+      ToastAndroid.show('' + res.message, 1);
     }
   };
   //hàm xử lý của Email
@@ -220,10 +226,10 @@ const User = (props) => {
     const res = await suaEmail(data2._id, userName2);
     if (res.success) {
       hideAlert();
-      setuserName(userName2)
-      ToastAndroid.show("Cập nhật thành công", 1);
+      setuserName(userName2);
+      ToastAndroid.show('Cập nhật thành công', 1);
     } else {
-      ToastAndroid.show("" + res.message, 1);
+      ToastAndroid.show('' + res.message, 1);
     }
   };
   //hàm xử lý của GioiTinh
@@ -231,23 +237,22 @@ const User = (props) => {
     const res = await suaGioiTinh(data2._id, gender2);
     if (res.success) {
       hideAlert();
-      setGender(gender2)
-      ToastAndroid.show("Cập nhật thành công", 1);
+      setGender(gender2);
+      ToastAndroid.show('Cập nhật thành công', 1);
     } else {
-      ToastAndroid.show("" + res.message, 1);
+      ToastAndroid.show('' + res.message, 1);
     }
   };
   //hàm xử lý của password
   const changePassWord = async () => {
-
     const res = await suaPassWord(data2._id, newPassWord, rePassWord);
     if (res.success) {
-      setpassWord(newPassWord)
+      setpassWord(newPassWord);
       hideAlert();
 
-      ToastAndroid.show("Cập nhật thành công", 1);
+      ToastAndroid.show('Cập nhật thành công', 1);
     } else {
-      ToastAndroid.show("" + res.message, 1);
+      ToastAndroid.show('' + res.message, 1);
     }
   };
   //hàm xử lý của HinhAnh
@@ -256,13 +261,11 @@ const User = (props) => {
     if (res.success) {
       sethinhAnh(dowload);
       hideAlert();
-      ToastAndroid.show("Cập nhật thành công", 1);
+      ToastAndroid.show('Cập nhật thành công', 1);
     } else {
-      ToastAndroid.show("" + res.message, 1);
+      ToastAndroid.show('' + res.message, 1);
     }
   };
-  
- 
 
   //hàm của giới tính
   const handleGenderPress = selectedGender => {
@@ -275,190 +278,317 @@ const User = (props) => {
   //hàm của date và dateOfBirth
   const toggleDatepicker = () => {
     setshowPicker(!showPicker);
-  }
-  const onChange = ({ type }, selectedDate) => {
-    if (type == "set") {
+  };
+  const onChange = ({type}, selectedDate) => {
+    if (type == 'set') {
       const currentDate = selectedDate;
       setDateOfBirth(currentDate);
-      if (Platform.OS === "android") {
+      if (Platform.OS === 'android') {
         toggleDatepicker();
-        setDate2(formatDate(currentDate.toDateString()))
+        setDate2(formatDate(currentDate.toDateString()));
       }
     } else {
       toggleDatepicker();
-
     }
-  }
-  const formatDate = (dateString) => {
+  };
+  const formatDate = dateString => {
     if (dateString) {
       const dateObject = new Date(dateString);
       const day = dateObject.getDate();
       const month = dateObject.getMonth() + 1; // Tháng bắt đầu từ 0, nên cộng thêm 1
       const year = dateObject.getFullYear();
-      return `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month}-${year}`;
+      return `${day < 10 ? '0' : ''}${day}-${
+        month < 10 ? '0' : ''
+      }${month}-${year}`;
     } else {
       formatDate(dateOfBirth);
     }
   };
 
-
-//hiện hoặc ẩn modal đăng xuất
-const handleDangXuat = () => {
-  setIsEditing(true);
-};
-const handleCancel = () => {
-  setIsEditing(false);
-};
-// Xử lý đăng xuất
-const handleActiveDangXuat = () => {
-  AsyncStorage.setItem("keepLogedIn", "")
-  setIsEditing(false);
-  navigation.dispatch(StackActions.replace('Login'));
-};
+  //hiện hoặc ẩn modal đăng xuất
+  const handleDangXuat = () => {
+    setIsEditing(true);
+  };
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
+  // Xử lý đăng xuất
+  const handleActiveDangXuat = () => {
+    AsyncStorage.setItem('keepLogedIn', '');
+    setIsEditing(false);
+    navigation.dispatch(StackActions.replace('Login'));
+  };
 
   return (
-
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#18191A' }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#18191A'}}>
+      <ScrollView>
       <View
         style={{
           justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
           height: '100%',
-          position: 'relative'
-        }}
-      >
+          position: 'relative',
+        }}>
         {/* nút back */}
 
-        <View style={{ flexDirection: 'row', position: 'absolute', top: 10, left: 10 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            position: 'absolute',
+            top: 10,
+            left: 10,
+          }}>
           <TouchableOpacity onPress={nextTo}>
             <Image
-              style={{ width: 44, height: 44 }}
-              source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Arrow%20Left%20Button2.png?alt=media&token=4ecc2c70-56d8-4da2-abac-750f6ca28639&_gl=1*8qq0vj*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzY3MjY4Ni40LjEuMTY5NzY3Mjk3Mi41NC4wLjA.' }}
+              style={{width: 44, height: 44}}
+              source={{
+                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Arrow%20Left%20Button2.png?alt=media&token=4ecc2c70-56d8-4da2-abac-750f6ca28639&_gl=1*8qq0vj*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzY3MjY4Ni40LjEuMTY5NzY3Mjk3Mi41NC4wLjA.',
+              }}
             />
           </TouchableOpacity>
-          <Text style={{ fontSize: 20, fontWeight: '700', color: 'white', marginTop: 14, marginLeft: '20%' }}>Thông tin cá nhân </Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: '700',
+              color: 'white',
+              marginTop: 14,
+              marginLeft: '20%',
+            }}>
+            Thông tin cá nhân{' '}
+          </Text>
         </View>
-
 
         {/* Hình ảnh USER */}
 
         <TouchableOpacity onPress={pickImage} style={styles.imgUser}>
-          <View >
+          <View>
             {isLoading ? (
               <ActivityIndicator size="large" color="blue" />
-            ) :
+            ) : (
               <View>
                 {hinhAnh ? ( // Check if hinhAnh is not empty
                   <Image
-                    style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'red' }}
-                    source={{ uri: hinhAnh }}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25,
+                      backgroundColor: 'red',
+                    }}
+                    source={{uri: hinhAnh}}
                   />
                 ) : (
                   // Handle the case when hinhAnh is empty
-                  <Text style={{ color: 'white' }}>Đang tải</Text>
+                  <Text style={{color: 'white'}}>Đang tải</Text>
                 )}
               </View>
-            }
+            )}
           </View>
           <Image
-            resizeMode='cover'
-            style={{ aspectRatio: 1, width: 16, height: 16, position: 'absolute', top: 35, left: 35 }}
-            source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Frefresh2.png?alt=media&token=bb4aed51-115d-450a-a2f5-c6623c13fb00&_gl=1*18lbbxu*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5ODAyMzA1NS4yMS4xLjE2OTgwMjM1MjQuMjguMC4w' }}
-
+            resizeMode="cover"
+            style={{
+              aspectRatio: 1,
+              width: 16,
+              height: 16,
+              position: 'absolute',
+              top: 35,
+              left: 35,
+            }}
+            source={{
+              uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Frefresh2.png?alt=media&token=bb4aed51-115d-450a-a2f5-c6623c13fb00&_gl=1*18lbbxu*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5ODAyMzA1NS4yMS4xLjE2OTgwMjM1MjQuMjguMC4w',
+            }}
           />
         </TouchableOpacity>
         {/* Thông Tin USER */}
         <View style={styles.ifmUser}>
           <Text style={styles.inputTitle}>Họ và tên</Text>
-          <View style={{ flexDirection: 'row', width: '85%', height: '11%', position: 'relative' }}>
-            <Text style={[styles.input1, { height: '100%' }]}>{tenKhachHang}</Text>
-            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '90%', width: 29, height: 20, }} onPress={showAlertHoTen}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '85%',
+              height: '11%',
+              position: 'relative',
+            }}>
+            <Text style={[styles.input1, {height: '100%'}]}>
+              {tenKhachHang}
+            </Text>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                alignSelf: 'center',
+                left: '90%',
+                width: 29,
+                height: 20,
+              }}
+              onPress={showAlertHoTen}>
               <Image
-                resizeMode='cover'
-                style={{ aspectRatio: 1, width: 29, height: 20, }}
-                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.' }}
-
+                resizeMode="cover"
+                style={{aspectRatio: 1, width: 29, height: 20}}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.',
+                }}
               />
             </TouchableOpacity>
           </View>
           <Text style={styles.inputTitle}>Số điện thoại</Text>
-          <View style={{ flexDirection: 'row', width: '85%', height: '11%', position: 'relative' }}>
-            <Text style={[styles.input1, { height: '100%' }]}>{SDT}</Text>
-            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '90%', width: 29, height: 20, }} onPress={showAlertSDT}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '85%',
+              height: '11%',
+              position: 'relative',
+            }}>
+            <Text style={[styles.input1, {height: '100%'}]}>{SDT}</Text>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                alignSelf: 'center',
+                left: '90%',
+                width: 29,
+                height: 20,
+              }}
+              onPress={showAlertSDT}>
               <Image
-                style={{ aspectRatio: 1, width: 29, height: 20, }}
-                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.' }}
-
+                style={{aspectRatio: 1, width: 29, height: 20}}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.',
+                }}
               />
             </TouchableOpacity>
           </View>
           <Text style={styles.inputTitle}>Ngày sinh</Text>
-          <View style={{ flexDirection: 'row', width: '85%', height: '11%', position: 'relative' }}>
-            <Text style={[styles.input1, { height: '100%' }]}>{date}</Text>
-            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '90%', width: 29, height: 20, }} onPress={showAlertNgaySinh}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '85%',
+              height: '11%',
+              position: 'relative',
+            }}>
+            <Text style={[styles.input1, {height: '100%'}]}>{date}</Text>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                alignSelf: 'center',
+                left: '90%',
+                width: 29,
+                height: 20,
+              }}
+              onPress={showAlertNgaySinh}>
               <Image
-                style={{ aspectRatio: 1, width: 29, height: 20, }}
-                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.' }}
-
+                style={{aspectRatio: 1, width: 29, height: 20}}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.',
+                }}
               />
             </TouchableOpacity>
           </View>
           <Text style={styles.inputTitle}>Email</Text>
-          <View style={{ flexDirection: 'row', width: '85%', height: '11%', position: 'relative' }}>
-            <Text style={[styles.input1, { height: '100%' }]}>{userName}</Text>
-            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '90%', width: 29, height: 20, }} onPress={showAlertEmail}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '85%',
+              height: '11%',
+              position: 'relative',
+            }}>
+            <Text style={[styles.input1, {height: '100%'}]}>{userName}</Text>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                alignSelf: 'center',
+                left: '90%',
+                width: 29,
+                height: 20,
+              }}
+              onPress={showAlertEmail}>
               <Image
-                style={{ aspectRatio: 1, width: 29, height: 20, }}
-                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.' }}
-
+                style={{aspectRatio: 1, width: 29, height: 20}}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.',
+                }}
               />
             </TouchableOpacity>
           </View>
           <Text style={styles.inputTitle}>Giới tính</Text>
-          <View style={{ flexDirection: 'row', width: '85%', height: '11%', position: 'relative' }}>
-            <Text style={[styles.input1, { height: '100%' }]}>{gender}</Text>
-            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '90%', width: 29, height: 20, }} onPress={showAlertGioiTinh}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '85%',
+              height: '11%',
+              position: 'relative',
+            }}>
+            <Text style={[styles.input1, {height: '100%'}]}>{gender}</Text>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                alignSelf: 'center',
+                left: '90%',
+                width: 29,
+                height: 20,
+              }}
+              onPress={showAlertGioiTinh}>
               <Image
-                style={{ aspectRatio: 1, width: 29, height: 20, }}
-                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.' }}
-
+                style={{aspectRatio: 1, width: 29, height: 20}}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.',
+                }}
               />
             </TouchableOpacity>
           </View>
           <Text style={styles.inputTitle}>Mật khẩu</Text>
 
-          <View style={{ flexDirection: 'row', width: '85%', height: '11%', position: 'relative' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '85%',
+              height: '11%',
+              position: 'relative',
+            }}>
             {isPasswordHidden ? (
-              <Text style={[styles.input1, { height: '100%' }]}>*******</Text>
+              <Text style={[styles.input1, {height: '100%'}]}>*******</Text>
             ) : (
-              <Text style={[styles.input1, { height: '100%' }]}>{passWord}</Text>
+              <Text style={[styles.input1, {height: '100%'}]}>{passWord}</Text>
             )}
-            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '75%' }} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
+            <TouchableOpacity
+              style={{position: 'absolute', alignSelf: 'center', left: '75%'}}
+              onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
               <Image
-                style={{ width: 29, height: 20, }}
-                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.' }}
-
+                style={{width: 29, height: 20}}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.',
+                }}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '90%', width: 29, height: 20, }} onPress={showAlertPassWord}>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                alignSelf: 'center',
+                left: '90%',
+                width: 29,
+                height: 20,
+              }}
+              onPress={showAlertPassWord}>
               <Image
-                style={{ aspectRatio: 1, width: 29, height: 20, }}
-                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.' }}
-
+                style={{aspectRatio: 1, width: 29, height: 20}}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.',
+                }}
               />
             </TouchableOpacity>
           </View>
-
         </View>
 
-
-       
         <TouchableOpacity style={styles.btnDangXuat} onPress={handleDangXuat}>
-          <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Kanit', fontWeight: '700' }}>Đăng xuất</Text>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 16,
+              fontFamily: 'Kanit',
+              fontWeight: '700',
+            }}>
+            Đăng xuất
+          </Text>
         </TouchableOpacity>
-
-      </View >
+      </View>
       {/* hiện thông báo đăng xuất */}
       <View style={styles.container}>
         <Modal
@@ -472,11 +602,18 @@ const handleActiveDangXuat = () => {
               <View style={styles.logoContainer}>
                 <Text style={styles.title2}>Bạn có muốn đăng xuất không?</Text>
               </View>
-              <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={[styles.btnAccount, { width: 100, margin: 20, backgroundColor: '#990000' }]} onPress={handleActiveDangXuat}>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20, backgroundColor: '#990000'},
+                  ]}
+                  onPress={handleActiveDangXuat}>
                   <Text style={styles.btnTxt}>Ok</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.btnAccount, { width: 100, margin: 20 }]} onPress={handleCancel}>
+                <TouchableOpacity
+                  style={[styles.btnAccount, {width: 100, margin: 20}]}
+                  onPress={handleCancel}>
                   <Text style={styles.btnTxt}>Hủy</Text>
                 </TouchableOpacity>
               </View>
@@ -492,7 +629,6 @@ const handleActiveDangXuat = () => {
           animationType="slide"
           visible={isAlertHoTen}
           onRequestClose={hideAlert}>
-
           <View style={styles.modalBackground}>
             <View style={styles.modalView}>
               {/* View chứa hình ảnh logon và text */}
@@ -503,27 +639,26 @@ const handleActiveDangXuat = () => {
                 <Image
                   style={styles.inputIcon}
                   source={{
-                    uri:
-                      'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
                   }}
                 />
                 <TextInput
                   style={styles.input}
                   placeholder="Họ và tên"
                   placeholderTextColor="black"
-                  
                   onChangeText={setTenKhachHang2}
                 />
               </View>
               <TouchableOpacity style={styles.btnAccount} onPress={changeHoTen}>
-                <Text style={styles.btnTxt} >Thay đổi</Text>
+                <Text style={styles.btnTxt}>Thay đổi</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.btnAccount} onPress={handleAlertAction}>
+              <TouchableOpacity
+                style={styles.btnAccount}
+                onPress={handleAlertAction}>
                 <Text style={styles.btnTxt}>Hủy</Text>
               </TouchableOpacity>
             </View>
           </View>
-
         </Modal>
       </View>
       {/*kết thúc hiện cập nhật họ và tên */}
@@ -544,23 +679,23 @@ const handleActiveDangXuat = () => {
                 <Image
                   style={styles.inputIcon}
                   source={{
-                    uri:
-                      'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FphoneRegister.png?alt=media&token=071db83e-4b4d-49a6-855f-b8796122c627&_gl=1*1rhn6d6*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ3MTUuNjAuMC4w',
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FphoneRegister.png?alt=media&token=071db83e-4b4d-49a6-855f-b8796122c627&_gl=1*1rhn6d6*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ3MTUuNjAuMC4w',
                   }}
                 />
                 <TextInput
                   style={styles.input}
                   placeholder="Số điện thoại"
                   placeholderTextColor="black"
-                  
                   onChangeText={setSDT2}
-                  keyboardType='numeric'
+                  keyboardType="numeric"
                 />
               </View>
               <TouchableOpacity style={styles.btnAccount} onPress={changeSDT}>
                 <Text style={styles.btnTxt}>Thay đổi</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.btnAccount} onPress={handleAlertAction}>
+              <TouchableOpacity
+                style={styles.btnAccount}
+                onPress={handleAlertAction}>
                 <Text style={styles.btnTxt}>Hủy</Text>
               </TouchableOpacity>
             </View>
@@ -585,14 +720,13 @@ const handleActiveDangXuat = () => {
                 <Image
                   style={styles.inputIcon}
                   source={{
-                    uri:
-                      'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
                   }}
                 />
                 {showPicker && (
                   <DateTimePicker
-                    mode='date'
-                    display='spinner'
+                    mode="date"
+                    display="spinner"
                     value={dateOfBirth}
                     onChange={onChange}
                     maximumDate={new Date('2023-12-31')}
@@ -600,27 +734,26 @@ const handleActiveDangXuat = () => {
                   />
                 )}
                 {!showPicker && (
-                  <Pressable
-                    style={{ width: '90%' }}
-                    onPress={toggleDatepicker}
-                  >
+                  <Pressable style={{width: '90%'}} onPress={toggleDatepicker}>
                     <TextInput
                       style={styles.input}
                       placeholder="Ngày sinh"
                       value={date2}
-
                       onChangeText={setDate2}
                       placeholderTextColor="black"
                       editable={false}
                     />
                   </Pressable>
                 )}
-
               </View>
-              <TouchableOpacity style={styles.btnAccount} onPress={changeNgaySinh}>
+              <TouchableOpacity
+                style={styles.btnAccount}
+                onPress={changeNgaySinh}>
                 <Text style={styles.btnTxt}>Thay đổi</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.btnAccount} onPress={handleAlertAction}>
+              <TouchableOpacity
+                style={styles.btnAccount}
+                onPress={handleAlertAction}>
                 <Text style={styles.btnTxt}>Hủy</Text>
               </TouchableOpacity>
             </View>
@@ -645,8 +778,7 @@ const handleActiveDangXuat = () => {
                 <Image
                   style={styles.inputIcon}
                   source={{
-                    uri:
-                      'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/logoEmail.png?alt=media&token=00111537-92bd-48de-8754-a1ac66871c3b&_gl=1*aj7qcl*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5Njk0Njg5OS4yNi4xLjE2OTY5NDc4NzUuNDcuMC4w',
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/logoEmail.png?alt=media&token=00111537-92bd-48de-8754-a1ac66871c3b&_gl=1*aj7qcl*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5Njk0Njg5OS4yNi4xLjE2OTY5NDc4NzUuNDcuMC4w',
                   }}
                 />
                 <TextInput
@@ -659,7 +791,9 @@ const handleActiveDangXuat = () => {
               <TouchableOpacity style={styles.btnAccount} onPress={changeEmail}>
                 <Text style={styles.btnTxt}>Thay đổi</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.btnAccount} onPress={handleAlertAction}>
+              <TouchableOpacity
+                style={styles.btnAccount}
+                onPress={handleAlertAction}>
                 <Text style={styles.btnTxt}>Hủy</Text>
               </TouchableOpacity>
             </View>
@@ -683,7 +817,8 @@ const handleActiveDangXuat = () => {
               <View style={styles.genderContainer}>
                 <Text style={styles.sex}>Giới tính (Tùy chọn)</Text>
                 <View style={styles.radioOptionsContainer}>
-                  <TouchableWithoutFeedback onPress={() => handleGenderPress('Nam')}>
+                  <TouchableWithoutFeedback
+                    onPress={() => handleGenderPress('Nam')}>
                     <View style={styles.radioOption}>
                       <View
                         style={[
@@ -694,7 +829,8 @@ const handleActiveDangXuat = () => {
                       <Text style={styles.radioLabel}>Nam</Text>
                     </View>
                   </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => handleGenderPress('Nữ')}>
+                  <TouchableWithoutFeedback
+                    onPress={() => handleGenderPress('Nữ')}>
                     <View style={styles.radioOption}>
                       <View
                         style={[
@@ -707,10 +843,14 @@ const handleActiveDangXuat = () => {
                   </TouchableWithoutFeedback>
                 </View>
               </View>
-              <TouchableOpacity style={styles.btnAccount} onPress={changeGioTinh}>
+              <TouchableOpacity
+                style={styles.btnAccount}
+                onPress={changeGioTinh}>
                 <Text style={styles.btnTxt}>Thay đổi</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.btnAccount} onPress={handleAlertAction}>
+              <TouchableOpacity
+                style={styles.btnAccount}
+                onPress={handleAlertAction}>
                 <Text style={styles.btnTxt}>Hủy</Text>
               </TouchableOpacity>
             </View>
@@ -735,8 +875,7 @@ const handleActiveDangXuat = () => {
                 <Image
                   style={styles.inputIcon}
                   source={{
-                    uri:
-                      'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
                   }}
                 />
                 <TextInput
@@ -751,8 +890,7 @@ const handleActiveDangXuat = () => {
                 <Image
                   style={styles.inputIcon}
                   source={{
-                    uri:
-                      'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
                   }}
                 />
                 <TextInput
@@ -763,10 +901,14 @@ const handleActiveDangXuat = () => {
                   onChangeText={setRePassWord}
                 />
               </View>
-              <TouchableOpacity style={styles.btnAccount} onPress={changePassWord}>
+              <TouchableOpacity
+                style={styles.btnAccount}
+                onPress={changePassWord}>
                 <Text style={styles.btnTxt}>Thay đổi</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.btnAccount} onPress={handleAlertAction}>
+              <TouchableOpacity
+                style={styles.btnAccount}
+                onPress={handleAlertAction}>
                 <Text style={styles.btnTxt}>Hủy</Text>
               </TouchableOpacity>
             </View>
@@ -774,10 +916,9 @@ const handleActiveDangXuat = () => {
         </Modal>
       </View>
       {/*kết thúc hiện cập nhật mật khẩu */}
-    </SafeAreaView >
-
+      </ScrollView>
+    </SafeAreaView>
   );
-
 };
 
 export default User;
@@ -808,12 +949,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   imgUser: {
-
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 60,
     position: 'relative',
-
   },
 
   // Title
@@ -833,15 +972,15 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
 
     paddingTop: 10,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   inputTitle: {
-    color: 'white', alignSelf: 'flex-start', marginLeft: 20,
-    marginVertical: 10
+    color: 'white',
+    alignSelf: 'flex-start',
+    marginLeft: 20,
+    marginVertical: 10,
   },
   // Button Update
-
-
 
   btnDangXuat: {
     width: '70%',
@@ -850,7 +989,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#990000',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '40%'
+    marginTop: '40%',
   },
   //của Update
   container: {
@@ -870,14 +1009,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '800',
     marginTop: 40,
-    marginBottom: 10
+    marginBottom: 10,
   },
   title2: {
     fontSize: 20,
     color: 'white',
     fontWeight: '800',
     marginTop: 40,
-    marginBottom: 10
+    marginBottom: 10,
   },
   //  Text input
   inputAccount: {
@@ -897,7 +1036,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 14,
     marginLeft: 5,
-    color: 'black',// Khoảng cách giữa TextInput và placeholder
+    color: 'black', // Khoảng cách giữa TextInput và placeholder
     width: '85%',
   },
   // Lựa chọn giới tính
@@ -908,7 +1047,7 @@ const styles = StyleSheet.create({
   sex: {
     fontSize: 18, // Điều chỉnh kích thước văn bản
     marginBottom: 10, // Tạo khoảng cách giữa văn bản và các radio buttons
-    color: 'white'
+    color: 'white',
   },
   radioOptionsContainer: {
     flexDirection: 'row', // Sắp xếp các radio button theo chiều ngang
@@ -932,9 +1071,9 @@ const styles = StyleSheet.create({
   },
   radioLabel: {
     marginLeft: 5,
-    color: 'white'
+    color: 'white',
   },
-  // Button 
+  // Button
   btnAccount: {
     borderRadius: 12,
     height: 40,
@@ -945,10 +1084,9 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   btnTxt: {
-    color: 'white', fontSize: 16, fontFamily: 'Kanit', fontWeight: '700'
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Kanit',
+    fontWeight: '700',
   },
-
-
-
-
 });
