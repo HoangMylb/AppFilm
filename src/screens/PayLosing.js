@@ -11,10 +11,12 @@ import viLocale from 'date-fns/locale/vi';
 import { ThanhToanContext } from '../context/ThanhToanContext'
 import { useStripe } from '@stripe/stripe-react-native';
 import { PhimContext } from '../context/PhimContext';
+import { UserContext } from '../context/UserContext';
 const PayLosing = ({navigation}) => {
     const route = useRoute();
     const { ThanhToan,newDonHang } = useContext(ThanhToanContext);
     const { getSeat, updateSeat } = useContext(PhimContext);
+    const { getId,sendOTP } = useContext(UserContext);
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const user = route.params.user;
     const phim = route.params.phim;
@@ -23,15 +25,36 @@ const PayLosing = ({navigation}) => {
     const xuatChieu = route.params.xuatChieu;
     const ghe = route.params.ghe;
     const soLuong = route.params.soLuong;
+    const phongChieu = route.params.phongChieu;
     const tien = route.params.tien;
     const idPhong = route.params.idPhong;
     const idGhe = route.params.idGhe;
+    const gio = route.params.gio;
+    const thangSeat = route.params.thangSeat;
+    const tenUser = route.params.tenUser;
     const formattedNumber = tien.toLocaleString('vi-VN');
+   
+
+    const [email, setEmail] = useState('')
+    const trangThai = "lịch sử";
+
+    useEffect(() => {
+        
+        const getEmail =async () =>{
+            const a = await getId(user);
+            setEmail(a.message.userName);
+        }
+        getEmail()
+    }, []);
+    const handleSendHistory = async () => {      
+    await sendOTP(email,trangThai);
+      }
+
     const nextTo = async () => {
         navigation.dispatch(StackActions.replace('Home'));
       };
-      const donHang= async (user, phim,rapPhim, ngayDat,xuatChieu, ghe,  soLuong, tien)=>{
-        const a = await newDonHang(user, phim,rapPhim, ngayDat,xuatChieu, ghe,  soLuong, tien)
+      const donHang= async (user, phim,rapPhim, ngayDat,xuatChieu, ghe,  soLuong,phongChieu, tien)=>{
+        const a = await newDonHang(user, phim,rapPhim, ngayDat,xuatChieu, ghe,  soLuong, phongChieu,tien)
         if (a.success) {
             
             ToastAndroid.show("Thanh toán thành công",1)
@@ -49,8 +72,8 @@ const PayLosing = ({navigation}) => {
         );
       };
       const updateSeated = async () => {
-        const ghe = idGhe.map((seat) => seat._id);
-        await updateSeat(idPhong, ghe,phim, rapPhim);
+        const ghe = idGhe.map((seat) => seat._id)
+        await updateSeat(idPhong,ghe ,phim, rapPhim,thangSeat,gio);
     }
       const thanhToan = async () => {
             const a = await ThanhToan(tien);
@@ -74,10 +97,13 @@ const PayLosing = ({navigation}) => {
             if (paymentResponse.error) {
                 ToastAndroid.show("Thanh toán thất bại",1)
             } else {
+                updateSeated();
+               
                 const now = new Date();
                 const ngayDat = format(now, 'p PP', { locale: viLocale });
-                donHang(user, phim,rapPhim, ngayDat,xuatChieu, ghe,  soLuong, tien)
-                updateSeated();
+                handleSendHistory(email,trangThai,tenUser,ngayDat,phongChieu,soLuong,ghe,xuatChieu,tien);
+                donHang(user, phim,rapPhim, ngayDat,xuatChieu, ghe,  soLuong,phongChieu, tien)
+                
                 navigateToPaySuccess(formattedNumber,ngayDat)
                
             }

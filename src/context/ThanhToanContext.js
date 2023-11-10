@@ -33,9 +33,9 @@ export const ThanhToanProvider = (props) => {
             return null;
         }
     }
-   const newDonHang = async (user, phim, rapPhim, ngayDat,xuatChieu, ghe,  soLuong, tien) => {
+   const newDonHang = async (user, phim, rapPhim, ngayDat,xuatChieu, ghe,  soLuong,phongChieu, tien) => {
     try {
-        const respon =  await customAxios().post('/donhang/newDonHang',{user, phim,rapPhim, ngayDat,xuatChieu, ghe, soLuong, tien})
+        const respon =  await customAxios().post('/donhang/newDonHang',{user, phim,rapPhim, ngayDat,xuatChieu, ghe, soLuong, phongChieu,tien})
         if (respon.success) {   
                 
             return { success: true, message: respon.message }

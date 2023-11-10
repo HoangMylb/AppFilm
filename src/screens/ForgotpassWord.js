@@ -7,7 +7,7 @@ const ForgotpassWord = ({navigation}) => {
   const { checkOTP,sendOTP} = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(null);
-  const trangThai = "OTP"
+  const trangThai = "OTP";
   const clickNextTo = () => {
     navigation.dispatch(StackActions.replace('Login'));
   };
