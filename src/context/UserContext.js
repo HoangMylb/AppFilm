@@ -32,14 +32,14 @@ export const UserProvider = (props) => {
             { tenKhachHang: tenKhachHang,userName: userName, passWord: passWord, rePassWord: rePassWord, SDT: SDT, ngaySinh: ngaySinh, vaiTro: vaiTro, gioiTinh: gioiTinh, hinhAnh: hinhAnh });
             if (respon.success) {
                 console.log('register thành công '+respon.success);
-                return { success: true, message: respon.message }
+                return { success: true, message: '', messageTen: '', messageUser: '', messageSDT:'', messageGender: '', messageDate: '', messageUser2: '', messageSDT2: '' }
             }
             else {
-                console.log('register thành thất bại ' +respon.message);
-                return { success: false, message: respon.message }
+                console.log('register thành thất bại ' +respon.messageUser);
+                return { success: false, message: respon.message , messageTen: respon.messageTen, messageUser: respon.messageUser, messageSDT: respon.messageSDT, messageGender: respon.messageGender, messageDate: respon.messageDate, messagePass: respon.messagePass, messageRePass: respon.messageRePass, messageUser2: respon.messageUser2, messageSDT2: respon.messageSDT2 }
             }
         } catch (error) {
-            console.log('login', error)
+            console.log('register', error)
             return false;
         }
     }
@@ -173,9 +173,9 @@ export const UserProvider = (props) => {
         }
     }
     
-    const sendOTP = async (email, trangThai) => {
+    const sendOTP = async (email, trangThai,nguoiDat,ngayDat, phongChieu, soLuong , ghe, xuatChieu,tien) => {
         try {
-            const respon = await customAxios().post('/otp/signup', { email, trangThai});
+            const respon = await customAxios().post('/otp/signup', { email, trangThai,nguoiDat,ngayDat, phongChieu, soLuong , ghe, xuatChieu,tien});
             if (respon.status) {
      
                 return { success: true, message: respon.data };

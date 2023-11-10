@@ -14,12 +14,8 @@ const TimeSelect = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [selectedNgay, setSelectedNgay] = useState('');
   const [selectedGio, setSelectedGio] = useState('');
-  useEffect(() => {
-    console.log("item giờ: " + item);
-    console.log("item1 giờ: " + item1);
-    console.log("idUser giờ: " + idUser);
-  }, [])
-
+  const [Thang, setThang] = useState('');
+  const [ngaySeat, setngaySeat] = useState('');
   useEffect(() => {
     const today = new Date();
     const next7Days = Array.from({ length: 7 }, (_, index) => addDays(today, index));
@@ -28,6 +24,7 @@ const TimeSelect = ({ navigation }) => {
       const day = date.getDate();
       const month = format(date, 'MMMM', { locale: viLocale });
       const year = format(date,'yyyy',{ locale: viLocale })
+      setThang(date.getMonth() + 1);
       return { id: index + 1, day, month,year, selected: false };
     });
 
@@ -35,12 +32,11 @@ const TimeSelect = ({ navigation }) => {
   }, []);
 
   const [data1, setData1] = useState([
-    { id: 1, time: "12:00", selected: false },
-    { id: 2, time: "14:00", selected: false },
-    { id: 3, time: "16:00", selected: false },
-    { id: 4, time: "19:00", selected: false },
-    { id: 5, time: "21:45", selected: false },
-    { id: 6, time: "23:30", selected: false },
+    { id: 1, time: "13:00", selected: false },
+    { id: 2, time: "16:00", selected: false },
+    { id: 3, time: "19:00", selected: false },
+    { id: 4, time: "21:00", selected: false },
+    
   ]);
 
   const toggleSelection = (id) => {
@@ -52,7 +48,8 @@ const TimeSelect = ({ navigation }) => {
     );
     const selectedDay = data.find((item) => item.id === id);
     if (selectedDay) {
-      console.log("Ngày đã chọn:", selectedDay.day, selectedDay.month,selectedDay.year);
+      setngaySeat( selectedDay.day+"/"+Thang+"/"+selectedDay.year)
+      console.log("Ngày đã chọn2222:",selectedDay);
       // Lưu trạng thái của ngày được chọn vào biến selectedNgay
       setSelectedNgay(selectedDay);
     }
@@ -99,7 +96,7 @@ const TimeSelect = ({ navigation }) => {
       </View>
     );
   }
-  const navigateToSeatSelect = (item1, item, idUser, ngay,thang,nam,gio) => {
+  const navigateToSeatSelect = (item1, item, idUser, ngay,thang,nam,gio,thangSeat) => {
     navigation.dispatch(
       StackActions.replace('SeatSelect', {
         item1: item1,
@@ -109,6 +106,7 @@ const TimeSelect = ({ navigation }) => {
         thang: thang,
         nam: nam,
         gio:  gio,
+        thangSeat:thangSeat
       })
     );
   };
@@ -116,7 +114,7 @@ const TimeSelect = ({ navigation }) => {
    if (selectedNgay=='' || selectedGio=='') {
     ToastAndroid.show("Vui lòng chọn ngày và giờ", 1);
    }else{
-    navigateToSeatSelect(item1, item, idUser,selectedNgay.day,selectedNgay.month,selectedNgay.year,selectedGio.time)
+    navigateToSeatSelect(item1, item, idUser,selectedNgay.day,selectedNgay.month,selectedNgay.year,selectedGio.time,ngaySeat)
     
    }
    

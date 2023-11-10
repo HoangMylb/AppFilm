@@ -174,9 +174,30 @@ export const PhimProvider = (props) => {
         return { success: false };
     }
 }
-
+const getSeat = async (Phim,Rap,ngay, gio) => {
+    try {
+        const response = await customAxios().get(`/lichchieu?Phim=${Phim}&Rap=${Rap}&ngay=${ngay}&gio=${gio}`);
+      
+            return response;
+        
+    } catch (error) {
+        console.log('getSeat', error);
+        return null;
+    }
+}
+const updateSeat = async (phongId, gheIds,Phim ,Rap,ngay, gio) => {
+    try {
+        const response = await customAxios().put('/updateGhe',{phongId,gheIds,Phim ,Rap,ngay, gio});
+      
+            return response;
+        
+    } catch (error) {
+        console.log('updateSeat', error);
+        return null;
+    }
+}
     return (
-        <PhimContext.Provider value={{ getAllDV,phimSapChieu, getPhimHomeSC,phimDangChieu,getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich,getMangPhim,kiemTraYeuThich}}>
+        <PhimContext.Provider value={{updateSeat, getSeat,getAllDV,phimSapChieu, getPhimHomeSC,phimDangChieu,getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich,getMangPhim,kiemTraYeuThich}}>
             {children}
         </PhimContext.Provider>
     )

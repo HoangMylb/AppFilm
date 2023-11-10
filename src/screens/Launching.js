@@ -62,7 +62,9 @@ const Launching = ({ navigation }) => {
     <View style={{ flex: 1, backgroundColor: '#18191A' }}>
 
 
-      {isLoading ? (<Text style={{ color: 'white', fontSize: 16, marginLeft: 60, fontWeight: 'bold' }}>Đang tải ...</Text>) : (
+      {isLoading ? (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{color:'white'}}>Đang tải dữ liệu... </Text>
+        </View>) : (
         <><View style={{ flexDirection: 'row', alignItems: 'center', margin: 10, marginBottom: 10 }}>
           <TouchableOpacity onPress={nextTo}>
             <Image

@@ -18,10 +18,14 @@ import validator from 'validator';
 import { StackActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = (props) => {
-  
+
   const { navigation } = props;
   const [userName, setUserName] = useState('')
   const [passWord, setPassWord] = useState('')
+  const [emailError, setEmailError] = useState(null);
+  const [passError, setPassError] = useState(null);
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  // context
   const { login } = useContext(UserContext);
   const handleValidation = () => {
     if (validator.isEmail(userName)) {
@@ -33,26 +37,34 @@ const Login = (props) => {
     }
   };
   const clickNext = async () => {
-    if (userName == "" || passWord == "") {
-      ToastAndroid.show("Không để trống Email hoặc PassWord", 2);
-    } else {
+    if (userName == ""  ) {
+      setEmailError('Không để trống Email')
+      setPassError('')
+    } else if(passWord == ""){
+      setEmailError('')
+      setPassError('Không để trống PassWord')
+    }
+    else {
       if (handleValidation()) {
+        setEmailError('')
+        setPassError('')
         const res = await login(userName, passWord);
         if (res.success) {
           const userData = res.khach;
-
+          console.log("res.khach: "+res.khach);
           AsyncStorage.setItem('keepLogedIn', JSON.stringify(true));
           AsyncStorage.setItem('userData', JSON.stringify(userData));
-          console.log(" res.khach: "+ JSON.stringify(res.khach));
-          console.log("userData được lưu: "+ JSON.stringify(userData));
+          console.log(" res.khach: " + JSON.stringify(res.khach));
+          console.log("userData được lưu: " + JSON.stringify(userData));
           navigation.dispatch(StackActions.replace('Home'));
-          
+
           ToastAndroid.show("Đăng nhập thành công", 1);
         } else {
           ToastAndroid.show("Sai tài khoản hoặc mật khẩu", 1);
         }
       } else {
-        ToastAndroid.show("Email không hợp lệ", 1);
+        setEmailError("Email không hợp lệ")
+        setPassError('')
       }
     }
   };
@@ -81,7 +93,7 @@ const Login = (props) => {
           <View style={styles.loginForm}>
             <View style={styles.loginAccount}>
               {/* Input email*/}
-              <View style={styles.inputAccount}>
+              <View style={[styles.inputAccount,{borderColor: emailError ? 'red' : '#000000', borderWidth: 1  }]}>
                 <Image
                   style={styles.inputIcon}
                   source={{
@@ -96,8 +108,12 @@ const Login = (props) => {
                   onChangeText={setUserName}
                 />
               </View>
+              {emailError ? (
+                <Text style={{ marginTop: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}>{emailError}</Text>
+              ) : (<Text style={{ marginTop: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+              )}
               {/* Input password*/}
-              <View style={styles.inputAccount}>
+              <View style={[styles.inputAccount,{borderColor: passError ? 'red' : '#000000', borderWidth: 1  }]}>
                 <Image
                   style={styles.inputIcon}
                   source={{
@@ -107,12 +123,23 @@ const Login = (props) => {
                 <TextInput
                   style={styles.input}
                   placeholder="Mật khẩu"
-                  secureTextEntry={true}
+                  secureTextEntry={isPasswordHidden}
                   placeholderTextColor="black"
                   value={passWord}
                   onChangeText={setPassWord}
                 />
+                <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '85%' }} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
+                  <Image
+                    style={{ width: 22, height: 15, }}
+                    source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.' }}
+
+                  />
+                </TouchableOpacity>
               </View>
+              {passError ? (
+                <Text style={{ marginTop: 0, color: 'red', fontSize: 11, alignSelf: 'center' }}>{passError}</Text>
+              ) : (<Text style={{ marginTop: 0, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
+              )}
               <TouchableOpacity onPress={nextForgot} style={styles.forgotPassword}>
                 <Text style={{ color: '#E38025' }}>Quên mật khẩu</Text>
               </TouchableOpacity>
@@ -151,14 +178,14 @@ const Login = (props) => {
               <TouchableOpacity
                 onPress={clickNextTo}
                 style={{
-                 
+
                   width: 95,
                   height: 25,
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginLeft: 8,
-                 backgroundColor: '#E38025',
-                 borderRadius: 5
+                  backgroundColor: '#E38025',
+                  borderRadius: 5
                 }}>
                 <Text style={styles.txtRegister}> Đăng ký</Text>
               </TouchableOpacity>
@@ -189,7 +216,6 @@ const styles = StyleSheet.create({
     height: '40%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15
   },
   logo: {
     width: '40%',
@@ -197,6 +223,7 @@ const styles = StyleSheet.create({
   },
   // --------------------------
   scrollView: {
+
   },
   // Component chứa login form
   loginAccount: {
@@ -210,7 +237,8 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 40,
     backgroundColor: 'white',
-    marginTop: 10
+    marginTop: 5,
+    position: 'relative'
   },
   inputIcon: {
     width: 15, // Điều chỉnh kích thước của biểu tượng Email
@@ -229,7 +257,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     width: '90%',
-    marginTop: 10,
     marginBottom: 10
   },
   // button Account
@@ -247,7 +274,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Kanit',
     fontWeight: 'bold',
-    
+
   },
   // --------------------------
   loginSocial: {
@@ -260,22 +287,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 10
   },
   imgSocial: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginVertical: 10,
   },
   imgSocial2: {
     width: 50, // Độ rộng của đường viên
     height: 50, // Độ cao của đường viên
-    
-  
-   
+
+
+
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 10
+    marginHorizontal: 10
   },
   txtQuestion: {
     color: 'white',
