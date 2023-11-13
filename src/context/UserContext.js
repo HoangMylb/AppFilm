@@ -173,9 +173,9 @@ export const UserProvider = (props) => {
         }
     }
     
-    const sendOTP = async (email, trangThai) => {
+    const sendOTP = async (email, trangThai,nguoiDat,ngayDat, phongChieu, soLuong , ghe, xuatChieu,tien) => {
         try {
-            const respon = await customAxios().post('/otp/signup', { email, trangThai});
+            const respon = await customAxios().post('/otp/signup', { email, trangThai,nguoiDat,ngayDat, phongChieu, soLuong , ghe, xuatChieu,tien});
             if (respon.status) {
      
                 return { success: true, message: respon.data };

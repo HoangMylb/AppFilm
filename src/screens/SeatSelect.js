@@ -1,3 +1,4 @@
+
 import { StyleSheet, ToastAndroid, Text, View,Alert, SafeAreaView, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,10 +9,13 @@ import { format } from 'date-fns';
 import { ThanhToanContext } from '../context/ThanhToanContext'
 import { useStripe } from '@stripe/stripe-react-native';
 import { PhimContext } from '../context/PhimContext';
+import { UserContext } from '../context/UserContext';
 const SeatSelect = ({ navigation }) => {
     const route = useRoute();
     const { ThanhToan, newDonHang } = useContext(ThanhToanContext);
     const { getSeat, updateSeat } = useContext(PhimContext);
+    const { getId,sendOTP } = useContext(UserContext);
+    
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const item = route.params.item;
     const item1 = route.params.item1;
@@ -29,16 +33,35 @@ const SeatSelect = ({ navigation }) => {
     const [totalSeats, setTotalSeats] = useState(0);
     const [idPhong, setidPhong] = useState('')
     const [ArrayGhe, setArrayGhe] = useState('')
-    
+    const [phongChieu, setPhongChieu] = useState('')
     let idGheArray;
+    
+    const [email, setEmail] = useState('')
+    const [tenUser, setTenUser] = useState('')
+    const trangThai = "lịch sử";
+
+   
+    const handleSendHistory = async (email, trangThai,nguoiDat,ngayDat, phongChieu, soLuong , ghe, xuatChieu,tien) => {      
+    await sendOTP(email, trangThai,nguoiDat,ngayDat, phongChieu, soLuong , ghe, xuatChieu,tien);
+ 
+      }
     useEffect(() => {
         const seat = async () => {
             const a = await getSeat(item._id, item1._id,thangSeat, gio);
             setdataSeat(a[0].ghe);
             setidPhong(a[0]._id)
+            setPhongChieu(a[0].Phong);
+       
         };
+        const getEmail =async () =>{
+            const a = await getId(idUser);
+            setEmail(a.message.userName);
+            setTenUser(a.message.tenKhachHang);
+        }
+        getEmail()
         seat();
     }, []);
+  
     const updateSeated = async () => {
         const ghe = selectedSeats.map((seat) => seat._id);
    
@@ -104,7 +127,7 @@ const SeatSelect = ({ navigation }) => {
             })
         );
     };
-    const navigateToPayLosing = (user, phim, rapPhim, ngay, xuatChieu, ghe, soLuong, tien, idPhong, idGhe) => {
+    const navigateToPayLosing = (user, phim, rapPhim, ngay, xuatChieu, ghe, soLuong,phongChieu, tien, idPhong, idGhe, gio,thangSeat,tenUser) => {
         navigation.dispatch(
             StackActions.replace('PayLosing', {
                 user: user,
@@ -115,15 +138,20 @@ const SeatSelect = ({ navigation }) => {
                 ghe: ghe,
                 tien: tien,
                 soLuong: soLuong,
+                phongChieu:phongChieu,
                 tien: tien,
                 idPhong: idPhong,
-                idGhe: idGhe
+                idGhe: idGhe,
+                gio: gio,
+                thangSeat:thangSeat,
+                tenUser:tenUser
+
 
             })
         );
     };
-    const donHang = async (user, phim, rapPhim, ngayDat, xuatChieu, ghe, soLuong, tien) => {
-        const a = await newDonHang(user, phim, rapPhim, ngayDat, xuatChieu, ghe, soLuong, tien)
+    const donHang = async (user, phim, rapPhim, ngayDat, xuatChieu, ghe, soLuong, phongChieu, tien) => {
+        const a = await newDonHang(user, phim, rapPhim, ngayDat, xuatChieu, ghe, soLuong, phongChieu,tien)
         if (a.success) {
 
             ToastAndroid.show("Thanh toán thành công", 1)
@@ -157,13 +185,15 @@ const SeatSelect = ({ navigation }) => {
             if (paymentResponse.error) {
                 const now = new Date();
                 const ngayDat = format(now, 'p PP', { locale: viLocale });
-                navigateToPayLosing(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, tongTien, idPhong, selectedSeats)
+                navigateToPayLosing(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, phongChieu,tongTien, idPhong, selectedSeats,gio,thangSeat,tenUser)
                 ToastAndroid.show("Thanh toán thất bại", 1)
             } else {
                 updateSeated();
                 const now = new Date();
                 const ngayDat = format(now, 'p PP', { locale: viLocale });
-                donHang(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, tongTien)
+                handleSendHistory(email,trangThai,tenUser,ngayDat,phongChieu,totalSeats, ArrayGhe,gio + " - " + ngay + "/" + thang + "/" + nam,tongTien);
+                
+                donHang(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, phongChieu,tongTien)
                 
                 navigateToPaySuccess(formattedNumber, ngayDat)
 
