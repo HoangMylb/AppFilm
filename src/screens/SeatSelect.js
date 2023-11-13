@@ -1,4 +1,3 @@
-import { StyleSheet, ToastAndroid, Text, View, SafeAreaView, Image, TouchableOpacity,Alert, FlatList, ScrollView } from 'react-native'
 import { StyleSheet, ToastAndroid, Text, View,Alert, SafeAreaView, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import LinearGradient from 'react-native-linear-gradient';

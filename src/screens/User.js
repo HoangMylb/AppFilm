@@ -611,13 +611,16 @@ const User = props => {
                 <TouchableOpacity
                   style={[
                     styles.btnAccount,
-                    {width: 100, margin: 20, backgroundColor: '#990000'},
+                    {width: 100, margin: 20,},
                   ]}
                   onPress={handleActiveDangXuat}>
-                  <Text style={styles.btnTxt}>Ok</Text>
+                  <Text style={styles.btnTxt}>Xác nhận</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.btnAccount, {width: 100, margin: 20}]}
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,backgroundColor:'#da2530'},
+                  ]}
                   onPress={handleCancel}>
                   <Text style={styles.btnTxt}>Hủy</Text>
                 </TouchableOpacity>
@@ -638,7 +641,7 @@ const User = props => {
             <View style={styles.modalView}>
               {/* View chứa hình ảnh logon và text */}
               <View style={styles.logoContainer}>
-                <Text style={styles.title}>Cập nhật Họ và tên</Text>
+                <Text style={styles.title}>Cập nhật </Text>
               </View>
               <View style={styles.inputAccount}>
                 <Image
@@ -655,14 +658,24 @@ const User = props => {
                   onChangeText={setTenKhachHang2}
                 />
               </View>
-              <TouchableOpacity style={styles.btnAccount} onPress={changeHoTen}>
-                <Text style={styles.btnTxt}>Thay đổi</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.btnAccount}
-                onPress={handleAlertAction}>
-                <Text style={styles.btnTxt}>Hủy</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,},
+                  ]}
+                  onPress={changeHoTen}>
+                  <Text style={styles.btnTxt}>Xác nhận</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,backgroundColor:'#da2530'},
+                  ]}
+                  onPress={handleAlertAction}>
+                  <Text style={styles.btnTxt}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
@@ -679,7 +692,7 @@ const User = props => {
             <View style={styles.modalView}>
               {/* View chứa hình ảnh logon và text */}
               <View style={styles.logoContainer}>
-                <Text style={styles.title}>Cập nhật Số điện thoại</Text>
+                <Text style={styles.title}>Cập nhật</Text>
               </View>
               <View style={styles.inputAccount}>
                 <Image
@@ -696,14 +709,24 @@ const User = props => {
                   keyboardType="numeric"
                 />
               </View>
-              <TouchableOpacity style={styles.btnAccount} onPress={changeSDT}>
-                <Text style={styles.btnTxt}>Thay đổi</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.btnAccount}
-                onPress={handleAlertAction}>
-                <Text style={styles.btnTxt}>Hủy</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,},
+                  ]}
+                  onPress={changeSDT}>
+                  <Text style={styles.btnTxt}>Xác nhận</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,backgroundColor:'#da2530'},
+                  ]}
+                  onPress={handleAlertAction}>
+                  <Text style={styles.btnTxt}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
@@ -720,13 +743,14 @@ const User = props => {
             <View style={styles.modalView}>
               {/* View chứa hình ảnh logon và text */}
               <View style={styles.logoContainer}>
-                <Text style={styles.title}>Cập nhật Ngày sinh</Text>
+                <Text style={styles.title}>Cập nhật</Text>
               </View>
               <View style={styles.inputAccount}>
                 <Image
                   style={styles.inputIcon}
                   source={{
-                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
+                    uri:'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2Fcalender.png?alt=media&token=52811058-2d3a-4fcd-8b2f-202c20f95924&_gl=1*1eif0sl*_ga*ODc4NjkwNDYzLjE2OTc4ODI4NzE.*_ga_CW55HF8NVT*MTY5ODc0OTY3OC44LjEuMTY5ODc0OTk1Ny40My4wLjA.',
+
                   }}
                 />
                 {showPicker && (
@@ -752,16 +776,24 @@ const User = props => {
                   </Pressable>
                 )}
               </View>
-              <TouchableOpacity
-                style={styles.btnAccount}
-                onPress={changeNgaySinh}>
-                <Text style={styles.btnTxt}>Thay đổi</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.btnAccount}
-                onPress={handleAlertAction}>
-                <Text style={styles.btnTxt}>Hủy</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,},
+                  ]}
+                  onPress={changeNgaySinh}>
+                  <Text style={styles.btnTxt}>Xác nhận</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,backgroundColor:'#da2530'},
+                  ]}
+                  onPress={handleAlertAction}>
+                  <Text style={styles.btnTxt}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
@@ -778,7 +810,7 @@ const User = props => {
             <View style={styles.modalView}>
               {/* View chứa hình ảnh logon và text */}
               <View style={styles.logoContainer}>
-                <Text style={styles.title}>Cập nhật Email</Text>
+                <Text style={styles.title}>Cập nhật</Text>
               </View>
               <View style={styles.inputAccount}>
                 <Image
@@ -794,14 +826,24 @@ const User = props => {
                   onChangeText={setuserName2}
                 />
               </View>
-              <TouchableOpacity style={styles.btnAccount} onPress={changeEmail}>
-                <Text style={styles.btnTxt}>Thay đổi</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.btnAccount}
-                onPress={handleAlertAction}>
-                <Text style={styles.btnTxt}>Hủy</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,},
+                  ]}
+                  onPress={changeEmail}>
+                  <Text style={styles.btnTxt}>Xác nhận</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,backgroundColor:'#da2530'},
+                  ]}
+                  onPress={handleAlertAction}>
+                  <Text style={styles.btnTxt}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
@@ -818,7 +860,7 @@ const User = props => {
             <View style={styles.modalView}>
               {/* View chứa hình ảnh logon và text */}
               <View style={styles.logoContainer}>
-                <Text style={styles.title}>Cập nhật Giới tinh</Text>
+                <Text style={styles.title}>Cập nhật</Text>
               </View>
               <View style={styles.genderContainer}>
                 <Text style={styles.sex}>Giới tính (Tùy chọn)</Text>
@@ -849,16 +891,24 @@ const User = props => {
                   </TouchableWithoutFeedback>
                 </View>
               </View>
-              <TouchableOpacity
-                style={styles.btnAccount}
-                onPress={changeGioTinh}>
-                <Text style={styles.btnTxt}>Thay đổi</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.btnAccount}
-                onPress={handleAlertAction}>
-                <Text style={styles.btnTxt}>Hủy</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,},
+                  ]}
+                  onPress={changeHoTen}>
+                  <Text style={styles.btnTxt}>Xác nhận</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,backgroundColor:'#da2530'},
+                  ]}
+                  onPress={handleAlertAction}>
+                  <Text style={styles.btnTxt}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
@@ -875,13 +925,13 @@ const User = props => {
             <View style={styles.modalView}>
               {/* View chứa hình ảnh logon và text */}
               <View style={styles.logoContainer}>
-                <Text style={styles.title}>Cập nhật Password</Text>
+                <Text style={styles.title}>Cập nhật</Text>
               </View>
               <View style={styles.inputAccount}>
                 <Image
                   style={styles.inputIcon}
                   source={{
-                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/logoPassword.png?alt=media&token=3b71665d-b37b-49b8-9cfa-d98b52532b7f&_gl=1*1wwkmox*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5Njk0Njg5OS4yNi4xLjE2OTY5NDgzNjYuNDUuMC4w',
                   }}
                 />
                 <TextInput
@@ -896,7 +946,7 @@ const User = props => {
                 <Image
                   style={styles.inputIcon}
                   source={{
-                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Register%2FuserRegister.png?alt=media&token=5a7226fd-0368-4b3e-be76-f96190c7862a&_gl=1*5qnrvv*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NzAzMjg5OC4yOC4xLjE2OTcwMzQ2NjMuNTIuMC4w',
+                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/logoPassword.png?alt=media&token=3b71665d-b37b-49b8-9cfa-d98b52532b7f&_gl=1*1wwkmox*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5Njk0Njg5OS4yNi4xLjE2OTY5NDgzNjYuNDUuMC4w',
                   }}
                 />
                 <TextInput
@@ -907,16 +957,24 @@ const User = props => {
                   onChangeText={setRePassWord}
                 />
               </View>
-              <TouchableOpacity
-                style={styles.btnAccount}
-                onPress={changePassWord}>
-                <Text style={styles.btnTxt}>Thay đổi</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.btnAccount}
-                onPress={handleAlertAction}>
-                <Text style={styles.btnTxt}>Hủy</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,},
+                  ]}
+                  onPress={changeHoTen}>
+                  <Text style={styles.btnTxt}>Xác nhận</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.btnAccount,
+                    {width: 100, margin: 20,backgroundColor:'#da2530'},
+                  ]}
+                  onPress={handleAlertAction}>
+                  <Text style={styles.btnTxt}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
@@ -992,7 +1050,7 @@ const styles = StyleSheet.create({
     width: '70%',
     height: '7%',
     borderRadius: 12,
-    backgroundColor: '#990000',
+    backgroundColor: '#da2530',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '40%',
@@ -1023,6 +1081,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     marginTop: 40,
     marginBottom: 10,
+    textAlign: 'center'
   },
   //  Text input
   inputAccount: {
@@ -1083,8 +1142,8 @@ const styles = StyleSheet.create({
   btnAccount: {
     borderRadius: 12,
     height: 40,
-    width: 200,
-    backgroundColor: '#E38025',
+    width: 100,
+    backgroundColor: '#37c85d',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,
