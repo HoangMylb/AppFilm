@@ -39,6 +39,7 @@ import SplashScreen2 from './src/screens/SplashScreen2'
 import ForgetpassWordOtp from './src/screens/ForgetpassWordOtp'
 import ForgotpassWord from './src/screens/ForgotpassWord'
 import SubmitPassword from './src/screens/SubmitPassword'
+import LoginGoogle from './src/screens/LoginGoogle'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -189,79 +190,79 @@ const App = () => {
   return (
 
 
-    //<Location/>
-    <UserProvider>
-      <PhimProvider>
-        <ThanhToanProvider>
-          <TinTucProvider>
-            <StripeProvider publishableKey={STRIPE_KEY}>
-              <NavigationContainer>
+    <LoginGoogle />
+    // <UserProvider>
+    //   <PhimProvider>
+    //     <ThanhToanProvider>
+    //       <TinTucProvider>
+    //         <StripeProvider publishableKey={STRIPE_KEY}>
+    //           <NavigationContainer>
 
-                {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
-                  <Stack.Screen name="Splash2" component={SplashScreen2} options={{ headerShown: false }} />
-                ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab
-                  <Stack.Navigator initialRouteName="Splash">
-                    <Stack.Screen name="Splash2" component={SplashScreen2} options={{ headerShown: false }} />
-                    <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
-                    <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
-                    <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
-                    <Stack.Screen name="ThongBao" component={ThongBao} options={{ headerShown: false }} />
+    //             {isLoading ? ( // Nếu isLoading là true, hiển thị SplashScreen
+    //               <Stack.Screen name="Splash2" component={SplashScreen2} options={{ headerShown: false }} />
+    //             ) : data ? ( // Nếu đã đăng nhập, hiển thị MyTab
+    //               <Stack.Navigator initialRouteName="Splash">
+    //                 <Stack.Screen name="Splash2" component={SplashScreen2} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="ThongBao" component={ThongBao} options={{ headerShown: false }} />
 
-                    <Stack.Screen name="ForgetpassWordOtp" component={ForgetpassWordOtp} options={{ headerShown: false }} />
-                    <Stack.Screen name="ForgotpassWord" component={ForgotpassWord} options={{ headerShown: false }} />
-                    <Stack.Screen name="SubmitPassword" component={SubmitPassword} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="ForgetpassWordOtp" component={ForgetpassWordOtp} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="ForgotpassWord" component={ForgotpassWord} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="SubmitPassword" component={SubmitPassword} options={{ headerShown: false }} />
 
-                    <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
-                    <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
-                    <Stack.Screen name="BuyTicketsSC" component={BuyTicketsSC} options={{ headerShown: false }} />
-                    <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
-                    <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
-                    <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
-                    <Stack.Screen name="Comings" component={Comings} options={{ headerShown: false }} />
-                    <Stack.Screen name="Launching" component={Launching} options={{ headerShown: false }} />
-                    <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
-                    <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-                    <Stack.Screen name="PayLosing" component={PayLosing} options={{ headerShown: false }} />
-                    <Stack.Screen name="PaySuccess" component={PaySuccess} options={{ headerShown: false }} />
-                    <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                    <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }} />
-                    <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }} />
-                    <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-                  </Stack.Navigator>
-                ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
-                  <Stack.Navigator
-                    initialRouteName="Splash"
-                  >
-                    <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-                    <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                    <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-                    <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
-                    <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
-                    <Stack.Screen name="ThongBao" component={ThongBao} options={{ headerShown: false }} />
-                    <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
-                    <Stack.Screen name="PayLosing" component={PayLosing} options={{ headerShown: false }} />
-                    <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
-                    <Stack.Screen name="PaySuccess" component={PaySuccess} options={{ headerShown: false }} />
-                    <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
-                    <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
-                    <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
-                    <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
-                    <Stack.Screen name="ForgetpassWordOtp" component={ForgetpassWordOtp} options={{ headerShown: false }} />
-                    <Stack.Screen name="ForgotpassWord" component={ForgotpassWord} options={{ headerShown: false }} />
-                    <Stack.Screen name="SubmitPassword" component={SubmitPassword} options={{ headerShown: false }} />
-                    <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
-                    <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }} />
-                    <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }} />
-                    <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
-                    <Stack.Screen name="BuyTicketsSC" component={BuyTicketsSC} options={{ headerShown: false }} />
-                  </Stack.Navigator>
-                )}
-              </NavigationContainer>
-            </StripeProvider>
-          </TinTucProvider>
-        </ThanhToanProvider>
-      </PhimProvider>
-    </UserProvider>
+    //                 <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="BuyTicketsSC" component={BuyTicketsSC} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="Comings" component={Comings} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="Launching" component={Launching} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="PayLosing" component={PayLosing} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="PaySuccess" component={PaySuccess} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+    //               </Stack.Navigator>
+    //             ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
+    //               <Stack.Navigator
+    //                 initialRouteName="Splash"
+    //               >
+    //                 <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="TinTuc" component={TinTuc} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="ThongBao" component={ThongBao} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="PayLosing" component={PayLosing} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="PaySuccess" component={PaySuccess} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="TicketsYeuThich" component={TicketYeuThich} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="BuyTickets" component={BuyTickets} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="News" component={News} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="ForgetpassWordOtp" component={ForgetpassWordOtp} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="ForgotpassWord" component={ForgotpassWord} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="SubmitPassword" component={SubmitPassword} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="DetailNews" component={DetailNews} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
+    //                 <Stack.Screen name="BuyTicketsSC" component={BuyTicketsSC} options={{ headerShown: false }} />
+    //               </Stack.Navigator>
+    //             )}
+    //           </NavigationContainer>
+    //         </StripeProvider>
+    //       </TinTucProvider>
+    //     </ThanhToanProvider>
+    //   </PhimProvider>
+    // </UserProvider>
   )
 }
 
