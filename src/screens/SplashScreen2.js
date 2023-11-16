@@ -1,13 +1,13 @@
 import { Image, ImageBackground, StyleSheet, Text, View,} from 'react-native'
 import React, { useEffect } from 'react';
 import { StackActions } from '@react-navigation/native';
-const SplashScreen = (props) => {
+const SplashScreen2 = (props) => {
     const {navigation} = props;
 
     useEffect(() => {
         setTimeout(() => {
          
-          navigation.dispatch(StackActions.replace('Login'));
+          navigation.dispatch(StackActions.replace('Home'));
         }, 1000); // Chuyển đến màn hình Login sau 3 giây
       }, []);
   return (
@@ -21,7 +21,7 @@ const SplashScreen = (props) => {
   )
 }
 
-export default SplashScreen
+export default SplashScreen2
 
 const styles = StyleSheet.create({
     imgBackground:{

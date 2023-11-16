@@ -16,12 +16,8 @@ const movieList = [
     url: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/movie3.png?alt=media&token=e0604275-ad78-4f05-944f-70fd0f8ee123&_gl=1*i6m1ny*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NTk5Mzg1Mi4xMC4xLjE2OTU5OTUwMDMuNjAuMC4w',
     start:
       'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/start3.png?alt=media&token=976ee840-069c-4348-8859-20bdcae601c1&_gl=1*17asp4i*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NjAwNTY5My.4xMS4xLjE2OTYwMDU4MTQuNDcuMC4w',
-  },{
-    name: 'Tiệc Trăng Thiến',
-    url: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/movie3.png?alt=media&token=e0604275-ad78-4f05-944f-70fd0f8ee123&_gl=1*i6m1ny*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NTk5Mzg1Mi4xMC4xLjE2OTU5OTUwMDMuNjAuMC4w',
-    start:
-      'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/start3.png?alt=media&token=976ee840-069c-4348-8859-20bdcae601c1&_gl=1*17asp4i*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NjAwNTY5My.4xMS4xLjE2OTYwMDU4MTQuNDcuMC4w',
   },
+ 
 ];
 
 export default movieList;

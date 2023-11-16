@@ -1,39 +1,73 @@
-import { StyleSheet, SafeAreaView, Text, View, FlatList, Image } from 'react-native'
-import React, { useState } from 'react'
-import movieList from '../data/movieItem';
+import { StyleSheet, SafeAreaView, Text, View, FlatList, Image, TouchableOpacity } from 'react-native'
+import React, { useContext, useState, useEffect } from 'react'
 
-const News = () => {
-    const [movie, setMovie] = useState(movieList);
+import { TinTucContext } from '../context/TinTucContext';
 
+const News = ({navigation }) => {
+    const [movie, setMovie] = useState('');
+    const { getAllTinTuc } = useContext(TinTucContext);
+    const [loading, setLoading] = useState(true); // Thêm state loading
+
+    const getAll = async () => {
+        const a = await getAllTinTuc();
+        if (a.success) {
+            setMovie(a.message);
+        }
+        setLoading(false); // Đánh dấu rằng đã kết thúc loading
+    }
+
+    useEffect(() => {
+        getAll();
+    }, [])
+    const onPressItem = (item) => {
+        navigation.navigate('DetailNews', { item});
+    };
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <View style={styles.iconBack}>
-                    <Text style={{ marginTop: '20%', marginLeft: '20%',color:'#000' }}>Icon</Text>
-                </View>
-                <Text style={{ lineHeight: 40, fontWeight: '700' }}>Tin Tức</Text>
-                <Text style={{ width: 44, }}></Text>
+                <Text style={{ lineHeight: 30, fontWeight: '700', color: 'white', fontSize: 20, alignItems:'center',justifyContent:'center' }}>Tin Tức </Text>
             </View>
-            <FlatList
-                style={{marginHorizontal:10}}
+            {loading ? ( // Kiểm tra nếu đang loading thì hiển thị thông báo hoặc spinner
+                <View style = {{flex: 1,justifyContent:'center',alignItems:'center'}}>
+                <Text style={{color:'white'}}>Đang tải dữ liệu... </Text>
+                </View>
+            ) : (
+                <FlatList
+
                     numColumns={1}
                     data={movie}
-                    keyExtractor={item => item.name}
-                    renderItem={renderItem}
+                    keyExtractor={item => item._id}
+                    renderItem={({ item }) => (
+                        <View style={{ marginBottom: 10 }}>
+                            <TouchableOpacity  onPress={() => onPressItem(item)}>
+                                <View style={{ width: '90%', height: 255, backgroundColor: '#222220', marginTop: 20, marginLeft: 20, borderRadius: 12 }}>
+                                    {item.image ? (
+                                        <Image style={{ width: '100%', height: 180, resizeMode: 'cover' }} source={{ uri: item.image }} />
+                                    ) : (
+                                        <Text style={{ color: 'white' }}>Đang tải</Text>
+                                    )}
+                                    <Text style={{ marginTop: '2%', marginLeft: '2%', width: '96%', fontSize: 17, color: 'white' }}>{item.title}</Text>
+
+                                    <Text style={{ marginTop: 'auto', marginBottom: '2%', marginLeft: '75%', fontSize: 13, color: '#E38025', fontWeight: '600' }}>Xem thêm  </Text>
+
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    )}
                 />
-           
-                
+            )}
         </View>
     )
 }
 
 export default News
 
+
 const styles = StyleSheet.create({
     iconBack: {
         width: 44,
         height: 44,
-        backgroundColor: '#fff', 
+        backgroundColor: '#fff',
         borderRadius: 50,
 
 
@@ -44,30 +78,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         width: '100%',
         height: 44,
-        marginTop:'4%'
+        marginTop: '4%'
     },
 
     container: {
         display: 'flex',
-        flex:1,
-        backgroundColor: '#E5C4C4'
+        flex: 1,
+        backgroundColor: '#18191A'
     },
 })
 
 
-const renderItem = ({ item }) => {
 
-    return (
-        <View
-        >
-            <View style={{ width: '90%', height: 255, backgroundColor: 'white', marginTop: 20, marginLeft: 20, borderRadius: 12 }}>
-                <Image style={{ width: '100%', height: '70%',objectFit:'cover' }} source={{uri:item.url}}></Image>
-
-                <Text style={{ marginTop:'2%', marginLeft: '2%', width: '96%', height: 30 }}>{item.name}</Text>
-
-                <Text  style={{ marginLeft:'72%', width: '30%', height: 30,color:'red',fontWeight:'600' }}>Xem thêm  </Text>
-            </View>
-        </View>
-    );
-};
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,79 +7,148 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  ScrollView,
+  ScrollView, ActivityIndicator
 } from 'react-native';
-import movieList from '../data/movieItem';
 import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';
-
+import MovieItem from '../renderItem/renderMovie';
+import DirectorItem from '../renderItem/renderDirector';
+import { UserContext } from '../context/UserContext';
+import { PhimContext } from '../context/PhimContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import MovieItem2 from '../renderItem/renderMovie2';
 const Home = (props) => {
+  const { navigation } = props;
+  //phim
+  const { getPhimHome,getPhimHomeSC,getAllDV } = useContext(PhimContext);
+  const [dataPhim, setDataPhim] = useState('')
+  const [dataPhim2, setDataPhim2] = useState('')
+  //user
+  const { getId } = useContext(UserContext);
+  const [tenKhachHang, settenKhachHang] = useState('')
+  const [hinhAnh, setHinhAnh] = useState('')
+  const [data2, setData2] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  //ham cua Phim
+  const clickNextAll = () => {
+    navigation.navigate('Launching');
+  };
+  const clickNextAll2 = () => {
+    navigation.navigate('Comings');
+  };
+  const phimHome = async () => {
+    const a = await getPhimHome();
+    if (a.success) {
+      setDataPhim(a.message)
+    } else {
+      console.log("Khong lay duoc Phim: " + JSON.stringify(a.success));
 
-  const {navigation} = props;
+    }
+
+  };
+  const phimHomeSC = async () => {
+    const a = await getPhimHomeSC();
+    if (a.success) {
+      setDataPhim2(a.message)
+    } else {
+      console.log("Khong lay duoc Phim: " + JSON.stringify(a.success));
+
+    }
+
+  };
+  //ket thuc ham cua Phim
+  const fetchData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('keepLogedIn');
+      const storedData2 = await AsyncStorage.getItem('userData');
+      if (storedData !== false) {
+        setData2(JSON.parse(storedData2));
+      }
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+    } finally {
+      setIsLoading(false); // Đã tải xong dữ liệu từ AsyncStorage
+    }
+  };
+  const nextToo = async () => {
+    const a = await getId(data2._id);
+    if (a.success) {
+      console.log("getIda1: " + JSON.stringify(a.message._id));
+      settenKhachHang(a.message.tenKhachHang)
+      setHinhAnh(a.message.hinhAnh)
+    } else {
+      console.log("getIdSai: " + JSON.stringify(a.success));
+
+    }
+
+  };
+  //console.log("khachHome: "+JSON.stringify(khachHang));
+  useEffect(() => {
+    fetchData();
+
+    if (!isLoading) {
+      nextToo();
+      phimHome();
+      phimHomeSC();
+      getDienVien();
+    }
+  }, [isLoading]);
+
+
   // data phim
-  const [movie, setMovie] = useState(movieList);
-  const [director, setDirector] = useState(directorList);
-  const [actor, setActor] = useState(actorList);
+
+  const [director, setDirector] = useState('');
+
+  const getDienVien = async () => {
+    const a = await getAllDV();
+    if (a.success) {
+      setDirector(a.message)
+    } else {
+      console.log("Khong lay duoc DienVien: " + JSON.stringify(a.success));
+    }
+
+  };
+  const renderItem1 = ({ item }) => {
+    return <DirectorItem item={item} />; // Sử dụng MovieItem component
+  };
 
 
   const clickNext = () => {
     navigation.navigate('User');
   };
 
-  const renderItem = ({item}) => {
-    return (
-      
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <Image
-          style={{
-            width: 120,
-            height: 200,
-            resizeMode: 'cover',
-            borderRadius: 12,
-            margin: 10,
-          }}
-          source={{uri: item.url}}
-        />
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 16,
-          }}>
-          {item.name}
-        </Text>
-        <Image
-          style={{
-            width: 90,
-            height: 14,
-            resizeMode: 'cover',
-          }}
-          source={{uri: item.start}}
-        />
-      </View>
-    );
-  };
+ 
 
+  
   return (
     <SafeAreaView style={styles.container}>
-
-      <ScrollView>
+      <ScrollView >
         <View style={styles.screen}>
           {/* HEADER */}
           <View style={styles.header}>
             <View style={styles.txtHeader}>
-              <Text style={styles.txt1}>Xin chào, Phúc</Text>
+
+              <Text style={styles.txt1}>Xin chào, {tenKhachHang} </Text>
+
               <Text style={styles.txt2}>Đặt vé xem phim thôi nào</Text>
             </View>
-            <TouchableOpacity onPress={clickNext}>
-            <Image
-              style={styles.imgHeader}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/ImageUser.png?alt=media&token=07b4b15d-4dcf-402b-88c0-87a987022e19&_gl=1*30vg5j*_ga*MTQ3NDUwNTMwMy4xNjk1NDY4NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkwOTQyOC4zOS4wLjA.',
-              }}
-            />
-            </TouchableOpacity>
-              
-            
+            {isLoading ? (
+              <ActivityIndicator size="large" color="blue" />
+            ) :
+              <TouchableOpacity onPress={clickNext}>
+
+                {hinhAnh ? ( // Check if hinhAnh is not empty
+                  <Image
+                    style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'red' }}
+                    source={{ uri: hinhAnh }}
+                  />
+                ) : (
+                  // Handle the case when hinhAnh is empty
+                  <Text style={{ color: 'white' }}>Đang tải</Text>
+                )}
+              </TouchableOpacity>
+            }
+
           </View>
           {/* ... */}
           {/* MOVIE thứ 1 */}
@@ -89,15 +158,9 @@ const Home = (props) => {
 
             {/* Danh sách phim đang chiếu */}
             <View style={styles.headerMovie}>
-              <Text style={{fontSize: 24, color: '#000000'}}>Đang chiếu</Text>
-              <Image
-                style={{width: 77, height: 1}}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Line.png?alt=media&token=5e09f7de-ab43-40cd-a64a-60ecceeff5c5&_gl=1*w0d55j*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY8NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkxMTU4NS40My4wLjA.',
-                }}
-              />
-              <TouchableOpacity>
-                <Text style={{fontSize: 13, color: '#CE1212'}}>
+              <Text style={{ fontSize: 24, color: 'white' }}>Đang chiếu</Text>
+              <TouchableOpacity onPress={clickNextAll}>
+                <Text style={{ fontSize: 13, color: '#E38025' }}>
                   Xem tất cả &gt;
                 </Text>
               </TouchableOpacity>
@@ -105,70 +168,52 @@ const Home = (props) => {
 
             {/* Phim */}
             <FlatList
-              style={{flex: 1}}
               horizontal
-              data={movie}
-              keyExtractor={item => item.name}
-              renderItem={renderItem}
+              data={dataPhim}
+              keyExtractor={(item, index) => item.tenPhim + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
+              renderItem={({ item }) => (
+                <MovieItem item={item} navigation={navigation} idUser={data2._id} />
+              )}
             />
           </View>
+          {/* MOVIE Sắp chiếu */}
+          <View style={styles.movie}>
+            {/* Danh sách phim đang chiếu */}
+            <View style={styles.headerMovie}>
+              <Text style={{ fontSize: 24, color: 'white' }}>Sắp chiếu</Text>
+              <TouchableOpacity onPress={clickNextAll2}>
+                <Text style={{ fontSize: 13, color: '#E38025' }}>
+                  Xem tất cả &gt;
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-          {/* Danh sách phim thứ 2 */}
+            {/* Phim */}
+            <FlatList
+              horizontal
+              data={dataPhim2}
+              keyExtractor={(item, index) => item.tenPhim + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
+              renderItem={({ item }) => (
+                <MovieItem2 item={item} navigation={navigation} idUser={data2._id} />
+              )}
+            />
+          </View>
+          {/* Danh sách dien vien */}
           <View style={styles.director}>
             {/* Tiêu đề */}
             <View style={styles.headerDirector}>
-              <Text style={{fontSize: 24, color: '#000000'}}>Đạo diễn   </Text>
-              <Image
-                style={{width: 77, height: 1}}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Line.png?alt=media&token=5e09f7de-ab43-40cd-a64a-60ecceeff5c5&_gl=1*w0d55j*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY8NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkxMTU4NS40My4wLjA.',
-                }}
-              />
-              <TouchableOpacity>
-                <Text style={{fontSize: 13, color: '#CE1212'}}>
-                  Xem tất cả &gt;
-                </Text>
-              </TouchableOpacity>
+              <Text style={{ fontSize: 24, color: 'white' }}>Diễn viên</Text>
             </View>
-            {/* Danh sách phim */}
             <FlatList
-              style={{flex: 1}}
               horizontal
               data={director}
-              keyExtractor={item => item.name}
-              renderItem={renderItem}
+              keyExtractor={(item, index) => item.Dic + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
+              renderItem={renderItem1}
             />
           </View>
 
-          {/* Danh sách phim thứ 3 */}
-          <View style={styles.actor}>
-            {/* Tiêu đề */}
-            <View style={styles.headerActor}>
-              <Text style={{fontSize: 24, color: '#000000'}}>Đang chiếu</Text>
-              <Image
-                style={{width: 77, height: 1}}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Line.png?alt=media&token=5e09f7de-ab43-40cd-a64a-60ecceeff5c5&_gl=1*w0d55j*_ga*MTQ3NDUwNTMwMy.4xNjk1NDY8NDE5*_ga_CW55HF8NVT*MTY5NTkwOTAwNS45LjEuMTY5NTkxMTU4NS40My4wLjA.',
-                }}
-              />
-              <TouchableOpacity>
-                <Text style={{fontSize: 13, color: '#CE1212'}}>
-                  Xem tất cả &gt;
-                </Text>
-              </TouchableOpacity>
-            </View>
-            {/* Danh sách phim */}
-            <FlatList
-              style={{flex: 1}}
-              horizontal
-              data={actor}
-              keyExtractor={item => item.name}
-              renderItem={renderItem}
-            />
-          </View>
         </View>
       </ScrollView>
-                
     </SafeAreaView>
   );
 };
@@ -178,7 +223,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#18191A',
   },
 
   screen: {
@@ -190,6 +235,10 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+
+  },
+  txtHeader: {
+
   },
   imgHeader: {
     width: 50,
@@ -200,46 +249,50 @@ const styles = StyleSheet.create({
 
   txt1: {
     fontSize: 22,
-    color: '#000000',
+    color: '#ffffff',
     fontFamily: 'Roboto',
   },
   txt2: {
     fontSize: 12,
     fontFamily: 'Roboto',
-    color: '#635F5B',
+    color: '#C57831',
   },
 
   // Movie
 
   txtRap: {
     marginTop: 15,
-    fontSize: 30,
+    fontSize: 32,
     fontFamily: 'Roboto',
-    color: '#000000',
+    color: '#ffffff',
   },
 
   headerMovie: {
-    marginTop: 15,
+    marginTop: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
 
   headerDirector: {
-    marginTop: 15,
+    marginTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
 
   headerActor: {
-    marginTop: 15,
+    marginTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
 
-  actor:{
+  actor: {
+    marginBottom: 20,
+  },
+
+  director: {
     marginBottom: 20,
   }
 });

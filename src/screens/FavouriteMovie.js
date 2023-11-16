@@ -1,28 +1,108 @@
-import { StyleSheet, SafeAreaView, Text, View, FlatList, Image } from 'react-native'
-import React, { useState } from 'react'
-import movieList from '../data/movieItem';
+import { StyleSheet, SafeAreaView, Text, View, FlatList, Image, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState, useContext } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
 
-const FavouriteMovie = () => {
-    const [movie, setMovie] = useState(movieList);
+import { PhimContext } from '../context/PhimContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const FavouriteMovie = ({navigation }) => {
 
+    const [movie2, setMovie2] = useState('');
+   
+    const { getYeuThich, getMangPhim } = useContext(PhimContext);
+    const [data2, setData2] = useState('');
+    const fetchData = async () => {
+        try {
+            const storedData = await AsyncStorage.getItem('keepLogedIn');
+            const storedData2 = await AsyncStorage.getItem('userData');
+            if (storedData !== false) {
+                setData2(JSON.parse(storedData2));
+            }
+        } catch (error) {
+            // Xử lý lỗi nếu cần
+        }
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchData();
+            // Đoạn mã dưới đây sẽ được chạy khi bạn chuyển qua màn hình khác.
+            return () => {
+
+            };
+        }, [])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+
+            if (data2._id) {
+                // data2._id tồn tại, bạn có thể gọi yeuthich() ở đây
+                yeuthich();
+
+            }
+            // Đoạn mã dưới đây sẽ được chạy khi bạn chuyển qua màn hình khác.
+            return () => {
+
+            };
+        }, [data2._id])
+    );
+
+    const yeuthich = async () => {
+        const a = await getYeuThich(data2._id);
+        if (a.success) {
+            //Sử dụng .flat() sau .map() sẽ làm phẳng mảng lồng mảng và trả về một mảng mới chứa các chuỗi _id.
+            const phimArrays = a.message.map(item => item.phim).flat();
+            hienYeuThich(phimArrays);
+        } else {
+
+        }
+    }
+    const hienYeuThich = async (_id) => {
+        const a = await getMangPhim(_id);
+        if (a.success) {
+            setMovie2(a.message);
+
+        } else {
+            console.log("getIdSai: " + JSON.stringify(a.success));
+
+        }
+    }
+
+    const onPressItem = (item) => {
+        console.log("Item: "+item.trangThai);
+        if (item.trangThai==="Đang chiếu") {
+            navigation.navigate('TicketsYeuThich', { item, idUser: data2._id });
+        }else{
+            navigation.navigate('TicketYeuThichSC', { item, idUser: data2._id });
+        }
+        
+    };
     return (
         <View style={styles.container}>
-            {/* <View style={styles.header}>
-                <View style={styles.iconBack}>
-                    <Text style={{ marginTop: '20%', marginLeft: '20%',color:'white' }}>Icon</Text>
-                </View>
-                <Text style={{ lineHeight: 40, fontWeight: '700' }}>Yêu Thích</Text>
-                <Text style={{ width: 44, }}></Text>
-            </View> */}
+            <Text style={{ fontSize: 20, fontWeight: '700', alignSelf: 'center', color: 'white', marginTop: 20 }}>Phim yêu thích </Text>
 
-           
-                <FlatList
-                style={{marginHorizontal:10}}
-                    numColumns={3}
-                    data={movie}
-                    keyExtractor={item => item.name}
-                    renderItem={renderItem}
-                />
+            <FlatList
+            style={{alignSelf: 'center'}}
+                numColumns={2}
+                data={movie2}
+                keyExtractor={item => item._id}
+                renderItem={({ item }) => (
+                    <View>
+                        <TouchableOpacity onPress={() => onPressItem(item)}>
+                            <View style={{ backgroundColor: 'black', margin: 20, borderRadius: 12, }}>
+                                <Image style={{ width: 120, height: 200, resizeMode: 'cover', borderRadius: 12, borderTopLeftRadius: 12, borderTopRightRadius: 12 }} src={item.poster}/>
+
+                                <Image
+                                    style={{ width: 20, height: 20, margin: 5 }}
+                                    source={{
+
+                                        uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/FavouriteMovie%2Fimage%2013.png?alt=media&token=086dcd3c-ef65-4fe7-9842-aaf71cf05a69&_gl=1*lvndtu*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5ODA5OTY5NC4yNi4xLjE2OTgxMDMwMDIuNDUuMC4w'
+                                    }}
+                                />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                )}
+            />
         </View>
     )
 }
@@ -33,41 +113,17 @@ const styles = StyleSheet.create({
     iconBack: {
         width: 44,
         height: 44,
-        backgroundColor: '#E5C4C4', 
+        backgroundColor: '#E5C4C4',
         opacity: 0.7,
         borderRadius: 50,
-
-
     },
-    header: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
-        height: 44,
-        marginTop:'4%'
-    },
-
     container: {
-        display: 'flex',
-        flex:1,
-        backgroundColor: '#E5C4C4'
+        flex: 1,
+        backgroundColor: '#18191A',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 })
 
 
-const renderItem = ({ item }) => {
-
-    return (
-        <View
-        >
-
-            <View style={{ width: 114, height: 197, backgroundColor: 'black', marginTop: 20, marginLeft: 7, borderRadius: 12 }}>
-                <Image style={{ width: '100%', height: '90%', borderTopLeftRadius: 12, borderTopRightRadius: 12 }} src={item.url}></Image>
-
-                <Text style={{ marginLeft: '10%', width: 18, height: 18, color: 'pink' }}>❤</Text>
-            </View>
-        </View>
-    );
-};
 
