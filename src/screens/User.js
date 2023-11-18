@@ -897,7 +897,7 @@ const User = props => {
                     styles.btnAccount,
                     {width: 100, margin: 20,},
                   ]}
-                  onPress={changeHoTen}>
+                  onPress={changeGioTinh}>
                   <Text style={styles.btnTxt}>Xác nhận</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -963,7 +963,7 @@ const User = props => {
                     styles.btnAccount,
                     {width: 100, margin: 20,},
                   ]}
-                  onPress={changeHoTen}>
+                  onPress={changePassWord}>
                   <Text style={styles.btnTxt}>Xác nhận</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
