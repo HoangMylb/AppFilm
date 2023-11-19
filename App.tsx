@@ -41,7 +41,7 @@ import ForgotpassWord from './src/screens/ForgotpassWord'
 import SubmitPassword from './src/screens/SubmitPassword'
 import TicketYeuThichSC from './src/screens/TicketYeuThichSC'
 import Test from './src/screens/Test'
-import LoginGoogle from './src/screens/LoginGoogle'
+
 import RegisterGG from './src/screens/RegisterGG'
 
 const Stack = createNativeStackNavigator();
@@ -197,7 +197,7 @@ const App = () => {
     // </PhimProvider> 
     //
     <UserProvider>
-      {/* <LoginGoogle/> */}
+      
       <PhimProvider>
         <ThanhToanProvider>
           <TinTucProvider>
