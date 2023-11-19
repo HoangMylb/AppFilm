@@ -24,10 +24,12 @@ import {StackActions} from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 const User = props => {
   const {navigation} = props;
   // bắt đầu các hàm thay đổi hình đại diện
   const [dowload, setDowload] = useState('');
+  const [checkGG, setCheckGG] = useState('');
   async function pickImage() {
     try {
       const image = await ImagePicker.openPicker({
@@ -81,14 +83,25 @@ const User = props => {
     suaEmail,
     suaGioiTinh,
     suaHinhAnh,
+    signOut,
   } = useContext(UserContext);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [data2, setData2] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  
   const fetchData = async () => {
     try {
       const storedData = await AsyncStorage.getItem('keepLogedIn');
       const storedData2 = await AsyncStorage.getItem('userData');
+      const storedData3 = await AsyncStorage.getItem('keepLogedInGG');
+     
+      if (storedData3 !== null && storedData3 !== 'false') {
+        setCheckGG('a');
+      } else {
+        setCheckGG('b');
+      }
+      
+      
       if (storedData !== null) {
         setData2(JSON.parse(storedData2));
       }
@@ -123,7 +136,11 @@ const User = props => {
       changeHinhAnh();
 
     }
+   
   }, [isLoading, dowload]);
+  useEffect(() => {
+    fetchData();
+  }, [checkGG]);
   const nextTo = async () => {
     navigation.dispatch(StackActions.replace('Home'));
   };
@@ -312,13 +329,26 @@ const User = props => {
   const handleCancel = () => {
     setIsEditing(false);
   };
+
   // Xử lý đăng xuất
+  const signOutGG = async () => {
+    if(checkGG==='a'){
+      signOut();
+    }
+   
+  }
   const handleActiveDangXuat = () => {
 
     AsyncStorage.setItem('keepLogedIn', '');
 
-    AsyncStorage.setItem("keepLogedIn", "")
+    AsyncStorage.setItem("keepLogedIn", "");
+    AsyncStorage.setItem('keepLogedInGG', '');
     setIsEditing(false);
+    
+  
+      signOutGG();
+    
+    
     navigation.dispatch(StackActions.replace('Login'));
   };
 
@@ -415,6 +445,7 @@ const User = props => {
             <Text style={[styles.input1, {height: '100%'}]}>
               {tenKhachHang}
             </Text>
+            
             <TouchableOpacity
               style={{
                 position: 'absolute',
@@ -494,7 +525,7 @@ const User = props => {
               position: 'relative',
             }}>
             <Text style={[styles.input1, {height: '100%'}]}>{userName}</Text>
-            <TouchableOpacity
+            {checkGG==='b'&&( <TouchableOpacity
               style={{
                 position: 'absolute',
                 alignSelf: 'center',
@@ -509,7 +540,8 @@ const User = props => {
                   uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Information%20User%2Fimage%2026.png?alt=media&token=a709b447-30cd-4b98-bcc3-5e44697d7d25&_gl=1*13nr4lc*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5Nzc5NjIzMy42LjEuMTY5Nzc5NzQ0MC4zOC4wLjA.',
                 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity>)}
+            
           </View>
           <Text style={styles.inputTitle}>Giới tính</Text>
           <View
@@ -537,9 +569,9 @@ const User = props => {
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.inputTitle}>Mật khẩu</Text>
-
-          <View
+          {checkGG==='b'&&(<Text style={styles.inputTitle}>Mật khẩu</Text>)}
+          
+          {checkGG==='b'&&(<View
             style={{
               flexDirection: 'row',
               width: '85%',
@@ -577,7 +609,8 @@ const User = props => {
                 }}
               />
             </TouchableOpacity>
-          </View>
+          </View>)}
+          
         </View>
 
 
@@ -897,7 +930,7 @@ const User = props => {
                     styles.btnAccount,
                     {width: 100, margin: 20,},
                   ]}
-                  onPress={changeHoTen}>
+                  onPress={changeGioTinh}>
                   <Text style={styles.btnTxt}>Xác nhận</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -963,7 +996,7 @@ const User = props => {
                     styles.btnAccount,
                     {width: 100, margin: 20,},
                   ]}
-                  onPress={changeHoTen}>
+                  onPress={changePassWord}>
                   <Text style={styles.btnTxt}>Xác nhận</Text>
                 </TouchableOpacity>
                 <TouchableOpacity

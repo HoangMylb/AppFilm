@@ -42,6 +42,8 @@ import SubmitPassword from './src/screens/SubmitPassword'
 import TicketYeuThichSC from './src/screens/TicketYeuThichSC'
 import Test from './src/screens/Test'
 
+import RegisterGG from './src/screens/RegisterGG'
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const STRIPE_KEY =
@@ -193,8 +195,9 @@ const App = () => {
     // <PhimProvider>
     // <Test/>
     // </PhimProvider> 
-
+    //
     <UserProvider>
+      
       <PhimProvider>
         <ThanhToanProvider>
           <TinTucProvider>
@@ -232,6 +235,7 @@ const App = () => {
                     <Stack.Screen name="TimeSelect" component={TimeSelect} options={{ headerShown: false }} />
                     <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }} />
                     <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+                    <Stack.Screen name="RegisterGG" component={RegisterGG} options={{ headerShown: false }} />
                   </Stack.Navigator>
                 ) : ( // Nếu chưa đăng nhập, hiển thị màn hình đăng nhập
                   <Stack.Navigator
@@ -260,6 +264,7 @@ const App = () => {
                     <Stack.Screen name="SeatSelect" component={SeatSelect} options={{ headerShown: false }} />
                     <Stack.Screen name="User" component={User} options={{ headerShown: false }} />
                     <Stack.Screen name="BuyTicketsSC" component={BuyTicketsSC} options={{ headerShown: false }} />
+                    <Stack.Screen name="RegisterGG" component={RegisterGG} options={{ headerShown: false }} />
                   </Stack.Navigator>
                 )}
               </NavigationContainer>
