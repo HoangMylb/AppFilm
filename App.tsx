@@ -248,6 +248,8 @@ const App = () => {
                     <Stack.Screen name="YeuThich" component={Yeuthich} options={{ headerShown: false }} />
                     <Stack.Screen name="ThongBao" component={ThongBao} options={{ headerShown: false }} />
                     <Stack.Screen name="Home" component={MyTab} options={{ headerShown: false }} />
+                    <Stack.Screen name="Comings" component={Comings} options={{ headerShown: false }} />
+                    <Stack.Screen name="Launching" component={Launching} options={{ headerShown: false }} />
                     <Stack.Screen name="PayLosing" component={PayLosing} options={{ headerShown: false }} />
                     <Stack.Screen name="DetailNotification" component={DetailNotification} options={{ headerShown: false }} />
                     <Stack.Screen name="PaySuccess" component={PaySuccess} options={{ headerShown: false }} />

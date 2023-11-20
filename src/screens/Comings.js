@@ -99,7 +99,7 @@ const Comings = ({navigation}) => {
               style={{
                 color: 'white',
                 fontSize: 16,
-                marginLeft: 60,
+                marginLeft: '30%',
                 fontWeight: 'bold',
               }}>
               Sắp chiếu{' '}
