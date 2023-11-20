@@ -70,7 +70,7 @@ const ForgotpassWord = ({navigation}) => {
 
       <TouchableOpacity style={styles.toguima} onPress={handleSendCode}>
         <Text style={{
-          color: "#FFFFFF", fontSize: 18, fontWeight: '500', lineHeight: 20, alignItems: 'center', marginLeft: 4, marginTop: 11
+          color: "#FFFFFF", fontSize: 18, fontWeight: '500', lineHeight: 20,alignSelf: 'center', marginTop: 11
         }}>Gửi mã</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 8,
     backgroundColor: "#E38025",
-    alignItems: 'center',
+    alignSelf: 'center',
     marginTop: '120%'
   },
   tpphone: {

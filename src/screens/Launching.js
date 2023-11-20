@@ -71,7 +71,7 @@ const Launching = ({ navigation }) => {
               style={{ width: 44, height: 44 }}
               source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Arrow%20Left%20Button2.png?alt=media&token=4ecc2c70-56d8-4da2-abac-750f6ca28639&_gl=1*8qq0vj*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzY3MjY4Ni40LjEuMTY5NzY3Mjk3Mi41NC4wLjA.' }} />
           </TouchableOpacity>
-          <Text style={{ color: 'white', fontSize: 16, marginLeft: 60, fontWeight: 'bold' }}>Đang chiếu</Text>
+          <Text style={{ color: 'white', fontSize: 16, marginLeft: '30%', fontWeight: 'bold' }}>Đang chiếu</Text>
         </View><FlatList
             data={movie}
             numColumns={2}

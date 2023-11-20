@@ -32,7 +32,7 @@ const Login = (props) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   // context
   const { login, getByUser,googleSignIn,signOut } = useContext(UserContext);
-  signOut();
+  
   const handleValidation = () => {
     if (validator.isEmail(userName)) {
       // Email hợp lệ
@@ -234,8 +234,8 @@ const signOutGG = async () => {
             <View style={styles.bottomText}>
               <Text style={styles.txtQuestion}>Người dùng mới !</Text>
               <TouchableOpacity
-                //onPress={clickNextTo}
-                onPress={signOut}
+                onPress={clickNextTo}
+                //onPress={signOut}
                 style={{
 
                   width: 95,
