@@ -111,7 +111,7 @@ const Login = (props) => {
     );
 };
   const SignIn = async () => {
-    
+    signOut();
     try {
       const userCredential = await googleSignIn();
       console.log(" userCredential: " + JSON.stringify(userCredential.user));
@@ -134,9 +134,7 @@ const Login = (props) => {
   }
 }
 
-const signOutGG = async () => {
-    signOut();
-}
+
   
 
   return (
