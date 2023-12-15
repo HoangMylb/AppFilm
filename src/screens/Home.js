@@ -38,43 +38,7 @@ const Home = props => {
 
   const closeModal = () => {
     setModalVisible(false);
-    // Đặt cờ để chỉ định rằng modal đã được hiển thị
-    AsyncStorage.setItem('modalShown', 'true');
   };
-
-  // Lấy dữ liệu và kiểm tra xem modal đã được hiển thị chưa
-  const fetchModal = async () => {
-    try {
-      const storedData = await AsyncStorage.getItem('keepLogedIn');
-      const storedData2 = await AsyncStorage.getItem('userData');
-      const modalShown = await AsyncStorage.getItem('modalShown');
-
-      if (storedData !== false) {
-        setData2(JSON.parse(storedData2));
-
-        // Kiểm tra xem modal đã được hiển thị chưa
-        if (!modalShown) {
-          setModalVisible(true);
-        }
-      }
-    } catch (error) {
-      // Xử lý lỗi nếu cần
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchModal();
-
-    if (!isLoading) {
-      nextToo();
-      phimHome();
-      phimHomeSC();
-      getDienVien();
-    }
-  }, [isLoading]);
-
 
   //ham cua Phim
   const clickNextAll = () => {
