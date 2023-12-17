@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,28 +7,39 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  ScrollView, ActivityIndicator
+  ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';
 import MovieItem from '../renderItem/renderMovie';
 import DirectorItem from '../renderItem/renderDirector';
-import { UserContext } from '../context/UserContext';
-import { PhimContext } from '../context/PhimContext';
+import {UserContext} from '../context/UserContext';
+import {PhimContext} from '../context/PhimContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MovieItem2 from '../renderItem/renderMovie2';
-const Home = (props) => {
-  const { navigation } = props;
+import Modal from 'react-native-modal';
+const Home = props => {
+  const {navigation} = props;
   //phim
-  const { getPhimHome,getPhimHomeSC,getAllDV } = useContext(PhimContext);
-  const [dataPhim, setDataPhim] = useState('')
-  const [dataPhim2, setDataPhim2] = useState('')
+  const {getPhimHome, getPhimHomeSC, getAllDV} = useContext(PhimContext);
+  const [dataPhim, setDataPhim] = useState('');
+  const [dataPhim2, setDataPhim2] = useState('');
   //user
-  const { getId } = useContext(UserContext);
-  const [tenKhachHang, settenKhachHang] = useState('')
-  const [hinhAnh, setHinhAnh] = useState('')
+  const {getId} = useContext(UserContext);
+  const [tenKhachHang, settenKhachHang] = useState('');
+  const [hinhAnh, setHinhAnh] = useState('');
   const [data2, setData2] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+
+  // modal quang cao
+
+  const [isModalVisible, setModalVisible] = useState(true);
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   //ham cua Phim
   const clickNextAll = () => {
     navigation.navigate('Launching');
@@ -39,22 +50,18 @@ const Home = (props) => {
   const phimHome = async () => {
     const a = await getPhimHome();
     if (a.success) {
-      setDataPhim(a.message)
+      setDataPhim(a.message);
     } else {
-      console.log("Khong lay duoc Phim: " + JSON.stringify(a.success));
-
+      console.log('Khong lay duoc Phim: ' + JSON.stringify(a.success));
     }
-
   };
   const phimHomeSC = async () => {
     const a = await getPhimHomeSC();
     if (a.success) {
-      setDataPhim2(a.message)
+      setDataPhim2(a.message);
     } else {
-      console.log("Khong lay duoc Phim: " + JSON.stringify(a.success));
-
+      console.log('Khong lay duoc Phim: ' + JSON.stringify(a.success));
     }
-
   };
   //ket thuc ham cua Phim
   const fetchData = async () => {
@@ -73,14 +80,12 @@ const Home = (props) => {
   const nextToo = async () => {
     const a = await getId(data2._id);
     if (a.success) {
-      console.log("getIda1: " + JSON.stringify(a.message._id));
-      settenKhachHang(a.message.tenKhachHang)
-      setHinhAnh(a.message.hinhAnh)
+      console.log('getIda1: ' + JSON.stringify(a.message._id));
+      settenKhachHang(a.message.tenKhachHang);
+      setHinhAnh(a.message.hinhAnh);
     } else {
-      console.log("getIdSai: " + JSON.stringify(a.success));
-
+      console.log('getIdSai: ' + JSON.stringify(a.success));
     }
-
   };
   //console.log("khachHome: "+JSON.stringify(khachHang));
   useEffect(() => {
@@ -94,7 +99,6 @@ const Home = (props) => {
     }
   }, [isLoading]);
 
-
   // data phim
 
   const [director, setDirector] = useState('');
@@ -102,53 +106,50 @@ const Home = (props) => {
   const getDienVien = async () => {
     const a = await getAllDV();
     if (a.success) {
-      setDirector(a.message)
+      setDirector(a.message);
     } else {
-      console.log("Khong lay duoc DienVien: " + JSON.stringify(a.success));
+      console.log('Khong lay duoc DienVien: ' + JSON.stringify(a.success));
     }
-
   };
-  const renderItem1 = ({ item }) => {
+  const renderItem1 = ({item}) => {
     return <DirectorItem item={item} />; // Sử dụng MovieItem component
   };
-
 
   const clickNext = () => {
     navigation.navigate('User');
   };
 
- 
-
-  
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView >
+      <ScrollView>
         <View style={styles.screen}>
           {/* HEADER */}
           <View style={styles.header}>
             <View style={styles.txtHeader}>
-
               <Text style={styles.txt1}>Xin chào, {tenKhachHang} </Text>
 
               <Text style={styles.txt2}>Đặt vé xem phim thôi nào</Text>
             </View>
             {isLoading ? (
               <ActivityIndicator size="large" color="blue" />
-            ) :
+            ) : (
               <TouchableOpacity onPress={clickNext}>
-
                 {hinhAnh ? ( // Check if hinhAnh is not empty
                   <Image
-                    style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'red' }}
-                    source={{ uri: hinhAnh }}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25,
+                      backgroundColor: 'red',
+                    }}
+                    source={{uri: hinhAnh}}
                   />
                 ) : (
                   // Handle the case when hinhAnh is empty
-                  <Text style={{ color: 'white' }}>Đang tải</Text>
+                  <Text style={{color: 'white'}}>Đang tải</Text>
                 )}
               </TouchableOpacity>
-            }
-
+            )}
           </View>
           {/* ... */}
           {/* MOVIE thứ 1 */}
@@ -158,9 +159,9 @@ const Home = (props) => {
 
             {/* Danh sách phim đang chiếu */}
             <View style={styles.headerMovie}>
-              <Text style={{ fontSize: 24, color: 'white' }}>Đang chiếu</Text>
+              <Text style={{fontSize: 24, color: 'white'}}>Đang chiếu</Text>
               <TouchableOpacity onPress={clickNextAll}>
-                <Text style={{ fontSize: 13, color: '#E38025' }}>
+                <Text style={{fontSize: 13, color: '#E38025'}}>
                   Xem tất cả &gt;
                 </Text>
               </TouchableOpacity>
@@ -171,8 +172,12 @@ const Home = (props) => {
               horizontal
               data={dataPhim}
               keyExtractor={(item, index) => item.tenPhim + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
-              renderItem={({ item }) => (
-                <MovieItem item={item} navigation={navigation} idUser={data2._id} />
+              renderItem={({item}) => (
+                <MovieItem
+                  item={item}
+                  navigation={navigation}
+                  idUser={data2._id}
+                />
               )}
             />
           </View>
@@ -180,9 +185,9 @@ const Home = (props) => {
           <View style={styles.movie}>
             {/* Danh sách phim đang chiếu */}
             <View style={styles.headerMovie}>
-              <Text style={{ fontSize: 24, color: 'white' }}>Sắp chiếu</Text>
+              <Text style={{fontSize: 24, color: 'white'}}>Sắp chiếu</Text>
               <TouchableOpacity onPress={clickNextAll2}>
-                <Text style={{ fontSize: 13, color: '#E38025' }}>
+                <Text style={{fontSize: 13, color: '#E38025'}}>
                   Xem tất cả &gt;
                 </Text>
               </TouchableOpacity>
@@ -193,8 +198,12 @@ const Home = (props) => {
               horizontal
               data={dataPhim2}
               keyExtractor={(item, index) => item.tenPhim + index.toString()} // Sử dụng index để đảm bảo key là duy nhất
-              renderItem={({ item }) => (
-                <MovieItem2 item={item} navigation={navigation} idUser={data2._id} />
+              renderItem={({item}) => (
+                <MovieItem2
+                  item={item}
+                  navigation={navigation}
+                  idUser={data2._id}
+                />
               )}
             />
           </View>
@@ -202,7 +211,7 @@ const Home = (props) => {
           <View style={styles.director}>
             {/* Tiêu đề */}
             <View style={styles.headerDirector}>
-              <Text style={{ fontSize: 24, color: 'white' }}>Diễn viên</Text>
+              <Text style={{fontSize: 24, color: 'white'}}>Diễn viên</Text>
             </View>
             <FlatList
               horizontal
@@ -211,9 +220,28 @@ const Home = (props) => {
               renderItem={renderItem1}
             />
           </View>
-
         </View>
       </ScrollView>
+
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalRel}>
+            <Image
+              style={styles.containerImg}
+              source={{
+                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Home%2Fve.png?alt=media&token=a7d04c9b-814c-45f6-9fed-285587da13c9',
+              }}></Image>
+
+            <TouchableOpacity style={styles.modalAb} onPress={closeModal}>
+              <Image
+                style={styles.closeModal}
+                source={{
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Home%2Fcancel.png?alt=media&token=9ff45bd4-dff2-488e-a5f4-f4133a31becc',
+                }}></Image>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -221,6 +249,35 @@ const Home = (props) => {
 export default Home;
 
 const styles = StyleSheet.create({
+  // modal
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  containerImg: {
+    width: 290,
+    height: 300,
+    borderRadius: 12,
+  },
+
+  modalRel: {
+    position: 'relative',
+  },
+
+  modalAb: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
+
+  closeModal: {
+    width: 40,
+    height: 40,
+  },
+  //
   container: {
     flex: 1,
     backgroundColor: '#18191A',
@@ -235,11 +292,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-
   },
-  txtHeader: {
-
-  },
+  txtHeader: {},
   imgHeader: {
     width: 50,
     height: 50,
@@ -294,5 +348,5 @@ const styles = StyleSheet.create({
 
   director: {
     marginBottom: 20,
-  }
+  },
 });

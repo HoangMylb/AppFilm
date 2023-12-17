@@ -44,11 +44,11 @@ const Login = (props) => {
   };
   const clickNext = async () => {
     if (userName == "") {
-      setEmailError('Vui lòng không để trống Email')
+      setEmailError('Email không được để trống')
       setPassError('')
     } else if (passWord == "") {
       setEmailError('')
-      setPassError('Vui lòng không để trống PassWord')
+      setPassError('Password không được để trống')
     }
     else {
       if (handleValidation()) {
@@ -66,10 +66,10 @@ const Login = (props) => {
 
           ToastAndroid.show("Đăng nhập thành công", 1);
         } else {
-          ToastAndroid.show("Sai tài khoản hoặc mật khẩu", 1);
+          ToastAndroid.show("Tài khoản hoặc mật khẩu không đúng", 1);
         }
       } else {
-        setEmailError("Vui lòng nhập Email đúng định dạng")
+        setEmailError("Email phải đúng định dạng")
         setPassError('')
       }
     }
