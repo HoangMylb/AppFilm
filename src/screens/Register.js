@@ -394,12 +394,14 @@ const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 15,
   },
   logo: {
     width: 200,
     height: 140,
   },
   title: {
+    marginTop: 10,
     fontSize: 30,
     color: 'white',
     fontWeight: '800'
