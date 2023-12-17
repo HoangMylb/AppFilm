@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect,useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,6 +9,8 @@ import {
   FlatList,
   ScrollView,
   ActivityIndicator,
+  AppState ,
+ 
 } from 'react-native';
 import directorList from '../data/directorItem';
 import actorList from '../data/actorItem';
@@ -33,13 +35,52 @@ const Home = props => {
   const [isLoading, setIsLoading] = useState(true);
 
   // modal quang cao
-
-  const [isModalVisible, setModalVisible] = useState(true);
-
-  const closeModal = () => {
+  
+  const [isModalVisible, setModalVisible] = useState(false);
+  
+  const closeModal = async () => {
     setModalVisible(false);
+    await AsyncStorage.setItem('modalDisplayed', 'false');
   };
+ 
+  useEffect(() => {
+    const a = async () => {
+      const modalDisplayed = await AsyncStorage.getItem('modalDisplayed');
+      console.log('a', modalDisplayed);
+      setModalVisible(modalDisplayed === 'true');
+    };
+  
+    a();
+  }, []);
+  
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
+  useEffect(()  =>  {
+    const subscription = AppState.addEventListener('change', async nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+      }
+      
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log('AppState', appState.current);
+      if ( appState.current==='background') {
+        AsyncStorage.setItem('modalDisplayed', 'true');
+        // const storedData = await AsyncStorage.getItem('modalDisplayed');
+        // console.log('back',storedData);
+        // setModalVisible(storedData)
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+ 
   //ham cua Phim
   const clickNextAll = () => {
     navigation.navigate('Launching');
@@ -222,26 +263,31 @@ const Home = props => {
           </View>
         </View>
       </ScrollView>
-
+      {isModalVisible?( 
       <Modal isVisible={isModalVisible}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalRel}>
-            <Image
-              style={styles.containerImg}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Home%2Fve.png?alt=media&token=a7d04c9b-814c-45f6-9fed-285587da13c9',
-              }}></Image>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalRel}>
+          <Image
+            style={styles.containerImg}
+            source={{
+              uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Home%2Fve.png?alt=media&token=a7d04c9b-814c-45f6-9fed-285587da13c9',
+            }}
+          />
 
-            <TouchableOpacity style={styles.modalAb} onPress={closeModal}>
-              <Image
-                style={styles.closeModal}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Home%2Fcancel.png?alt=media&token=9ff45bd4-dff2-488e-a5f4-f4133a31becc',
-                }}></Image>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={styles.modalAb} onPress={closeModal}>
+            <Image
+              style={styles.closeModal}
+              source={{
+                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Home%2Fcancel.png?alt=media&token=9ff45bd4-dff2-488e-a5f4-f4133a31becc',
+              }}
+            />
+          </TouchableOpacity>
         </View>
-      </Modal>
+      </View>
+    </Modal>):(null)}
+     
+  
+     
     </SafeAreaView>
   );
 };
