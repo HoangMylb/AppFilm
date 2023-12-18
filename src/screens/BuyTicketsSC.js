@@ -86,6 +86,7 @@ const BuyTickets = ({navigation}) => {
             style={{width: 320, height: 300, alignSelf: 'center'}}
             controls={true}
             poster={item.poster}
+            resizeMode="contain"
           />
 
           <View style={styles.boder}>

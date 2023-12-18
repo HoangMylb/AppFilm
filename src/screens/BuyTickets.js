@@ -72,7 +72,17 @@ const BuyTickets = ({ navigation }) => {
   useEffect(() => {
     console.log('checkeff: ' + check);
   }, [check]);
-
+  const navigateToLocation = (item, idUser) => {
+    navigation.dispatch(
+        StackActions.replace('Location', {
+          item: item,
+          idUser: idUser,
+        })
+    );
+};
+const onPressHandler = () => {
+  navigateToLocation(item, idUser);
+};
   return (
     <View style={styles.container}>
       {/* Nút back */}
@@ -91,9 +101,10 @@ const BuyTickets = ({ navigation }) => {
         <View>
           <Video
             source={{ uri: item.trailer }}
-            style={{ width: 320, height: 300, alignSelf: 'center' }}
+            style={{ width: 320, height: 300, alignSelf: 'center',  }}
             controls={true}
             poster={item.poster}
+            resizeMode="contain"
           />
 
           <View style={styles.border}>
@@ -204,9 +215,7 @@ const BuyTickets = ({ navigation }) => {
                   alignSelf: 'center',
                   marginBottom: 20,
                 }}
-                onPress={() => {
-                  navigation.navigate('Location', { item, idUser });
-                }}>
+                onPress={onPressHandler}>
                 <Text
                   style={{
                     height: 26,

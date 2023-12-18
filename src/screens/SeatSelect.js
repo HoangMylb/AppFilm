@@ -1,5 +1,5 @@
 
-import { StyleSheet, ToastAndroid, Text, View,Alert, SafeAreaView, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import { StyleSheet, ToastAndroid, Text, View, Alert, SafeAreaView, Modal, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import LinearGradient from 'react-native-linear-gradient';
 import { StackActions } from '@react-navigation/native';
@@ -14,8 +14,8 @@ const SeatSelect = ({ navigation }) => {
     const route = useRoute();
     const { ThanhToan, newDonHang } = useContext(ThanhToanContext);
     const { getSeat, updateSeat } = useContext(PhimContext);
-    const { getId,sendOTP } = useContext(UserContext);
-    
+    const { getId, sendOTP } = useContext(UserContext);
+
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const item = route.params.item;
     const item1 = route.params.item1;
@@ -35,25 +35,25 @@ const SeatSelect = ({ navigation }) => {
     const [ArrayGhe, setArrayGhe] = useState('')
     const [phongChieu, setPhongChieu] = useState('')
     let idGheArray;
-    
+
     const [email, setEmail] = useState('')
     const [tenUser, setTenUser] = useState('')
     const trangThai = "lịch sử";
 
-   
-    const handleSendHistory = async (email, trangThai,nguoiDat,ngayDat, phongChieu, soLuong , ghe, xuatChieu,tien) => {      
-    await sendOTP(email, trangThai,nguoiDat,ngayDat, phongChieu, soLuong , ghe, xuatChieu,tien);
- 
-      }
+
+    const handleSendHistory = async (email, trangThai, nguoiDat, ngayDat, phongChieu, soLuong, ghe, xuatChieu, tien) => {
+        await sendOTP(email, trangThai, nguoiDat, ngayDat, phongChieu, soLuong, ghe, xuatChieu, tien);
+
+    }
     useEffect(() => {
         const seat = async () => {
-            const a = await getSeat(item._id, item1._id,thangSeat, gio);
+            const a = await getSeat(item._id, item1._id, thangSeat, gio);
             setdataSeat(a[0].ghe);
             setidPhong(a[0]._id)
             setPhongChieu(a[0].Phong);
-       
+
         };
-        const getEmail =async () =>{
+        const getEmail = async () => {
             const a = await getId(idUser);
             setEmail(a.message.userName);
             setTenUser(a.message.tenKhachHang);
@@ -61,11 +61,11 @@ const SeatSelect = ({ navigation }) => {
         getEmail()
         seat();
     }, []);
-  
+
     const updateSeated = async () => {
         const ghe = selectedSeats.map((seat) => seat._id);
-   
-        await updateSeat(idPhong, ghe,item._id, item1._id,thangSeat,gio);
+
+        await updateSeat(idPhong, ghe, item._id, item1._id, thangSeat, gio);
     }
     const selectSeat = (index) => {
         const updatedDataSeat = [...dataSeat];
@@ -127,7 +127,7 @@ const SeatSelect = ({ navigation }) => {
             })
         );
     };
-    const navigateToPayLosing = (user, phim, rapPhim, ngay, xuatChieu, ghe, soLuong,phongChieu, tien, idPhong, idGhe, gio,thangSeat,tenUser) => {
+    const navigateToPayLosing = (user, phim, rapPhim, ngay, xuatChieu, ghe, soLuong, phongChieu, tien, idPhong, idGhe, gio, thangSeat, tenUser) => {
         navigation.dispatch(
             StackActions.replace('PayLosing', {
                 user: user,
@@ -138,20 +138,20 @@ const SeatSelect = ({ navigation }) => {
                 ghe: ghe,
                 tien: tien,
                 soLuong: soLuong,
-                phongChieu:phongChieu,
+                phongChieu: phongChieu,
                 tien: tien,
                 idPhong: idPhong,
                 idGhe: idGhe,
                 gio: gio,
-                thangSeat:thangSeat,
-                tenUser:tenUser
+                thangSeat: thangSeat,
+                tenUser: tenUser
 
 
             })
         );
     };
     const donHang = async (user, phim, rapPhim, ngayDat, xuatChieu, ghe, soLuong, phongChieu, tien) => {
-        const a = await newDonHang(user, phim, rapPhim, ngayDat, xuatChieu, ghe, soLuong, phongChieu,tien)
+        const a = await newDonHang(user, phim, rapPhim, ngayDat, xuatChieu, ghe, soLuong, phongChieu, tien)
         if (a.success) {
 
             ToastAndroid.show("Thanh toán thành công", 1)
@@ -185,20 +185,32 @@ const SeatSelect = ({ navigation }) => {
             if (paymentResponse.error) {
                 const now = new Date();
                 const ngayDat = format(now, 'p PP', { locale: viLocale });
-                navigateToPayLosing(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, phongChieu,tongTien, idPhong, selectedSeats,gio,thangSeat,tenUser)
+                navigateToPayLosing(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, phongChieu, tongTien, idPhong, selectedSeats, gio, thangSeat, tenUser)
                 ToastAndroid.show("Thanh toán thất bại", 1)
             } else {
                 updateSeated();
                 const now = new Date();
                 const ngayDat = format(now, 'p PP', { locale: viLocale });
-                handleSendHistory(email,trangThai,tenUser,ngayDat,phongChieu,totalSeats, ArrayGhe,gio + " - " + ngay + "/" + thang + "/" + nam,tongTien);
-                
-                donHang(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, phongChieu,tongTien)
-                
+                handleSendHistory(email, trangThai, tenUser, ngayDat, phongChieu, totalSeats, ArrayGhe, gio + " - " + ngay + "/" + thang + "/" + nam, tongTien);
+
+                donHang(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, phongChieu, tongTien)
+
                 navigateToPaySuccess(formattedNumber, ngayDat)
 
             }
         }
+    };
+    const [isAlertThanhToan, setAlertThanhToan] = useState(false);
+    const showAlertThanhToan = () => {
+        setAlertThanhToan(true);
+    };
+    const hideAlert = () => {
+
+        setAlertThanhToan(false);
+
+    };
+    const handleAlertAction = () => {
+        hideAlert();
     };
     return (
         <ScrollView>
@@ -222,46 +234,46 @@ const SeatSelect = ({ navigation }) => {
                     <View style={{ width: 200, height: 1, backgroundColor: '#880000' }}></View>
                 </View>
                 <View style={{ height: 350, position: 'relative' }}>
-                    <Image style={{ width: 25, height: 290, position: 'absolute', resizeMode: 'contain', top: '11%',left: '-1%' }}
+                    <Image style={{ width: 25, height: 290, position: 'absolute', resizeMode: 'contain', top: '11%', left: '-1%' }}
                         source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/Infomation%2FA%E2%80%A8%E2%80%A8B%E2%80%A8%E2%80%A8C%E2%80%A8%E2%80%A8D%E2%80%A8%E2%80%A8E%E2%80%A8%E2%80%A8F%E2%80%A8%E2%80%A8G%E2%80%A8%E2%80%A8H.png?alt=media&token=d83fa922-d332-435e-acdf-e16701eefd8f&_gl=1*qky73y*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5ODUwNzU3NC40MS4xLjE2OTg1MDc5NTQuOC4wLjA.' }}
                     />
-                    <ScrollView horizontal={true} style={{alignSelf: 'center'}}>
-                    <FlatList
-                        style={{ alignSelf: 'center', marginTop: 20, }}
-                        numColumns={numColumns}
-                        data={dataSeat}
-                        renderItem={({ item, index }) => {
-                            return (
-                                <TouchableOpacity style={{ margin: 10 }} onPress={() => selectSeat(index)}>
-                                    {item.empty === false && item.selected === true ? (
-                                        <Image
-                                            style={{ width: 30, height: 20 }}
-                                            source={{
-                                                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/seat%2FSeatNau.png?alt=media&token=e34478a0-bf3b-4a43-8893-678f853fad9a&_gl=1*1rpr441*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5OTIwMzQxNS41MC4xLjE2OTkyMDQzNzMuNDYuMC4w'
-                                            }}
-                                        />
-                                    ) : item.empty === true && item.selected === false ? (
-                                        <Image
-                                            style={{ width: 30, height: 20 }}
-                                            source={{
-                                                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/seat%2FSeatTrang.png?alt=media&token=e98202e7-c62a-4c4b-a784-6ce0f9fe1924&_gl=1*1f0osq1*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5OTIwMzQxNS41MC4xLjE2OTkyMDQzNzcuNDIuMC4w'
-                                            }}
-                                        />
-                                    ) : item.empty === false && item.selected === false ? (
-                                        <Image
-                                            style={{ width: 30, height: 20 }}
-                                            source={{
-                                                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/seat%2FSeatDo.png?alt=media&token=dce8ad62-e9f1-442b-8517-037f6082fb3d&_gl=1*1p3qclr*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5OTE5OTM1My40OS4wLjE2OTkxOTkzNTMuNjAuMC4w'
-                                            }}
-                                        />
-                                    ) : null}
-                                </TouchableOpacity>
-                            );
-                        }}
-                    />
+                    <ScrollView horizontal={true} style={{ alignSelf: 'center' }}>
+                        <FlatList
+                            style={{ alignSelf: 'center', marginTop: 20, }}
+                            numColumns={numColumns}
+                            data={dataSeat}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <TouchableOpacity style={{ margin: 10 }} onPress={() => selectSeat(index)}>
+                                        {item.empty === false && item.selected === true ? (
+                                            <Image
+                                                style={{ width: 30, height: 20 }}
+                                                source={{
+                                                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/seat%2FSeatNau.png?alt=media&token=e34478a0-bf3b-4a43-8893-678f853fad9a&_gl=1*1rpr441*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5OTIwMzQxNS41MC4xLjE2OTkyMDQzNzMuNDYuMC4w'
+                                                }}
+                                            />
+                                        ) : item.empty === true && item.selected === false ? (
+                                            <Image
+                                                style={{ width: 30, height: 20 }}
+                                                source={{
+                                                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/seat%2FSeatTrang.png?alt=media&token=e98202e7-c62a-4c4b-a784-6ce0f9fe1924&_gl=1*1f0osq1*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5OTIwMzQxNS41MC4xLjE2OTkyMDQzNzcuNDIuMC4w'
+                                                }}
+                                            />
+                                        ) : item.empty === false && item.selected === false ? (
+                                            <Image
+                                                style={{ width: 30, height: 20 }}
+                                                source={{
+                                                    uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/seat%2FSeatDo.png?alt=media&token=dce8ad62-e9f1-442b-8517-037f6082fb3d&_gl=1*1p3qclr*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5OTE5OTM1My40OS4wLjE2OTkxOTkzNTMuNjAuMC4w'
+                                                }}
+                                            />
+                                        ) : null}
+                                    </TouchableOpacity>
+                                );
+                            }}
+                        />
                     </ScrollView>
                 </View>
-               
+
                 <View style={{ width: 341, tintColor: "white", height: 1, backgroundColor: 'white' }}>
 
                 </View>
@@ -304,13 +316,55 @@ const SeatSelect = ({ navigation }) => {
                     />{tongTien ? (<Text style={styles.txttime}>{formattedNumber}đ</Text>) : (<Text style={styles.txttime}></Text>)}
 
                 </View>
-                <TouchableOpacity onPress={thanhToan} style={{ width: 250, height: 40, borderRadius: 10, backgroundColor: "#E38025", alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 20, marginBottom: 20 }}>
+                <TouchableOpacity onPress={showAlertThanhToan} style={{ width: 250, height: 40, borderRadius: 10, backgroundColor: "#E38025", alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 20, marginBottom: 20 }}>
                     <Text style={styles.txtdatngay}>Thanh toán</Text>
                 </TouchableOpacity>
 
-               
+                <View style={{
+                    flex: 1,
+                    margin: 10,
+                }}>
+                    {/* hiện thanh toán */}
+                    <Modal
+                        transparent={true}
+                        animationType="slide"
+                        visible={isAlertThanhToan}
+                        onRequestClose={hideAlert}>
+                        <View style={styles.modalBackground}>
+                            <View style={styles.modalView}>
+                                {/* View chứa hình ảnh logon và text */}
+                                <TouchableOpacity
+                                    style={
+                                        { alignSelf: 'flex-end' }}
+                                    onPress={handleAlertAction}>
+                                    <Text style={styles.btnTxt2}>X</Text>
+                                </TouchableOpacity>
+
+                                <View style={styles.logoContainer}>
+                                    <Text style={styles.title}>Phương thức thanh toán </Text>
+                                </View>
+
+                                <View style={{ }}>
+
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.btnAccount,
+                                            { width: 200, margin: 20, flexDirection: 'row',borderWidth: 0.5,borderRadius: 5, padding: 5,borderColor:'#C0C0C0'  },
+                                        ]}
+                                        onPress={thanhToan}
+                                       >
+                                        <Image style={{ width: 55, height: 32,  }}
+                                        source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/BuyTickets%2FGroup%2049.png?alt=media&token=59a84a49-147e-4403-8a3a-a9508f26dcc3' }}
+                                    /><Text style={styles.btnTxt}>Stripe</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
             </LinearGradient>
-            </ScrollView>
+        </ScrollView>
+
 
     )
 }
@@ -318,6 +372,54 @@ const SeatSelect = ({ navigation }) => {
 export default SeatSelect
 
 const styles = StyleSheet.create({
+    btnTxt2: {
+        color: 'white',
+        fontSize: 24,
+        alignSelf:'center',
+       
+    },
+    btnTxt: {
+        color: 'white',
+        fontSize: 16,
+        fontFamily: 'Kanit',
+        fontWeight: '700',
+        alignSelf:'center',
+        marginLeft: 10
+    },
+    title: {
+        fontSize: 20,
+        color: 'white',
+        fontWeight: '800',
+        marginTop: 20,
+        marginBottom: 10,
+    },
+    logoContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalView: {
+        backgroundColor: '#222222',
+        margin: 20,
+        padding: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    modalBackground: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
     txtdatngay: {
         fontSize: 20,
         fontWeight: '600',
