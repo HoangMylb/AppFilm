@@ -21,6 +21,9 @@ import {PhimContext} from '../context/PhimContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MovieItem2 from '../renderItem/renderMovie2';
 import Modal from 'react-native-modal';
+
+import LottieView from 'lottie-react-native';
+
 const Home = props => {
   const {navigation} = props;
   //phim

@@ -1,5 +1,6 @@
 import { StyleSheet, SafeAreaView, Text, View, FlatList, Image, TouchableOpacity } from 'react-native'
 import React, { useContext, useState, useEffect } from 'react'
+import LottieView from 'lottie-react-native';
 
 import { TinTucContext } from '../context/TinTucContext';
 
@@ -29,7 +30,7 @@ const News = ({navigation }) => {
             </View>
             {loading ? ( // Kiểm tra nếu đang loading thì hiển thị thông báo hoặc spinner
                 <View style = {{flex: 1,justifyContent:'center',alignItems:'center'}}>
-                <Text style={{color:'white'}}>Đang tải dữ liệu... </Text>
+                 <LottieView style = {{width:300,height:300}} source={require('../animation/animation.json')} autoPlay loop />
                 </View>
             ) : (
                 <FlatList
