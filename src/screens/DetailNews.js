@@ -27,7 +27,7 @@ const DetailNews = ({navigation}) => {
                 />
 
                 <Text style={{ color: 'white', fontSize: 20, marginLeft: 10 }}>{item.title}</Text>
-                <Text style={{ color: 'white', fontSize: 16, marginLeft: 10, marginTop: 20 }}>{item.chitiet}</Text>
+                <Text style={{ color: 'white', fontSize: 16, marginLeft: 10, marginVertical: 20 }}>{item.chitiet}</Text>
             </ScrollView>
         </View>
     )
