@@ -9,20 +9,14 @@ import {
   ToastAndroid,
   StyleSheet,
   Dimensions,
-  Modal,
-  TextInput
 } from 'react-native';
 import Video from 'react-native-video';
 import { StackActions } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import { PhimContext } from '../context/PhimContext';
-import { UserContext } from '../context/UserContext';
-import { format, addDays } from 'date-fns';
-import viLocale from 'date-fns/locale/vi';
-const BuyTickets = ({ navigation }) => {
 
-  const { getId } = useContext(UserContext);
-  const { removeBinhLuanFromPhim, newYeuThich, xoaYeuThich, kiemTraYeuThich, getDienVien, getBinhLuanPhim, addBinhLuan } = useContext(PhimContext);
+const BuyTickets = ({ navigation }) => {
+  const { newYeuThich, xoaYeuThich, kiemTraYeuThich, getDienVien } = useContext(PhimContext);
   const [check, setCheck] = useState(0);
   const [dataDienVien, setDataDienVien] = useState('');
   const route = useRoute();
@@ -31,6 +25,7 @@ const BuyTickets = ({ navigation }) => {
   const [checkYT, setcheckYT] = useState(false);
 
   const windowWidth = Dimensions.get('window').width;  // Lấy kích thước chiều rộng màn hình
+
 
   const isIcon = async () => {
     const newCheckValue = check + 1;
@@ -72,149 +67,22 @@ const BuyTickets = ({ navigation }) => {
     ktYeuThich();
 
     dienVien();
-    getBinhLuan();
-    getUser();
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1; // Tháng bắt đầu từ 0, nên cần cộng thêm 1
-    const day = currentDate.getDate();
-    setToDay(`${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`);
-
-
   }, []);
 
-  // useEffect(() => {
-  //   console.log('checkeff: ' + check);
-  // }, [check]);
+  useEffect(() => {
+    console.log('checkeff: ' + check);
+  }, [check]);
   const navigateToLocation = (item, idUser) => {
     navigation.dispatch(
-      StackActions.replace('Location', {
-        item: item,
-        idUser: idUser,
-      })
+        StackActions.replace('Location', {
+          item: item,
+          idUser: idUser,
+        })
     );
-  };
-  const onPressHandler = () => {
-    navigateToLocation(item, idUser);
-  };
-  const [dataComment, setDataComment] = useState('');
-  const [dataUser, setDataUser] = useState('');
-
-  const [noiDung, setNoiDung] = useState('');
-  const [today, setToDay] = useState('');
-  const [idComment, setIdComment] = useState('');
-  const [idItem, setIdItem] = useState('');
-  const [isComment, setIsComment] = useState(false);
-  const [isDel, setIsDel] = useState(false);
-  const comment = async () => {
-    setIsComment(true);
-
-  };
-  const handleCancelComment = () => {
-    setIsComment(false);
-  };
-  const handleCancelDel = () => {
-
-    setIsDel(false)
-  };
-
-  const getBinhLuan = async () => {
-
-    const a = await getBinhLuanPhim(item._id);
-    if (a.success) {
-
-      setDataComment(a.message)
-      setIdComment(a.idBinhLuan)
-    } else {
-      console.log('Không lấy được BinhLuan: ' + a.success);
-    }
-  };
-  const getUser = async () => {
-
-    const a = await getId(idUser);
-    if (a.success) {
-
-      setDataUser(a.message)
-    } else {
-      console.log('Không lấy được usserr: ' + a.success);
-    }
-  };
-  const addComment = async () => {
-
-    const a = await addBinhLuan(idComment, idUser, today, noiDung, dataUser.hinhAnh, dataUser.tenKhachHang);
-    if (a.success) {
-
-      setDataUser(a.message)
-      setNoiDung('')
-      getBinhLuan();
-    } else {
-      console.log('Không lấy được usserr: ' + a.success);
-    }
-  };
-  const handleDel = async () => {
-
-    const a = await removeBinhLuanFromPhim(idComment, idItem);
-    if (a.success) {
-      ToastAndroid.show(a.message, 1);
-      setIsDel(false)
-      getBinhLuan()
-    } else {
-      console.log('Không lấy được usserr: ' + a.success);
-    }
-  };
-  const handleLongPress = (id) => {
-    setIdItem(id)
-    setIsDel(true);
-
-  };
-  const renderItem = ({ item }) => (
-    <View>
-
-      <View style={{ flexDirection: 'row', marginVertical: 10, position: 'relative' }}>
-        <Image
-          style={{
-            width: 30,
-            height: 30,
-            marginRight: 10,
-            borderRadius: 15,
-
-          }}
-
-          source={{ uri: item.hinhAnh }}
-        />
-        <View >
-          <Text>{item.userTen}</Text>
-          <Text style={{ marginVertical: 5, fontWeight: 'bold' }}>{item.noiDung}</Text>
-          <Text>{item.ngay}</Text>
-        </View>
-        {item.userID === idUser ? (
-          <TouchableOpacity
-            style={{
-              width: 20,
-              alignSelf: 'center',
-              marginHorizontal: 5,
-              position: 'absolute',
-              top: 0,
-              right: '1%'
-            }}
-            onPress={() => handleLongPress(item._id)}>
-            <Image
-              style={{
-                width: 12,
-                height: 12,
-              }}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/BuyTickets%2FDelete%20(1).png?alt=media&token=5e9c05fe-72d5-42d5-896e-c0b082c96b02'
-              }}
-            />
-          </TouchableOpacity>
-        ) : null}
-
-      </View>
-    </View>
-  );
-
-
+};
+const onPressHandler = () => {
+  navigateToLocation(item, idUser);
+};
   return (
     <View style={styles.container}>
       {/* Nút back */}
@@ -233,7 +101,7 @@ const BuyTickets = ({ navigation }) => {
         <View>
           <Video
             source={{ uri: item.trailer }}
-            style={{ width: 320, height: 300, alignSelf: 'center', }}
+            style={{ width: 320, height: 300, alignSelf: 'center',  }}
             controls={true}
             poster={item.poster}
             resizeMode="contain"
@@ -265,20 +133,6 @@ const BuyTickets = ({ navigation }) => {
                   }}>
                   {item.tenPhim}
                 </Text>
-                <TouchableOpacity onPress={comment}>
-                  <Image
-                    style={{
-                      width: 25,
-                      height: 25,
-                      top: -28,
-                      left: 250,
-                      position: 'absolute',
-                    }}
-                    source={{
-                      uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/BuyTickets%2FComments.png?alt=media&token=fe63e872-ac03-4277-a59f-253a12008c37'
-                    }}
-                  />
-                </TouchableOpacity>
                 <TouchableOpacity onPress={isIcon}>
                   <Image
                     style={{
@@ -375,143 +229,12 @@ const BuyTickets = ({ navigation }) => {
             </View>
           </View>
         </View>
-        <View style={{
-          // flex: 1,margin: 10, 
-        }}>
-          <Modal
-            transparent={true}
-            animationType="slide"
-            visible={isComment}
-            onRequestClose={handleCancelComment}>
-            <View style={styles.modalBackground}>
-              <View style={styles.modalView}>
-                {/* View cancel */}
-                <View style={{ alignItems: 'flex-end' }}>
-                  <TouchableOpacity
-                    style={{
-                      width: 20,
-                    }}
-                    onPress={handleCancelComment}>
-                    <Text style={{ fontWeight: '800', fontSize: 20 }}>X</Text>
-                  </TouchableOpacity>
-                </View>
-                {/* View chứa flatlist*/}
-
-                <FlatList
-                  style={{ flex: 1 }}
-                  data={dataComment}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item._id}
-                />
-                {/* View chứa textInput và submit */}
-                <View style={{ flexDirection: 'row' }}>
-                  <TextInput
-                    style={{ backgroundColor: 'lightgray', borderRadius: 4, flex: 1, color: 'black', fontSize: 16, paddingLeft: 10 }}
-                    placeholder='Viết bình luận...'
-                    onChangeText={setNoiDung}
-                    value={noiDung}
-
-                  />
-                  <TouchableOpacity
-                    style={{
-                      width: 20,
-                      alignSelf: 'center',
-                      marginHorizontal: 5
-                    }}
-                    onPress={addComment}>
-                    <Image
-                      style={{
-                        width: 25,
-                        height: 25,
-                      }}
-                      source={{
-                        uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/BuyTickets%2FSent.png?alt=media&token=12657cb1-2439-4819-aaac-4927127a61ed'
-                      }}
-                    />
-                  </TouchableOpacity>
-                </View>
-
-
-              </View>
-            </View>
-          </Modal>
-          {/* ////mol xoa */}
-          <Modal
-            transparent={true}
-            animationType="slide"
-            visible={isDel}
-            onRequestClose={handleCancelDel}>
-            <TouchableOpacity
-              style={styles.modalBackground}
-              activeOpacity={1} // Tắt hiệu ứng opacity khi nhấn
-              onPress={null}>
-
-              <View style={{ width: 200, height: 100, backgroundColor: 'white', borderRadius: 10, justifyContent: 'center', top: '20%' }}>
-
-                {/* View chứa flatlist*/}
-
-
-                {/* View chứa textInput và submit */}
-                <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                  <TouchableOpacity
-                    style={{
-                      width: 50,
-                      borderRadius: 10,
-
-                      alignItems: 'center'
-                    }}
-                    onPress={handleDel}>
-                    <Text style={{ fontWeight: '800', fontSize: 16, color: 'red' }}>Xóa</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      width: 50,
-
-                      borderRadius: 10,
-                      alignItems: 'center'
-                    }}
-                    onPress={handleCancelDel}>
-                    <Text style={{ fontWeight: '800', fontSize: 16, color: 'black' }}>Hủy</Text>
-                  </TouchableOpacity>
-
-
-                </View>
-
-
-              </View>
-            </TouchableOpacity>
-          </Modal>
-        </View>
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  modalBackground: {
-    flex: 1,
-    alignItems: 'center',
-
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalView: {
-    marginTop: '10%',
-    backgroundColor: 'white',
-    width: '90%',
-    height: '90%',
-    // margin: 20,
-    padding: 10,
-    borderRadius: 10,
-    alignSelf: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
   imgdv: {
     width: 63,
     height: 62,
