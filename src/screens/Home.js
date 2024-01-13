@@ -12,8 +12,7 @@ import {
   AppState ,
  
 } from 'react-native';
-import directorList from '../data/directorItem';
-import actorList from '../data/actorItem';
+
 import MovieItem from '../renderItem/renderMovie';
 import DirectorItem from '../renderItem/renderDirector';
 import {UserContext} from '../context/UserContext';
@@ -22,7 +21,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MovieItem2 from '../renderItem/renderMovie2';
 import Modal from 'react-native-modal';
 
-import LottieView from 'lottie-react-native';
 
 const Home = props => {
   const {navigation} = props;

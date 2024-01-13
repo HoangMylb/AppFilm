@@ -243,8 +243,23 @@ const removeBinhLuanFromPhim = async (_id,binhLuanId) => {
         return false;
     }
 }
+const getPhimId = async (_id) => {
+    try {
+        const respon =  await customAxios().get(`/phim/getIdPhim?_id=${_id}`)
+        if (respon.success) {   
+            
+            return { success: true, message: respon.message }
+        }
+        else {
+            return { success: false, message: respon.message }
+        }
+    } catch (error) {
+        console.log('PhimSapChieu', error)
+        return false;
+    }
+}
     return (
-        <PhimContext.Provider value={{removeBinhLuanFromPhim,getBinhLuanPhim,addBinhLuan,updateSeat, getSeat,getAllDV,phimSapChieu, getPhimHomeSC,phimDangChieu,getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich,getMangPhim,kiemTraYeuThich}}>
+        <PhimContext.Provider value={{getPhimId,removeBinhLuanFromPhim,getBinhLuanPhim,addBinhLuan,updateSeat, getSeat,getAllDV,phimSapChieu, getPhimHomeSC,phimDangChieu,getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich,getMangPhim,kiemTraYeuThich}}>
             {children}
         </PhimContext.Provider>
     )
