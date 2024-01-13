@@ -22,7 +22,7 @@ import viLocale from 'date-fns/locale/vi';
 const BuyTickets = ({ navigation }) => {
 
   const { getId } = useContext(UserContext);
-  const { removeBinhLuanFromPhim,newYeuThich, xoaYeuThich, kiemTraYeuThich, getDienVien, getBinhLuanPhim, addBinhLuan } = useContext(PhimContext);
+  const { removeBinhLuanFromPhim, newYeuThich, xoaYeuThich, kiemTraYeuThich, getDienVien, getBinhLuanPhim, addBinhLuan } = useContext(PhimContext);
   const [check, setCheck] = useState(0);
   const [dataDienVien, setDataDienVien] = useState('');
   const route = useRoute();
@@ -31,27 +31,7 @@ const BuyTickets = ({ navigation }) => {
   const [checkYT, setcheckYT] = useState(false);
 
   const windowWidth = Dimensions.get('window').width;  // Lấy kích thước chiều rộng màn hình
-  const [dataComment, setDataComment] = useState('');
-  const [dataUser, setDataUser] = useState('');
 
-  const [noiDung, setNoiDung] = useState('');
-  const [today, setToDay] = useState('');
-  const [idComment, setIdComment] = useState('');
-  const [idItem, setIdItem] = useState('');
-  const [isComment, setIsComment] = useState(false);
-  const [isDel, setIsDel] = useState(false);
-  const comment = async () => {
-    setIsComment(true);
-
-  };
-  const handleCancelComment = () => {
-    setIsComment(false);
-  };
-  const handleCancelDel = () => {
-
-    setIsDel(false)
-  };
- 
   const isIcon = async () => {
     const newCheckValue = check + 1;
     setCheck(newCheckValue);
@@ -117,6 +97,27 @@ const BuyTickets = ({ navigation }) => {
   const onPressHandler = () => {
     navigateToLocation(item, idUser);
   };
+  const [dataComment, setDataComment] = useState('');
+  const [dataUser, setDataUser] = useState('');
+
+  const [noiDung, setNoiDung] = useState('');
+  const [today, setToDay] = useState('');
+  const [idComment, setIdComment] = useState('');
+  const [idItem, setIdItem] = useState('');
+  const [isComment, setIsComment] = useState(false);
+  const [isDel, setIsDel] = useState(false);
+  const comment = async () => {
+    setIsComment(true);
+
+  };
+  const handleCancelComment = () => {
+    setIsComment(false);
+  };
+  const handleCancelDel = () => {
+
+    setIsDel(false)
+  };
+
   const getBinhLuan = async () => {
 
     const a = await getBinhLuanPhim(item._id);
@@ -151,12 +152,12 @@ const BuyTickets = ({ navigation }) => {
     }
   };
   const handleDel = async () => {
-    
-    const a = await removeBinhLuanFromPhim(idComment,idItem);
+
+    const a = await removeBinhLuanFromPhim(idComment, idItem);
     if (a.success) {
       ToastAndroid.show(a.message, 1);
-    setIsDel(false)
-    getBinhLuan()
+      setIsDel(false)
+      getBinhLuan()
     } else {
       console.log('Không lấy được usserr: ' + a.success);
     }
@@ -182,38 +183,38 @@ const BuyTickets = ({ navigation }) => {
           source={{ uri: item.hinhAnh }}
         />
         <View >
-          <Text>{item._id}</Text>
+          <Text>{item.userTen}</Text>
           <Text style={{ marginVertical: 5, fontWeight: 'bold' }}>{item.noiDung}</Text>
           <Text>{item.ngay}</Text>
         </View>
         {item.userID === idUser ? (
-  <TouchableOpacity
-    style={{
-      width: 20,
-      alignSelf: 'center',
-      marginHorizontal: 5,
-      position: 'absolute',
-      top: 0,
-      right: '1%'
-    }}
-    onPress={() => handleLongPress(item._id)}>
-    <Image
-      style={{
-        width: 12,
-        height: 12,
-      }}
-      source={{
-        uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/BuyTickets%2FDelete%20(1).png?alt=media&token=5e9c05fe-72d5-42d5-896e-c0b082c96b02'
-      }}
-    />
-  </TouchableOpacity>
-) : null}
+          <TouchableOpacity
+            style={{
+              width: 20,
+              alignSelf: 'center',
+              marginHorizontal: 5,
+              position: 'absolute',
+              top: 0,
+              right: '1%'
+            }}
+            onPress={() => handleLongPress(item._id)}>
+            <Image
+              style={{
+                width: 12,
+                height: 12,
+              }}
+              source={{
+                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/BuyTickets%2FDelete%20(1).png?alt=media&token=5e9c05fe-72d5-42d5-896e-c0b082c96b02'
+              }}
+            />
+          </TouchableOpacity>
+        ) : null}
 
       </View>
     </View>
   );
-  
-  
+
+
   return (
     <View style={styles.container}>
       {/* Nút back */}
@@ -456,7 +457,7 @@ const BuyTickets = ({ navigation }) => {
                     style={{
                       width: 50,
                       borderRadius: 10,
-                    
+
                       alignItems: 'center'
                     }}
                     onPress={handleDel}>
@@ -465,7 +466,7 @@ const BuyTickets = ({ navigation }) => {
                   <TouchableOpacity
                     style={{
                       width: 50,
-                      
+
                       borderRadius: 10,
                       alignItems: 'center'
                     }}
