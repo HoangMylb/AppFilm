@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const baseURL = 'https://web-admin-hghz.onrender.com/';
+const baseURL = 'http://192.168.1.8:3000/';
 const customAxios = (contentType = 'application/json')=>{
     const axiosInstance = axios.create({
         baseURL: baseURL

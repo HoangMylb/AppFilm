@@ -8,6 +8,7 @@ import {
   TouchableOpacity,Dimensions
 } from 'react-native';
 import React, {useContext, useState, useEffect} from 'react';
+import LottieView from 'lottie-react-native';
 
 import {ThanhToanContext} from '../context/ThanhToanContext';
 
@@ -119,7 +120,7 @@ const Notification = ({navigation}) => {
         />
       ) : (
         <View style = {{flex: 1,justifyContent:'center',alignItems:'center'}}>
-          <Text style={styles.loadingText}>Đang tải dữ liệu... </Text>
+          <LottieView style = {{width:300,height:300}} source={require('../animation/animation.json')} autoPlay loop />
         </View>
       )}
     </View>

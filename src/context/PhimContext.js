@@ -196,8 +196,70 @@ const updateSeat = async (phongId, gheIds,Phim ,Rap,ngay, gio) => {
         return null;
     }
 }
+const addBinhLuan = async (_id,userID,ngay,noiDung,hinhAnh,userTen) => {
+    try {
+        const respon =  await customAxios().post('/binhluan/add', { _id,userID,ngay,noiDung,hinhAnh,userTen})
+        if (respon.success) {   
+            
+            return { success: true, message: respon.message }
+        }
+        else {
+            return { success: false, message: respon.message }
+        }
+    } catch (error) {
+        console.log('newYeuThichContext', error)
+        return false;
+    }
+}
+const getBinhLuanPhim = async (_id) => {
+    try {
+        const respon =  await customAxios().get(`/binhluan/get?_id=${_id}`)
+        if (respon.success) {   
+            
+            return { success: true,idBinhLuan: respon.idBinhLuan, message: respon.message,  }
+        }
+        else {
+            return { success: false, message: respon.message }
+        }
+    } catch (error) {
+        console.log('PhimSapChieu', error)
+        return false;
+    }
+}
+const removeBinhLuanFromPhim = async (_id,binhLuanId) => {
+    try {
+        const respon =  await customAxios().delete('/binhluan/remove',  {
+            data: { _id, binhLuanId },
+          })
+        if (respon.success) {   
+            
+            return { success: true, message: respon.message }
+        }
+        else {
+            return { success: false, message: respon.message }
+        }
+    } catch (error) {
+        console.log('newYeuThichContext', error)
+        return false;
+    }
+}
+const getPhimId = async (_id) => {
+    try {
+        const respon =  await customAxios().get(`/phim/getIdPhim?_id=${_id}`)
+        if (respon.success) {   
+            
+            return { success: true, message: respon.message }
+        }
+        else {
+            return { success: false, message: respon.message }
+        }
+    } catch (error) {
+        console.log('PhimSapChieu', error)
+        return false;
+    }
+}
     return (
-        <PhimContext.Provider value={{updateSeat, getSeat,getAllDV,phimSapChieu, getPhimHomeSC,phimDangChieu,getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich,getMangPhim,kiemTraYeuThich}}>
+        <PhimContext.Provider value={{getPhimId,removeBinhLuanFromPhim,getBinhLuanPhim,addBinhLuan,updateSeat, getSeat,getAllDV,phimSapChieu, getPhimHomeSC,phimDangChieu,getPhimHome,getDienVien,newYeuThich,xoaYeuThich,getYeuThich,getMangPhim,kiemTraYeuThich}}>
             {children}
         </PhimContext.Provider>
     )

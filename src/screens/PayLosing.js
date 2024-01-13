@@ -138,7 +138,7 @@ const PayLosing = ({navigation}) => {
                             <Text style={styles.doneLabel}>Thanh toán lại</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={nextTo} style={styles.doneButton}>
-                            <Text style={styles.doneLabel}>Về trang Home</Text>
+                            <Text style={styles.doneLabel}>Trở về</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     },
 
     doneButton: {
-        marginTop: 9,
+        marginTop: 15,
         height: 32,
         width: '75%',
         alignItems: 'center',
