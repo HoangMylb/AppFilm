@@ -17,22 +17,13 @@ import { UserContext } from '../context/UserContext';
 import validator from 'validator';
 import { StackActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
-import firebase from '@react-native-firebase/app';
+import { cleanSingle } from 'react-native-image-crop-picker';
 
 const Login = (props) => {
-
   const { navigation } = props;
   const [userName, setUserName] = useState('')
   const [passWord, setPassWord] = useState('')
-  const [emailError, setEmailError] = useState(null);
-  const [passError, setPassError] = useState(null);
-  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
-  // context
-  const { login, getByUser,googleSignIn,signOut } = useContext(UserContext);
-  
+  const { login } = useContext(UserContext);
   const handleValidation = () => {
     if (validator.isEmail(userName)) {
       // Email hợp lệ
@@ -43,34 +34,26 @@ const Login = (props) => {
     }
   };
   const clickNext = async () => {
-    if (userName == "") {
-      setEmailError('Email không được để trống')
-      setPassError('')
-    } else if (passWord == "") {
-      setEmailError('')
-      setPassError('Password không được để trống')
-    }
-    else {
+    if (userName == "" || passWord == "") {
+      ToastAndroid.show("Không để trống Email hoặc PassWord", 2);
+    } else {
       if (handleValidation()) {
-        setEmailError('')
-        setPassError('')
         const res = await login(userName, passWord);
         if (res.success) {
           const userData = res.khach;
-         
+
           AsyncStorage.setItem('keepLogedIn', JSON.stringify(true));
           AsyncStorage.setItem('userData', JSON.stringify(userData));
-          AsyncStorage.setItem('keepLogedInGG', JSON.stringify(false));
           console.log(" res.khach: " + JSON.stringify(res.khach));
+          console.log("userData được lưu: " + JSON.stringify(userData));
           navigation.dispatch(StackActions.replace('Home'));
 
           ToastAndroid.show("Đăng nhập thành công", 1);
         } else {
-          ToastAndroid.show("Tài khoản hoặc mật khẩu không đúng", 1);
+          ToastAndroid.show("Sai tài khoản hoặc mật khẩu", 1);
         }
       } else {
-        setEmailError("Email phải đúng định dạng")
-        setPassError('')
+        ToastAndroid.show("Email không hợp lệ", 1);
       }
     }
   };
@@ -80,64 +63,6 @@ const Login = (props) => {
   const nextForgot = () => {
     navigation.navigate('ForgotpassWord');
   };
-
-
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: '453299861632-2rgp3trk74pnt4p52i7eba5bsjf8nv7v.apps.googleusercontent.com',
-
-    });
-
-    if (!firebase.apps.length) {
-      firebase.initializeApp({
-        // Các thông tin cấu hình Firebase của bạn
-        apiKey: "AIzaSyDIGQ3ihKBMIRt8qXYGqaVgvdKu8GTnV5w",
-        authDomain: "fir-cinemaapp-dcbcf.firebaseapp.com",
-        databaseURL: "https://fir-cinemaapp-dcbcf-default-rtdb.firebaseio.com",
-        projectId: "fir-cinemaapp-dcbcf",
-        storageBucket: "fir-cinemaapp-dcbcf.appspot.com",
-        messagingSenderId: "453299861632",
-        appId: "1:453299861632:web:0ca28d878d4f75223b0e65",
-        measurementId: "G-FYNH0FGHLP"
-      });
-    }
-  }, [])
-  const updateUser = (email, ten) => {
-    navigation.dispatch(
-        StackActions.replace('RegisterGG', {
-          email: email,
-          ten: ten,
-        })
-    );
-};
-  const SignIn = async () => {
-    
-    try {
-      const userCredential = await googleSignIn();
-      console.log(" userCredential: " + JSON.stringify(userCredential.user));
-      const a = await getByUser(userCredential.user.email);
-      if (a.success) {
-          const userData = a.message;
-          AsyncStorage.setItem('keepLogedIn', JSON.stringify(true));
-          AsyncStorage.setItem('userData', JSON.stringify(userData));
-          AsyncStorage.setItem('keepLogedInGG', JSON.stringify(true));
-          console.log(" res.khach: " + JSON.stringify(a.message));
-          navigation.dispatch(StackActions.replace('Home'));
-          ToastAndroid.show("Đăng nhập thành công", 1);
-      } else {
-          
-        updateUser(userCredential.user.email,userCredential.user.displayName );
-      }
-  } catch (error) {
-      console.log(error);
-      // Xử lý lỗi nếu cần
-  }
-}
-
-const signOutGG = async () => {
-    signOut();
-}
-  
 
   return (
     <View style={styles.Background}>
@@ -157,7 +82,7 @@ const signOutGG = async () => {
           <View style={styles.loginForm}>
             <View style={styles.loginAccount}>
               {/* Input email*/}
-              <View style={[styles.inputAccount, { borderColor: emailError ? 'red' : '#000000', borderWidth: 1 }]}>
+              <View style={styles.inputAccount}>
                 <Image
                   style={styles.inputIcon}
                   source={{
@@ -172,12 +97,8 @@ const signOutGG = async () => {
                   onChangeText={setUserName}
                 />
               </View>
-              {emailError ? (
-                <Text style={{ marginTop: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}>{emailError}</Text>
-              ) : (<Text style={{ marginTop: 5, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
-              )}
               {/* Input password*/}
-              <View style={[styles.inputAccount, { borderColor: passError ? 'red' : '#000000', borderWidth: 1 }]}>
+              <View style={styles.inputAccount}>
                 <Image
                   style={styles.inputIcon}
                   source={{
@@ -187,23 +108,12 @@ const signOutGG = async () => {
                 <TextInput
                   style={styles.input}
                   placeholder="Mật khẩu"
-                  secureTextEntry={isPasswordHidden}
+                  secureTextEntry={true}
                   placeholderTextColor="black"
                   value={passWord}
                   onChangeText={setPassWord}
                 />
-                <TouchableOpacity style={{ position: 'absolute', alignSelf: 'center', left: '85%' }} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
-                  <Image
-                    style={{ width: 22, height: 15, }}
-                    source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/icon%20_eye_.png?alt=media&token=2a97db14-015f-43dd-b6e8-87ad7b01c317&_gl=1*1ugamz5*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5NzcyMDU1OS41LjEuMTY5NzcyMDYwNC4xNS4wLjA.' }}
-
-                  />
-                </TouchableOpacity>
               </View>
-              {passError ? (
-                <Text style={{ marginTop: 0, color: 'red', fontSize: 11, alignSelf: 'center' }}>{passError}</Text>
-              ) : (<Text style={{ marginTop: 0, color: 'red', fontSize: 11, alignSelf: 'center' }}></Text>
-              )}
               <TouchableOpacity onPress={nextForgot} style={styles.forgotPassword}>
                 <Text style={{ color: '#E38025' }}>Quên mật khẩu</Text>
               </TouchableOpacity>
@@ -218,8 +128,7 @@ const signOutGG = async () => {
                 ---------------------------- Hoặc ----------------------------
               </Text>
               {/* 2 logo social */}
-              <TouchableOpacity style={styles.imgSocial} onPress={SignIn}
-              >
+              <View style={styles.imgSocial}>
                 <View style={styles.imgSocial2}>
                   <Image
                     style={{ width: 30, height: 30 }}
@@ -228,14 +137,20 @@ const signOutGG = async () => {
                     }}
                   />
                 </View>
-
-              </TouchableOpacity>
+                <View style={styles.imgSocial2}>
+                  <Image
+                    style={{ width: 30, height: 30 }}
+                    source={{
+                      uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/FB.png?alt=media&token=e54a728e-facf-46f5-8a1c-ae44057e8570',
+                    }}
+                  />
+                </View>
+              </View>
             </View>
             <View style={styles.bottomText}>
               <Text style={styles.txtQuestion}>Người dùng mới !</Text>
               <TouchableOpacity
                 onPress={clickNextTo}
-                //onPress={signOut}
                 style={{
 
                   width: 95,
@@ -275,6 +190,7 @@ const styles = StyleSheet.create({
     height: '40%',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 15
   },
   logo: {
     width: '40%',
@@ -282,7 +198,6 @@ const styles = StyleSheet.create({
   },
   // --------------------------
   scrollView: {
-
   },
   // Component chứa login form
   loginAccount: {
@@ -296,8 +211,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 40,
     backgroundColor: 'white',
-    marginTop: 5,
-    position: 'relative'
+    marginTop: 10
   },
   inputIcon: {
     width: 15, // Điều chỉnh kích thước của biểu tượng Email
@@ -316,6 +230,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     width: '90%',
+    marginTop: 10,
     marginBottom: 10
   },
   // button Account
@@ -346,13 +261,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Kanit',
     fontWeight: 'bold',
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 10
   },
   imgSocial: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10,
   },
   imgSocial2: {
     width: 50, // Độ rộng của đường viên
@@ -362,7 +276,7 @@ const styles = StyleSheet.create({
 
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 10
+    margin: 10
   },
   txtQuestion: {
     color: 'white',
