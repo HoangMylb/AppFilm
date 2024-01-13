@@ -21,6 +21,12 @@ import {PhimContext} from '../context/PhimContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MovieItem2 from '../renderItem/renderMovie2';
 import Modal from 'react-native-modal';
+<<<<<<< HEAD
+=======
+
+import LottieView from 'lottie-react-native';
+
+>>>>>>> parent of 0dd34b1 (lien ket phim voi tin tuc xong)
 const Home = props => {
   const {navigation} = props;
   //phim
