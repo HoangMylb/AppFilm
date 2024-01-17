@@ -174,9 +174,9 @@ export const PhimProvider = (props) => {
         return { success: false };
     }
 }
-const getSeat = async (Phim,Rap,ngay, gio) => {
+const getSeat = async (Phim,Rap,ngay) => {
     try {
-        const response = await customAxios().get(`/lichchieu?Phim=${Phim}&Rap=${Rap}&ngay=${ngay}&gio=${gio}`);
+        const response = await customAxios().get(`/lichchieu?Phim=${Phim}&Rap=${Rap}&ngay=${ngay}`);
       
             return response;
         

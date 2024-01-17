@@ -109,8 +109,22 @@ const LayUser = async (_id) => {
         return { success: false, message:'LayUserContext fail' }
     }
 }
+const getXuatPhim = async (phim,rap) => {
+    try {
+        const respon =  await customAxios().get(`/xuatphim/getXuatPhim?phim=${phim}&rap=${rap}`)
+        if (respon.success) {   
+            
+            return { success: true, message: respon.message }
+        }
+        else {
+            return { success: false, message: respon.message }
+        }
+    } catch (error) {
+        return { success: false, message:'XuatPhimFail fail' }
+    }
+}
     return (
-        <ThanhToanContext.Provider value={{ LayUser,LayRap,LayPhim,getAllRapPhim,ThanhToan,newDonHang,DonHangUser}}>
+        <ThanhToanContext.Provider value={{ getXuatPhim,LayUser,LayRap,LayPhim,getAllRapPhim,ThanhToan,newDonHang,DonHangUser}}>
             {children}
         </ThanhToanContext.Provider>
     )

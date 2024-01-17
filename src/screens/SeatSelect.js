@@ -47,7 +47,7 @@ const SeatSelect = ({ navigation }) => {
     }
     useEffect(() => {
         const seat = async () => {
-            const a = await getSeat(item._id, item1._id, thangSeat, gio);
+            const a = await getSeat(item._id, item1._id, thangSeat);
             setdataSeat(a[0].ghe);
             setidPhong(a[0]._id)
             setPhongChieu(a[0].Phong);
@@ -65,7 +65,7 @@ const SeatSelect = ({ navigation }) => {
     const updateSeated = async () => {
         const ghe = selectedSeats.map((seat) => seat._id);
 
-        await updateSeat(idPhong, ghe, item._id, item1._id, thangSeat, gio);
+        await updateSeat(idPhong, ghe, item._id, item1._id, thangSeat, nam);
     }
     const selectSeat = (index) => {
         const updatedDataSeat = [...dataSeat];
@@ -185,7 +185,7 @@ const SeatSelect = ({ navigation }) => {
             if (paymentResponse.error) {
                 const now = new Date();
                 const ngayDat = format(now, 'p PP', { locale: viLocale });
-                navigateToPayLosing(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, phongChieu, tongTien, idPhong, selectedSeats, gio, thangSeat, tenUser)
+                navigateToPayLosing(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay , ArrayGhe, totalSeats, phongChieu, tongTien, idPhong, selectedSeats, gio, thangSeat, tenUser)
                 ToastAndroid.show("Thanh toán thất bại", 1)
             } else {
                 updateSeated();
@@ -193,7 +193,7 @@ const SeatSelect = ({ navigation }) => {
                 const ngayDat = format(now, 'p PP', { locale: viLocale });
                 handleSendHistory(email, trangThai, tenUser, ngayDat, phongChieu, totalSeats, ArrayGhe, gio + " - " + ngay + "/" + thang + "/" + nam, tongTien);
 
-                donHang(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay + "/" + thang + "/" + nam, ArrayGhe, totalSeats, phongChieu, tongTien)
+                donHang(idUser, item._id, item1._id, ngayDat, gio + " - " + ngay, ArrayGhe, totalSeats, phongChieu, tongTien)
 
                 navigateToPaySuccess(formattedNumber, ngayDat)
 
@@ -293,7 +293,7 @@ const SeatSelect = ({ navigation }) => {
                     <Image style={{ width: 20, height: 20 }}
                         source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/fir-cinemaapp-dcbcf.appspot.com/o/FavouriteMovie%2FVector.png?alt=media&token=98c12e1c-3f11-4c84-96f2-1bd65ae32dd5&_gl=1*z2vuxg*_ga*MTY3NjEyNTMzOC4xNjk3MzU5OTA1*_ga_CW55HF8NVT*MTY5ODUwNTQxMy40MC4xLjE2OTg1MDU3MTAuMjMuMC4w' }}
                     />
-                    <Text style={styles.txttime}>{ngay} {thang}, {nam}</Text>
+                    <Text style={styles.txttime}>{ngay} </Text>
                 </View>
 
                 <View style={{ flexDirection: 'row', marginTop: 20, marginLeft: 12 }}>
